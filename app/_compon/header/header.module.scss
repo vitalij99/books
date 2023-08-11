@@ -1,0 +1,11 @@
+.navigation {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.link {
+  padding: 15px;
+  &.isActive {
+    color: aqua;
+  }
+}
