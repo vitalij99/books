@@ -1,9 +1,16 @@
-'use client';
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Link,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
-import style from './header.module.scss';
+import MenuIcon from '@mui/icons-material/Menu';
 const NAVLINK = [
   {
     href: '/popular',
@@ -20,26 +27,35 @@ const NAVLINK = [
 ];
 
 const Header = () => {
-  const pathname = usePathname();
+  const handleCloseNavMenu = () => {};
   return (
-    <header>
-      <nav>
-        <ul className={style.navigation}>
-          {NAVLINK.map(navigation => {
-            const isActive = pathname === navigation.href;
-            return (
-              <li key={navigation.key}>
-                <Link href={navigation.href}>
-                  <h3 className={isActive ? style.link : style.isActive}>
-                    {navigation.key}
-                  </h3>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    </header>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+
+          {NAVLINK.map(({ href, key }) => (
+            <Link
+              key={key}
+              href={href}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              <Typography> {key}</Typography>
+            </Link>
+          ))}
+
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 

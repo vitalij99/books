@@ -1,9 +1,8 @@
-
-const Book = ({params}: {params: {book: string}}) => {
+const Book = async ({ params }: { params: { book: string } }) => {
   return (
     <>
       <div>Book</div>
-          <h1>{params.book }</h1>
+      <h1>{params.book}</h1>
     </>
   );
 };
