@@ -41,18 +41,15 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-
           {NAVLINK.map(({ href, key }) => (
             <Link
               key={key}
               href={href}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              sx={{ my: 2, p: 2, color: 'white', display: 'block' }}
             >
               <Typography> {key}</Typography>
             </Link>
           ))}
-
-          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </Box>

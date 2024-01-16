@@ -1,4 +1,4 @@
-const Book = async ({ params }: { params: { book: string } }) => {
+const Book = ({ params }: { params: { book: string } }) => {
   return (
     <>
       <div>Book</div>
