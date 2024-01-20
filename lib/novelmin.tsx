@@ -24,6 +24,19 @@ export const getBookSearchByName = async ({
     html: data,
     elem: 'article',
   });
+  if (!result) return [];
 
-  return result;
+  const links = result.map(item => item.querySelector('a'));
+
+  const linkInfoArray: { name: string; href: string }[] = [];
+
+  links.forEach(link => {
+    if (link !== null) {
+      const name = link.textContent || '';
+      const href = link.getAttribute('href') || '';
+      linkInfoArray.push({ name, href });
+    }
+  });
+
+  return linkInfoArray;
 };

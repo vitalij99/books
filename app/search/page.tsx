@@ -1,20 +1,17 @@
 import { getBookSearchByName } from '@/lib/novelmin';
+import { Listbooks } from '../_compon/ListBooks/Listbooks';
 
 const search = async ({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | '' };
 }) => {
-  // const data = await getBookSearchByName({ name: 'barb', page: 1 });
+  const books = await getBookSearchByName({
+    name: searchParams.search,
+    page: 1,
+  });
 
-  console.log(searchParams);
-  return (
-    <>
-      {/* <div dangerouslySetInnerHTML={{ __html: data as TrustedHTML }} /> */}
-
-      <h1>{searchParams[0]}</h1>
-    </>
-  );
+  return <>{<Listbooks books={books} />}</>;
 };
 
 export default search;
