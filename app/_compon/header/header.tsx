@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
+import Search from '../Search/Search';
 const NAVLINK = [
   {
     href: '/popular',
@@ -20,14 +21,9 @@ const NAVLINK = [
     href: '/books',
     key: 'Книги',
   },
-  {
-    href: '/search',
-    key: 'Пошук',
-  },
 ];
 
 const Header = () => {
-  const handleCloseNavMenu = () => {};
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -50,6 +46,7 @@ const Header = () => {
               <Typography> {key}</Typography>
             </Link>
           ))}
+          <Search />
         </Toolbar>
       </AppBar>
     </Box>
