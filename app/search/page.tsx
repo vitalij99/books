@@ -1,6 +1,7 @@
 import { getBookSearchByName } from '@/lib/novelmin';
 import { Listbooks } from '../_compon/ListBooks/Listbooks';
 
+// try add lazy import
 const search = async ({
   searchParams,
 }: {
