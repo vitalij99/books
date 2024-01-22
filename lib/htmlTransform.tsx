@@ -21,8 +21,8 @@ export const transformInHtml = ({
 
     const root = parse(finalHtml);
 
-    const cards = root.querySelectorAll(elem);
+    const elements = root.querySelectorAll(elem);
 
-    return cards;
+    return elements;
   }
 };

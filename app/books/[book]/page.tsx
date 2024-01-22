@@ -1,15 +1,14 @@
-import { getBookSearchByName } from '@/lib/novelmin';
+import Book from '@/app/_compon/Book/Book';
+import { getBookLink } from '@/lib/novelmin';
 
-const Book = async ({ params }: { params: { book: string } }) => {
-  const data = await getBookSearchByName({ name: 'barb', page: 1 });
-
+const page = async ({ params }: { params: { book: string } }) => {
+  const book = await getBookLink({ book: params.book });
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: data as TrustedHTML }} />
-
       <h1>{params.book}</h1>
+      {book && <Book data={book} />}
     </>
   );
 };
 
-export default Book;
+export default page;

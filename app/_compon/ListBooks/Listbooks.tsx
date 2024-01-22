@@ -5,6 +5,7 @@ import Loading from '../Loading/Loading';
 interface Book {
   name: string;
   book: string;
+  web: string;
 }
 interface ListbooksProps {
   books: Book[];
@@ -14,7 +15,7 @@ export const Listbooks = ({ books }: ListbooksProps) => {
     <>
       {books ? (
         books.map((book, index) => (
-          <Link key={index} href={`/books/${book.book}`}>
+          <Link key={index} href={`/books/${book.book}?web=${book.web}`}>
             <Typography>{book.name}</Typography>
           </Link>
         ))
