@@ -28,13 +28,14 @@ export const getBookSearchByName = async ({
 
   const links = result.map(item => item.querySelector('a'));
 
-  const linkInfoArray: { name: string; href: string }[] = [];
+  const linkInfoArray: { name: string; book: string }[] = [];
 
   links.forEach(link => {
     if (link !== null) {
       const name = link.textContent || '';
       const href = link.getAttribute('href') || '';
-      linkInfoArray.push({ name, href });
+      const book = href.replace('https://novelmin.com/', '');
+      linkInfoArray.push({ name, book });
     }
   });
 
