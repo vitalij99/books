@@ -1,6 +1,7 @@
 'use client';
+import { translate } from '@/lib/translate.google';
 import { Box, Link, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 interface BookProps {
   book: string[];
@@ -16,10 +17,21 @@ interface BookProps {
 const Book = ({ data }: { data: BookProps }) => {
   const [textBook, setTextBook] = useState(data.book);
 
-  useEffect(() => {
-    const textParagref = textBook.slice(0, 10);
-    console.log(textParagref);
-  }, [textBook]);
+  // useMemo(() => {
+  //   async function getTranslate() {
+  //     const allTextBook: string[] = [];
+
+  //     for (let index = 0; index < data.book.length; index++) {
+  //       const element = data.book[index];
+  //       const result = await translate(element);
+  //       allTextBook.push(...result);
+  //     }
+
+  //     setTextBook(allTextBook);
+  //   }
+
+  //   getTranslate();
+  // }, [data.book]);
 
   if (!data) {
     return <div>Error</div>;
