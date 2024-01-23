@@ -12,7 +12,7 @@ interface BookProps {
   };
 }
 
-// add translate
+// add translate and reader
 const Book = ({ data }: { data: BookProps }) => {
   const [textBook, setTextBook] = useState(data.book);
 
