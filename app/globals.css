@@ -5,6 +5,8 @@
 :root {
   --first-color: #000;
   --sec-color: #ffffff;
+  --text-book:#000;
+  --font-size: 20px;
 }
 
 @media (prefers-color-scheme: dark) {

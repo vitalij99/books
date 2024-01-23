@@ -1,7 +1,8 @@
 'use client';
-import { translate } from '@/lib/translate.google';
+
 import { Box, Link, Typography } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import BookMenu from '../BookMenu/BookMenu';
 
 interface BookProps {
   book: string[];
@@ -39,13 +40,22 @@ const Book = ({ data }: { data: BookProps }) => {
 
   return (
     <div>
+      <BookMenu />
+
       {textBook.map((text, index) => {
-        return <Typography key={index}>{text}</Typography>;
+        return (
+          <Typography
+            sx={{ color: 'var(--text-book)', fontSize: 'var(--font-size)' }}
+            key={index}
+          >
+            {text}
+          </Typography>
+        );
       })}
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>
         <Link href={data.nav.prevPage}>{data.nav.prevText}</Link>
+        <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>
       </Box>
     </div>
   );
