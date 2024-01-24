@@ -1,13 +1,6 @@
-import {
-  Box,
-  Button,
-  Drawer,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  SvgIcon,
-} from '@mui/material';
+import { Box, Button, Drawer, SvgIcon } from '@mui/material';
 import { useEffect, useState } from 'react';
+import MenuStyledText from '../MenuStyledText/MenuStyledText';
 
 const BookMenu = () => {
   const [anchor, setAnchor] = useState(false);
@@ -60,30 +53,5 @@ const MenuIcon = () => {
         />
       </svg>
     </SvgIcon>
-  );
-};
-const MenuStyledText = () => {
-  const handldeChange = (value: string) => {
-    document.documentElement.style.setProperty('--font-size', value);
-  };
-
-  const defFont = getComputedStyle(document.documentElement).getPropertyValue(
-    '--font-size'
-  );
-
-  return (
-    <>
-      <InputLabel htmlFor="outlined-adornment-amount">font size</InputLabel>
-      <OutlinedInput
-        id="outlined-adornment-amount"
-        endAdornment={<InputAdornment position="start">px</InputAdornment>}
-        label="font size"
-        type="number"
-        defaultValue={parseFloat(defFont)}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handldeChange(event.target.value + 'px');
-        }}
-      />
-    </>
   );
 };
