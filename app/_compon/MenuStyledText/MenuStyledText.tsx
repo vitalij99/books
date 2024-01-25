@@ -5,8 +5,8 @@ import React from 'react';
 const MenuStyledText = () => {
   const defcolor =
     getComputedStyle(document.documentElement).getPropertyValue(
-      '--text-color'
-    ) || '#ffffff';
+      '--text-book'
+    ) || '#000';
 
   const [color, setColor] = React.useState(defcolor);
 
@@ -14,7 +14,7 @@ const MenuStyledText = () => {
     document.documentElement.style.setProperty('--font-size', value);
   };
   const handldeChangeColor = (value: string) => {
-    document.documentElement.style.setProperty('--text-color', value);
+    document.documentElement.style.setProperty('--text-book', value);
     setColor(value);
   };
 
