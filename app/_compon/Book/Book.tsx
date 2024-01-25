@@ -2,7 +2,6 @@
 
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import BookMenu from '../BookMenu/BookMenu';
 
 interface BookProps {
   book: string[];
@@ -12,6 +11,11 @@ interface BookProps {
     nextText: string;
     prevText: string;
   };
+}
+enum AllowedKeys {
+  FontSize = '--font-size',
+  TextBook = '--text-book',
+  BgColor = '--bg-color-book',
 }
 
 // add translate and reader
@@ -34,13 +38,21 @@ const Book = ({ data }: { data: BookProps }) => {
   //   getTranslate();
   // }, [data.book]);
   useEffect(() => {
-    const storedFontSize = localStorage.getItem('fontSize');
-    const storedTextColor = localStorage.getItem('textColor');
-    if (storedFontSize && storedTextColor) {
-      document.documentElement.style.setProperty('--font-size', storedFontSize);
+    const storedFontSize = localStorage.getItem(AllowedKeys.FontSize);
+    const storedTextColor = localStorage.getItem(AllowedKeys.TextBook);
+    const storedBgColor = localStorage.getItem(AllowedKeys.BgColor);
+    if (storedFontSize && storedTextColor && storedBgColor) {
       document.documentElement.style.setProperty(
-        '--text-book',
+        AllowedKeys.FontSize,
+        storedFontSize
+      );
+      document.documentElement.style.setProperty(
+        AllowedKeys.TextBook,
         storedTextColor
+      );
+      document.documentElement.style.setProperty(
+        AllowedKeys.BgColor,
+        storedBgColor
       );
     }
   }, []);
@@ -50,9 +62,7 @@ const Book = ({ data }: { data: BookProps }) => {
   }
 
   return (
-    <div>
-      <BookMenu />
-
+    <Box sx={{ backgroundColor: 'var(--bg-color-book)' }}>
       {textBook.map((text, index) => {
         return (
           <Typography
@@ -68,7 +78,7 @@ const Book = ({ data }: { data: BookProps }) => {
         <Link href={data.nav.prevPage}>{data.nav.prevText}</Link>
         <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>
       </Box>
-    </div>
+    </Box>
   );
 };
 

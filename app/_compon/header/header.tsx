@@ -1,17 +1,15 @@
 import {
   AppBar,
   Box,
-  Button,
   IconButton,
   Link,
-  Menu,
-  MenuItem,
   Toolbar,
   Typography,
 } from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import Search from '../Search/Search';
+import BookMenu from '../BookMenu/BookMenu';
 const NAVLINK = [
   {
     href: '/popular',
@@ -47,6 +45,8 @@ const Header = () => {
             </Link>
           ))}
           <Search />
+          <Box sx={{ flexGrow: 1 }} />
+          <BookMenu />
         </Toolbar>
       </AppBar>
     </Box>

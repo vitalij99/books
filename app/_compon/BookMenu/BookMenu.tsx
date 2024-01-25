@@ -1,3 +1,4 @@
+'use client';
 import { Box, Button, Drawer, SvgIcon } from '@mui/material';
 import { useEffect, useState } from 'react';
 import MenuStyledText from '../MenuStyledText/MenuStyledText';
@@ -25,7 +26,13 @@ const BookMenu = () => {
       </Button>
       <Drawer anchor="right" open={anchor} onClose={toggleDrawer(false)}>
         {
-          <Box sx={{ p: '10px' }}>
+          <Box
+            sx={{
+              p: '10px',
+              bgcolor: 'var(--bg-color-menu)',
+              flex: 1,
+            }}
+          >
             <MenuStyledText />
           </Box>
         }
@@ -44,7 +51,7 @@ const MenuIcon = () => {
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
-        stroke="currentColor"
+        stroke="#fff"
       >
         <path
           strokeLinecap="round"

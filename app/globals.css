@@ -5,8 +5,10 @@
 :root {
   --first-color: #000;
   --sec-color: #ffffff;
-  --text-book:#000;
+  --text-book: var(--first-color);
   --font-size: 20px;
+  --bg-color-book: var(--sec-color);
+  --bg-color-menu: #1976d2;
 }
 
 @media (prefers-color-scheme: dark) {
