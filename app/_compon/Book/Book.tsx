@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Link, Typography } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import BookMenu from '../BookMenu/BookMenu';
 
 interface BookProps {
@@ -33,6 +33,17 @@ const Book = ({ data }: { data: BookProps }) => {
 
   //   getTranslate();
   // }, [data.book]);
+  useEffect(() => {
+    const storedFontSize = localStorage.getItem('fontSize');
+    const storedTextColor = localStorage.getItem('textColor');
+    if (storedFontSize && storedTextColor) {
+      document.documentElement.style.setProperty('--font-size', storedFontSize);
+      document.documentElement.style.setProperty(
+        '--text-book',
+        storedTextColor
+      );
+    }
+  }, []);
 
   if (!data) {
     return <div>Error</div>;
