@@ -1,5 +1,7 @@
 'use client';
 
+import { getStorage } from '@/lib/getStorage';
+import { setRootValue } from '@/lib/setRootValue';
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -16,7 +18,15 @@ enum AllowedKeys {
   FontSize = '--font-size',
   TextBook = '--text-book',
   BgColor = '--bg-color-book',
+  BkPadding = '--book-padding',
 }
+
+const STORAGE_KEY = [
+  AllowedKeys.FontSize,
+  AllowedKeys.TextBook,
+  AllowedKeys.BgColor,
+  AllowedKeys.BkPadding,
+];
 
 // add translate and reader
 const Book = ({ data }: { data: BookProps }) => {
@@ -38,22 +48,13 @@ const Book = ({ data }: { data: BookProps }) => {
   //   getTranslate();
   // }, [data.book]);
   useEffect(() => {
-    const storedFontSize = localStorage.getItem(AllowedKeys.FontSize);
-    const storedTextColor = localStorage.getItem(AllowedKeys.TextBook);
-    const storedBgColor = localStorage.getItem(AllowedKeys.BgColor);
-    if (storedFontSize && storedTextColor && storedBgColor) {
-      document.documentElement.style.setProperty(
-        AllowedKeys.FontSize,
-        storedFontSize
-      );
-      document.documentElement.style.setProperty(
-        AllowedKeys.TextBook,
-        storedTextColor
-      );
-      document.documentElement.style.setProperty(
-        AllowedKeys.BgColor,
-        storedBgColor
-      );
+    const storage = STORAGE_KEY.map(key => getStorage(key));
+    if (storage) {
+      storage.forEach((value, index) => {
+        if (value) {
+          setRootValue(STORAGE_KEY[index], value);
+        }
+      });
     }
   }, []);
 
@@ -62,7 +63,12 @@ const Book = ({ data }: { data: BookProps }) => {
   }
 
   return (
-    <Box sx={{ backgroundColor: 'var(--bg-color-book)' }}>
+    <Box
+      sx={{
+        backgroundColor: 'var(--bg-color-book)',
+        paddingInline: `var(${AllowedKeys.BkPadding})`,
+      }}
+    >
       {textBook.map((text, index) => {
         return (
           <Typography

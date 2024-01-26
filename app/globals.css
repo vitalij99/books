@@ -9,6 +9,7 @@
   --font-size: 20px;
   --bg-color-book: var(--sec-color);
   --bg-color-menu: #1976d2;
+  --book-padding: 20px;
 }
 
 @media (prefers-color-scheme: dark) {

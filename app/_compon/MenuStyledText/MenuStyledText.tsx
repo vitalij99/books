@@ -1,3 +1,4 @@
+import { getStorage } from '@/lib/getStorage';
 import {
   Box,
   InputAdornment,
@@ -12,57 +13,39 @@ enum AllowedKeys {
   FontSize = '--font-size',
   TextBook = '--text-book',
   BgColor = '--bg-color-book',
+  BkPadding = '--book-padding',
 }
 
+const STORAGE_KEY = [
+  AllowedKeys.FontSize,
+  AllowedKeys.TextBook,
+  AllowedKeys.BgColor,
+  AllowedKeys.BkPadding,
+];
+
+type StorageType = {
+  [key in AllowedKeys]: string;
+};
+
+const defaultStorage = (): StorageType => {
+  const storage: StorageType = {} as StorageType;
+  STORAGE_KEY.forEach(key => {
+    storage[key] = getStorage(key as AllowedKeys);
+  });
+  return storage;
+};
+
 const MenuStyledText = () => {
-  const [color, setColor] = useState(
-    localStorage.getItem(AllowedKeys.TextBook) || '#000'
-  );
-  const [colorBg, setColorBg] = useState(
-    localStorage.getItem(AllowedKeys.BgColor) || '#000'
-  );
-  const [fontSizy, setFontSizy] = useState(
-    localStorage.getItem(AllowedKeys.FontSize) || '20px'
-  );
-
-  useEffect(() => {
-    const storedFontSize = localStorage.getItem('fontSize');
-    const storedTextColor = localStorage.getItem('textColor');
-
-    if (!storedFontSize && !storedTextColor) {
-      const defFont =
-        getComputedStyle(document.documentElement).getPropertyValue(
-          '--font-size'
-        ) || '20px';
-      const defcolor =
-        getComputedStyle(document.documentElement).getPropertyValue(
-          '--text-book'
-        ) || '#000';
-
-      setColor(defcolor);
-      setFontSizy(defFont);
-    }
-  }, []);
+  const [storage, setStorage] = useState(defaultStorage);
 
   const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
     localStorage.setItem(key, value);
     document.documentElement.style.setProperty(key, value);
   }, 500);
 
-  const handldeChangeFont = (value: string) => {
-    setFontSizy(value);
-
-    debouncedHandleChange(value, AllowedKeys.FontSize);
-  };
-  const handldeChangeColor = (value: string) => {
-    setColor(value);
-
-    debouncedHandleChange(value, AllowedKeys.TextBook);
-  };
-  const handldeChangeColorBg = (value: string) => {
-    setColorBg(value);
-
-    debouncedHandleChange(value, AllowedKeys.BgColor);
+  const handldeChange = (value: string, key: AllowedKeys) => {
+    setStorage({ ...storage, [key]: value });
+    debouncedHandleChange(value, key);
   };
 
   return (
@@ -71,7 +54,7 @@ const MenuStyledText = () => {
         sx={{ color: `var(${AllowedKeys.TextBook})` }}
         htmlFor="outlined-adornment-amount"
       >
-        Text size
+        Розмір тексту
       </InputLabel>
       <OutlinedInput
         sx={{ color: `var(${AllowedKeys.TextBook})` }}
@@ -79,37 +62,58 @@ const MenuStyledText = () => {
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="font size"
         type="number"
-        defaultValue={parseFloat(fontSizy)}
+        defaultValue={parseFloat(storage[AllowedKeys.FontSize])}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handldeChangeFont(event.target.value + 'px');
+          handldeChange(event.target.value + 'px', AllowedKeys.FontSize);
         }}
       />
       <InputLabel
         sx={{ color: `var(${AllowedKeys.TextBook})` }}
         htmlFor="mui-color-input"
       >
-        Text color
+        Колір тексту
       </InputLabel>
       <MuiColorInput
         sx={{ color: `var(${AllowedKeys.TextBook})` }}
         id="mui-color-input"
-        value={color}
+        value={storage[AllowedKeys.TextBook]}
         format="hex"
         isAlphaHidden
-        onChange={handldeChangeColor}
+        onChange={(value: string) => {
+          handldeChange(value, AllowedKeys.TextBook);
+        }}
       />
       <InputLabel
         sx={{ color: `var(${AllowedKeys.TextBook})` }}
         htmlFor="mui-color-bg"
       >
-        Background color
+        Колір фону
       </InputLabel>
       <MuiColorInput
         id="mui-color-bg"
-        value={colorBg}
+        value={storage[AllowedKeys.BgColor]}
         isAlphaHidden
         format="hex"
-        onChange={handldeChangeColorBg}
+        onChange={(value: string) => {
+          handldeChange(value, AllowedKeys.BgColor);
+        }}
+      />
+      <InputLabel
+        sx={{ color: `var(${AllowedKeys.TextBook})` }}
+        htmlFor="pageWidth"
+      >
+        Ширина сторінки
+      </InputLabel>
+      <OutlinedInput
+        sx={{ color: `var(${AllowedKeys.TextBook})` }}
+        id="pageWidth"
+        endAdornment={<InputAdornment position="start">px</InputAdornment>}
+        label="font size"
+        type="number"
+        defaultValue={parseFloat(storage[AllowedKeys.BkPadding])}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          handldeChange(event.target.value + 'px', AllowedKeys.BkPadding);
+        }}
       />
     </Box>
   );
