@@ -1,7 +1,9 @@
 'use client';
 
+import { AllowedKeys, STORAGE_KEY } from '@/app/type/book';
 import { getStorage } from '@/lib/getStorage';
 import { setRootValue } from '@/lib/setRootValue';
+import { translate } from '@/lib/translate.google';
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -14,39 +16,37 @@ interface BookProps {
     prevText: string;
   };
 }
-enum AllowedKeys {
-  FontSize = '--font-size',
-  TextBook = '--text-book',
-  BgColor = '--bg-color-book',
-  BkPadding = '--book-padding',
-}
 
-const STORAGE_KEY = [
-  AllowedKeys.FontSize,
-  AllowedKeys.TextBook,
-  AllowedKeys.BgColor,
-  AllowedKeys.BkPadding,
-];
-
-// add translate and reader
-const Book = ({ data }: { data: BookProps }) => {
+// add  reader
+const Book = ({
+  data,
+  translate: tran,
+}: {
+  data: BookProps;
+  translate?: string;
+}) => {
   const [textBook, setTextBook] = useState(data.book);
 
-  // useMemo(() => {
-  //   async function getTranslate() {
-  //     const allTextBook: string[] = [];
+  useMemo(() => {
+    async function getTranslate() {
+      const allTextBook: string[] = [];
 
-  //     for (let index = 0; index < data.book.length; index++) {
-  //       const element = data.book[index];
-  //       const result = await translate(element);
-  //       allTextBook.push(...result);
-  //     }
+      for (let index = 0; index < data.book.length; index++) {
+        const element = data.book[index];
+        const result = await translate(element);
+        allTextBook.push(...result);
+        if (index === 10) {
+          setTextBook(allTextBook);
+        }
+      }
 
-  //     setTextBook(allTextBook);
-  //   }
+      setTextBook(allTextBook);
+    }
 
-  //   getTranslate();
-  // }, [data.book]);
+    if (tran) {
+      getTranslate();
+    }
+  }, [data.book, tran]);
   useEffect(() => {
     const storage = STORAGE_KEY.map(key => getStorage(key));
     if (storage) {

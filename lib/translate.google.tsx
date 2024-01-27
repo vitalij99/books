@@ -5,6 +5,12 @@ const link =
 
 export const translate = async (text: string) => {
   const encodeText = encodeURI(text);
+
+  if (!encodeText) {
+    console.log(encodeText, text);
+    return text;
+  }
+
   const { data } = await axios.get(`${link}&q=${encodeText}`);
   if (!data) undefined;
 

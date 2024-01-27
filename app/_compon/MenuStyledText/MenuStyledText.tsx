@@ -1,3 +1,4 @@
+import { AllowedKeys, STORAGE_KEY } from '@/app/type/book';
 import { getStorage } from '@/lib/getStorage';
 import {
   Box,
@@ -8,20 +9,6 @@ import {
 } from '@mui/material';
 import { MuiColorInput } from 'mui-color-input';
 import React, { useEffect, useState } from 'react';
-
-enum AllowedKeys {
-  FontSize = '--font-size',
-  TextBook = '--text-book',
-  BgColor = '--bg-color-book',
-  BkPadding = '--book-padding',
-}
-
-const STORAGE_KEY = [
-  AllowedKeys.FontSize,
-  AllowedKeys.TextBook,
-  AllowedKeys.BgColor,
-  AllowedKeys.BkPadding,
-];
 
 type StorageType = {
   [key in AllowedKeys]: string;
