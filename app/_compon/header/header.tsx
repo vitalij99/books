@@ -9,7 +9,9 @@ import {
 
 import MenuIcon from '@mui/icons-material/Menu';
 import Search from '../Search/Search';
-import BookMenu from '../BookMenu/BookMenu';
+
+import BookHeader from '../BookHeader/BookHeader';
+
 const NAVLINK = [
   {
     href: '/popular',
@@ -46,7 +48,7 @@ const Header = () => {
           ))}
           <Search />
           <Box sx={{ flexGrow: 1 }} />
-          <BookMenu />
+          <BookHeader />
         </Toolbar>
       </AppBar>
     </Box>

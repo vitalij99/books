@@ -1,9 +1,9 @@
 'use client';
 
-import { AllowedKeys, STORAGE_KEY } from '@/app/type/book';
 import { getStorage } from '@/lib/getStorage';
 import { setRootValue } from '@/lib/setRootValue';
 import { translate } from '@/lib/translate.google';
+import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 

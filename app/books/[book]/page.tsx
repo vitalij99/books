@@ -8,7 +8,6 @@ const page = async ({
   params: { book: string };
   searchParams: { [key: string]: string | '' };
 }) => {
-  console.log(searchParams);
   const book = await getBookLink({ book: params.book });
   return <>{book && <Book data={book} translate={undefined} />}</>;
 };

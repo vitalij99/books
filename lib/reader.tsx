@@ -1,8 +1,6 @@
 export async function startReade({ book }: { book: string[] }) {
   const synth = window.speechSynthesis;
   const options = {
-    classDiv: 'content',
-    nextPage: 'nextchap',
     language: 'Google español',
     pitch: 2,
     rate: 2,
@@ -17,8 +15,9 @@ export async function startReade({ book }: { book: string[] }) {
     if (synth.speaking) {
       console.error('speechSynthesis.speaking');
       return;
-    } else if (!book) {
-      const utterThis = new SpeechSynthesisUtterance(...book);
+    } else if (book) {
+      const textBook = book.reduce((acum, text) => acum + text, '');
+      const utterThis = new SpeechSynthesisUtterance(textBook);
 
       utterThis.onerror = function () {
         console.error('SpeechSynthesisUtterance.onerror');
