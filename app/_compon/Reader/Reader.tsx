@@ -1,9 +1,29 @@
-import { Box, Button, Drawer, SvgIcon } from '@mui/material';
-import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Drawer,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SvgIcon,
+} from '@mui/material';
+
+import { useEffect, useState } from 'react';
 
 const Reader = () => {
   const [onOpen, setOnOpen] = useState(false);
+  const [voice, setVoice] = useState('');
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>();
 
+  useEffect(() => {
+    const synth = window.speechSynthesis;
+    const voi = synth.getVoices();
+
+    setVoices(voi);
+  }, []);
+  const handleChange = (event: SelectChangeEvent) => {
+    setVoice(event.target.value as string);
+  };
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -31,6 +51,21 @@ const Reader = () => {
             }}
           >
             asdasd
+            <Select
+              id="demo-simple-select"
+              value={voice}
+              label="voice"
+              onChange={handleChange}
+            >
+              {voices &&
+                voices.map((elem, index) => {
+                  return (
+                    <MenuItem key={index} value={elem.voiceURI}>
+                      {elem.name}
+                    </MenuItem>
+                  );
+                })}
+            </Select>
           </Box>
         }
       </Drawer>

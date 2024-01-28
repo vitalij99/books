@@ -1,7 +1,7 @@
-export async function startReade({ book }: { book: string[] }) {
+export const startReader = ({ book }: { book: string[] }) => {
   const synth = window.speechSynthesis;
   const options = {
-    language: 'Google español',
+    language: 'Microsoft Polina Online (Natural) - Ukrainian (Ukraine)',
     pitch: 2,
     rate: 2,
     reade: false,
@@ -34,4 +34,5 @@ export async function startReade({ book }: { book: string[] }) {
       synth.speak(utterThis);
     }
   }
-}
+  return speak;
+};

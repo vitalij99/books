@@ -1,6 +1,6 @@
 'use client';
 import { Box, Button, Drawer, SvgIcon } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import MenuStyledText from '../MenuStyledText/MenuStyledText';
 
 const BookMenu = () => {

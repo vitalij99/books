@@ -1,6 +1,7 @@
 'use client';
 
 import { getStorage } from '@/lib/getStorage';
+import { startReader } from '@/lib/reader';
 import { setRootValue } from '@/lib/setRootValue';
 import { translate } from '@/lib/translate.google';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
@@ -21,9 +22,11 @@ interface BookProps {
 const Book = ({
   data,
   translate: tran,
+  timeReader,
 }: {
   data: BookProps;
-  translate?: string;
+  translate?: boolean;
+  timeReader: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
 
@@ -57,6 +60,9 @@ const Book = ({
       });
     }
   }, []);
+  useEffect(() => {
+    const reader = startReader({ book: textBook });
+  }, [textBook]);
 
   if (!data) {
     return <div>Error</div>;
