@@ -1,6 +1,7 @@
 'use client';
 
 import BookMenu from '../BookMenu/BookMenu';
+import Reader from '../Reader/Reader';
 
 const BookHeader = () => {
   const pathname = document.location.pathname;
@@ -12,6 +13,7 @@ const BookHeader = () => {
   }
   return (
     <>
+      <Reader />
       <BookMenu />
     </>
   );
