@@ -10,7 +10,7 @@ const page = async ({
 }) => {
   console.log(searchParams);
   const book = await getBookLink({ book: params.book });
-  return <>{book && <Book data={book} translate={true} timeReader={'2'} />}</>;
+  return <>{book && <Book data={book} translate={false} timeReader={'2'} />}</>;
 };
 
 export default page;

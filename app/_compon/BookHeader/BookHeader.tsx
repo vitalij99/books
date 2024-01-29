@@ -17,7 +17,6 @@ const BookHeader = () => {
   }
   return (
     <>
-      <Reader />
       <BookMenu />
     </>
   );

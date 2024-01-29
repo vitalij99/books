@@ -1,4 +1,5 @@
-import { getStorage } from '@/lib/getStorage';
+'use client';
+import { StartReader } from '@/lib/reader';
 import { READER_KEY } from '@/type/book';
 import {
   Box,
@@ -8,36 +9,20 @@ import {
   Select,
   SelectChangeEvent,
   SvgIcon,
+  Typography,
   debounce,
 } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const Reader = () => {
+const Reader = ({ book }: { book: string[] }) => {
   const [onOpen, setOnOpen] = useState(false);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>();
-  const [voice, setVoice] = useState('');
+  const [isreade, setIsreade] = useState(false);
 
-  useEffect(() => {
-    if (onOpen) {
-      setVoices(window.speechSynthesis.getVoices());
-    }
-  }, [onOpen]);
-
-  useEffect(() => {
-    if (!voices) return;
-    const storage = getStorage(READER_KEY.voice);
-    if (!storage) return;
-    voices.forEach((elem, index) => {
-      if (elem.name === storage) {
-        setVoice(voices[index].name);
-      }
-    });
-  }, [voices]);
+  const reader = StartReader({ book });
 
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
-    setVoice(value as string);
     handleChangeLocalStorage(value, READER_KEY.voice);
   };
 
@@ -56,12 +41,25 @@ const Reader = () => {
 
       setOnOpen(open);
     };
+
+  const handleReade = () => {
+    if (!reader) return;
+
+    if (!isreade) {
+      reader.speak();
+      setIsreade(true);
+    } else {
+      reader.synth.cancel();
+      setIsreade(false);
+    }
+  };
+
   return (
     <div>
       <Button onClick={toggleDrawer(true)}>
         <ReaderIcon />
       </Button>
-      {voices && (
+      {reader && (
         <Drawer anchor="top" open={onOpen} onClose={toggleDrawer(false)}>
           {
             <Box
@@ -71,21 +69,25 @@ const Reader = () => {
                 flex: 1,
               }}
             >
-              asdasd
+              <Button onClick={handleReade}>
+                <Typography color={'var(--text-book)'}>
+                  {!isreade ? 'Старт' : 'Стоп'}
+                </Typography>
+              </Button>
+
               <Select
                 id="demo-simple-select"
-                value={voice}
+                value={reader.voice}
                 label="voice"
                 onChange={handleChange}
               >
-                {voices &&
-                  voices.map((elem, index) => {
-                    return (
-                      <MenuItem key={index} value={elem.name}>
-                        {elem.name}
-                      </MenuItem>
-                    );
-                  })}
+                {reader.voices.map((elem, index) => {
+                  return (
+                    <MenuItem key={index} value={elem.name}>
+                      {elem.name}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </Box>
           }
@@ -104,7 +106,7 @@ const ReaderIcon = () => {
         fill="none"
         viewBox="0 0 64 64"
         strokeWidth={1.5}
-        stroke="#fff"
+        stroke="var(--bg-color-menu)"
       >
         <path
           strokeLinecap="round"

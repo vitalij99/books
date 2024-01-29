@@ -1,8 +1,17 @@
+'use client';
 import { READER_KEY } from '@/type/book';
 import { getStorage } from './getStorage';
+import { useEffect, useState } from 'react';
 
-export const startReader = ({ book }: { book: string[] }) => {
-  const synth = window.speechSynthesis;
+export const StartReader = ({ book }: { book: string[] }) => {
+  const [synth, setfirst] = useState<SpeechSynthesis>();
+
+  useEffect(() => {
+    setfirst(window.speechSynthesis);
+  }, []);
+  if (!synth) {
+    return;
+  }
   const text = book.reduce((acum, text) => acum + text, '');
   const utterThis = new SpeechSynthesisUtterance(text);
   const options = {
@@ -15,6 +24,9 @@ export const startReader = ({ book }: { book: string[] }) => {
   };
   let voices = synth.getVoices();
   function speak() {
+    if (!synth) {
+      return;
+    }
     if (voices.length === 0) {
       voices = synth.getVoices();
       return;
@@ -26,11 +38,10 @@ export const startReader = ({ book }: { book: string[] }) => {
         }
       }
 
-      console.log(voices);
       utterThis.pitch = options.pitch;
       utterThis.rate = options.rate;
       synth.speak(utterThis);
     }
   }
-  return { synth, utterThis, speak, voices };
+  return { synth, utterThis, speak, voices, voice: options.language };
 };

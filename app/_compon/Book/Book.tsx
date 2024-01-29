@@ -1,12 +1,13 @@
 'use client';
 
-import { getStorage, getStorageRootValue } from '@/lib/getStorage';
-import { startReader } from '@/lib/reader';
+import { getStorageRootValue } from '@/lib/getStorage';
+
 import { setRootValue } from '@/lib/setRootValue';
 import { translate } from '@/lib/translate.google';
-import { AllowedKeys, READER_KEY, STORAGE_KEY } from '@/type/book';
-import { Box, Button, Link, Typography } from '@mui/material';
+import { AllowedKeys, STORAGE_KEY } from '@/type/book';
+import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
+import Reader from '../Reader/Reader';
 
 interface BookProps {
   book: string[];
@@ -18,7 +19,6 @@ interface BookProps {
   };
 }
 
-// add  reader
 const Book = ({
   data,
   translate: tran,
@@ -61,11 +61,6 @@ const Book = ({
     }
   }, []);
 
-  const handleReade = () => {
-    const reader = startReader({ book: textBook });
-
-    reader.speak();
-  };
   if (!data) {
     return <div>Error</div>;
   }
@@ -77,9 +72,9 @@ const Book = ({
         paddingInline: `var(${AllowedKeys.BkPadding})`,
       }}
     >
-      <div>
-        <Button onClick={handleReade}>Reade</Button>
-      </div>
+      <Box sx={{ position: 'fixed', right: '0' }}>
+        <Reader book={textBook} />
+      </Box>
       {textBook.map((text, index) => {
         return (
           <Typography
