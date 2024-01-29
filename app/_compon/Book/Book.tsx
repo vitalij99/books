@@ -1,11 +1,11 @@
 'use client';
 
-import { getStorage } from '@/lib/getStorage';
+import { getStorage, getStorageRootValue } from '@/lib/getStorage';
 import { startReader } from '@/lib/reader';
 import { setRootValue } from '@/lib/setRootValue';
 import { translate } from '@/lib/translate.google';
-import { AllowedKeys, STORAGE_KEY } from '@/type/book';
-import { Box, Link, Typography } from '@mui/material';
+import { AllowedKeys, READER_KEY, STORAGE_KEY } from '@/type/book';
+import { Box, Button, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
 interface BookProps {
@@ -26,7 +26,7 @@ const Book = ({
 }: {
   data: BookProps;
   translate?: boolean;
-  timeReader: string;
+  timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
 
@@ -51,7 +51,7 @@ const Book = ({
     }
   }, [data.book, tran]);
   useEffect(() => {
-    const storage = STORAGE_KEY.map(key => getStorage(key));
+    const storage = STORAGE_KEY.map(key => getStorageRootValue(key));
     if (storage) {
       storage.forEach((value, index) => {
         if (value) {
@@ -60,10 +60,12 @@ const Book = ({
       });
     }
   }, []);
-  useEffect(() => {
-    const reader = startReader({ book: textBook });
-  }, [textBook]);
 
+  const handleReade = () => {
+    const reader = startReader({ book: textBook });
+
+    reader.speak();
+  };
   if (!data) {
     return <div>Error</div>;
   }
@@ -75,6 +77,9 @@ const Book = ({
         paddingInline: `var(${AllowedKeys.BkPadding})`,
       }}
     >
+      <div>
+        <Button onClick={handleReade}>Reade</Button>
+      </div>
       {textBook.map((text, index) => {
         return (
           <Typography
@@ -85,7 +90,6 @@ const Book = ({
           </Typography>
         );
       })}
-
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Link href={data.nav.prevPage}>{data.nav.prevText}</Link>
         <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>

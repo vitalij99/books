@@ -1,4 +1,4 @@
-import { getStorage } from '@/lib/getStorage';
+import { getStorageRootValue } from '@/lib/getStorage';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import {
   Box,
@@ -17,7 +17,7 @@ type StorageType = {
 const defaultStorage = (): StorageType => {
   const storage: StorageType = {} as StorageType;
   STORAGE_KEY.forEach(key => {
-    storage[key] = getStorage(key as AllowedKeys);
+    storage[key] = getStorageRootValue(key as AllowedKeys);
   });
   return storage;
 };

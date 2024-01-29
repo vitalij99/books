@@ -4,6 +4,9 @@ export enum AllowedKeys {
   BgColor = '--bg-color-book',
   BkPadding = '--book-padding',
 }
+export const READER_KEY = {
+  voice: 'voice',
+};
 
 export const STORAGE_KEY = [
   AllowedKeys.FontSize,

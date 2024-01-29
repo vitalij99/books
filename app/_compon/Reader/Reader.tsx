@@ -1,3 +1,5 @@
+import { getStorage } from '@/lib/getStorage';
+import { READER_KEY } from '@/type/book';
 import {
   Box,
   Button,
@@ -6,24 +8,42 @@ import {
   Select,
   SelectChangeEvent,
   SvgIcon,
+  debounce,
 } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 
 const Reader = () => {
   const [onOpen, setOnOpen] = useState(false);
-  const [voice, setVoice] = useState('');
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>();
+  const [voice, setVoice] = useState('');
 
   useEffect(() => {
-    const synth = window.speechSynthesis;
-    const voi = synth.getVoices();
+    if (onOpen) {
+      setVoices(window.speechSynthesis.getVoices());
+    }
+  }, [onOpen]);
 
-    setVoices(voi);
-  }, []);
+  useEffect(() => {
+    if (!voices) return;
+    const storage = getStorage(READER_KEY.voice);
+    if (!storage) return;
+    voices.forEach((elem, index) => {
+      if (elem.name === storage) {
+        setVoice(voices[index].name);
+      }
+    });
+  }, [voices]);
+
   const handleChange = (event: SelectChangeEvent) => {
-    setVoice(event.target.value as string);
+    const value = event.target.value || '';
+    setVoice(value as string);
+    handleChangeLocalStorage(value, READER_KEY.voice);
   };
+
+  const handleChangeLocalStorage = debounce((value: string, key: string) => {
+    localStorage.setItem(key, value);
+  }, 500);
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -41,34 +61,36 @@ const Reader = () => {
       <Button onClick={toggleDrawer(true)}>
         <ReaderIcon />
       </Button>
-      <Drawer anchor="top" open={onOpen} onClose={toggleDrawer(false)}>
-        {
-          <Box
-            sx={{
-              p: '10px',
-              bgcolor: 'var(--bg-color-menu)',
-              flex: 1,
-            }}
-          >
-            asdasd
-            <Select
-              id="demo-simple-select"
-              value={voice}
-              label="voice"
-              onChange={handleChange}
+      {voices && (
+        <Drawer anchor="top" open={onOpen} onClose={toggleDrawer(false)}>
+          {
+            <Box
+              sx={{
+                p: '10px',
+                bgcolor: 'var(--bg-color-menu)',
+                flex: 1,
+              }}
             >
-              {voices &&
-                voices.map((elem, index) => {
-                  return (
-                    <MenuItem key={index} value={elem.voiceURI}>
-                      {elem.name}
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </Box>
-        }
-      </Drawer>
+              asdasd
+              <Select
+                id="demo-simple-select"
+                value={voice}
+                label="voice"
+                onChange={handleChange}
+              >
+                {voices &&
+                  voices.map((elem, index) => {
+                    return (
+                      <MenuItem key={index} value={elem.name}>
+                        {elem.name}
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </Box>
+          }
+        </Drawer>
+      )}
     </div>
   );
 };
