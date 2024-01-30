@@ -38,7 +38,7 @@ const Book = ({
         const element = data.book[index];
         const result = await translate(element);
         allTextBook.push(...result);
-        if (index === 10) {
+        if (index === 30) {
           setTextBook(allTextBook);
         }
       }
