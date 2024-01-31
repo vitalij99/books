@@ -2,7 +2,7 @@
 import { READER_KEY } from '@/type/book';
 import { getStorage } from './getStorage';
 import { useEffect, useState } from 'react';
-
+// add text bg
 export const StartReader = ({ book }: { book: string[] }) => {
   const [synth, setfirst] = useState<SpeechSynthesis>();
 
