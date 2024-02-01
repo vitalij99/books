@@ -14,12 +14,15 @@ import {
 } from '@mui/material';
 
 import { useState } from 'react';
-
-const Reader = ({ book }: { book: string[] }) => {
+interface StartReaderProps {
+  book: string[];
+  changeText: (number: number) => void;
+}
+const Reader = ({ book, changeText }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState(false);
 
-  const reader = StartReader({ book });
+  const reader = StartReader({ book, changeText });
 
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value || '';

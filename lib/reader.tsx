@@ -2,8 +2,13 @@
 import { READER_KEY } from '@/type/book';
 import { getStorage } from './getStorage';
 import { useEffect, useState } from 'react';
+
+interface StartReaderProps {
+  book: string[];
+  changeText: (number: number) => void;
+}
 // add text bg
-export const StartReader = ({ book }: { book: string[] }) => {
+export const StartReader = ({ book, changeText }: StartReaderProps) => {
   const [synth, setfirst] = useState<SpeechSynthesis>();
 
   useEffect(() => {
@@ -14,6 +19,7 @@ export const StartReader = ({ book }: { book: string[] }) => {
   }
   const text = book.reduce((acum, text) => acum + text, '');
   const utterThis = new SpeechSynthesisUtterance(text);
+  let voices = synth.getVoices();
   const options = {
     language: getStorage(READER_KEY.voice) || '',
     pitch: 2,
@@ -22,7 +28,7 @@ export const StartReader = ({ book }: { book: string[] }) => {
     timer: 2,
     paragraf: 0,
   };
-  let voices = synth.getVoices();
+
   function speak() {
     if (!synth) {
       return;
@@ -53,6 +59,11 @@ export const StartReader = ({ book }: { book: string[] }) => {
 
     synth.speak(utterThis);
   };
+
+  utterThis.addEventListener('boundary', event => {
+    const index = event.charIndex;
+    changeText(index);
+  });
   return {
     synth,
     utterThis,

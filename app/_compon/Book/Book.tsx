@@ -6,7 +6,7 @@ import { setRootValue } from '@/lib/setRootValue';
 import { translate } from '@/lib/translate.google';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { SetStateAction, useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
 
 interface BookProps {
@@ -29,6 +29,7 @@ const Book = ({
   timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
+  const [textIsRead, setTextIsRead] = useState(0);
 
   useMemo(() => {
     async function getTranslate() {
@@ -65,6 +66,20 @@ const Book = ({
     return <div>Error</div>;
   }
 
+  const changeTextRead = (textReadeIndex: number) => {
+    let textIndex = 0;
+
+    for (let index = 0; index < textBook.length; index++) {
+      const text = textBook[index];
+      textIndex += text.length;
+
+      if (textIndex >= textReadeIndex) {
+        setTextIsRead(index);
+        break;
+      }
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -73,12 +88,17 @@ const Book = ({
       }}
     >
       <Box sx={{ position: 'fixed', right: '0' }}>
-        <Reader book={textBook} />
+        <Reader book={textBook} changeText={changeTextRead} />
       </Box>
       {textBook.map((text, index) => {
+        const sxStyled = textIsRead === index;
         return (
           <Typography
-            sx={{ color: 'var(--text-book)', fontSize: 'var(--font-size)' }}
+            sx={{
+              color: 'var(--text-book)',
+              fontSize: 'var(--font-size)',
+              bgcolor: sxStyled ? '#FFFF00' : undefined,
+            }}
             key={index}
           >
             {text}
