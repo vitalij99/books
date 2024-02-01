@@ -23,7 +23,9 @@ const Reader = ({ book }: { book: string[] }) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
+    reader?.synth.cancel();
     handleChangeLocalStorage(value, READER_KEY.voice);
+    reader?.handleChangeVoice(value);
   };
 
   const handleChangeLocalStorage = debounce((value: string, key: string) => {

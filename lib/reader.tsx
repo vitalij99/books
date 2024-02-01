@@ -27,6 +27,7 @@ export const StartReader = ({ book }: { book: string[] }) => {
     if (!synth) {
       return;
     }
+
     if (voices.length === 0) {
       voices = synth.getVoices();
       return;
@@ -43,5 +44,21 @@ export const StartReader = ({ book }: { book: string[] }) => {
       synth.speak(utterThis);
     }
   }
-  return { synth, utterThis, speak, voices, voice: options.language };
+
+  const handleChangeVoice = (name: string) => {
+    const voice = voices.find(voice => voice.name === name);
+    if (voice) {
+      utterThis.voice = voice;
+    }
+
+    synth.speak(utterThis);
+  };
+  return {
+    synth,
+    utterThis,
+    speak,
+    voices,
+    voice: options.language,
+    handleChangeVoice,
+  };
 };
