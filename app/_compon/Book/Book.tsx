@@ -29,7 +29,7 @@ const Book = ({
   timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
-  const [textIsRead, setTextIsRead] = useState(0);
+  const [textIsRead, setTextIsRead] = useState(-1);
 
   useMemo(() => {
     async function getTranslate() {

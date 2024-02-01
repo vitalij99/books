@@ -20,7 +20,7 @@ interface StartReaderProps {
 }
 const Reader = ({ book, changeText }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
-  const [isreade, setIsreade] = useState(false);
+  const [isreade, setIsreade] = useState({ read: false, pause: false });
 
   const reader = StartReader({ book, changeText });
 
@@ -50,15 +50,25 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
   const handleReade = () => {
     if (!reader) return;
 
-    if (!isreade) {
+    if (!reader.synth.speaking) {
       reader.speak();
-      setIsreade(true);
+      setIsreade({ ...isreade, read: true });
+    } else if (isreade.pause) {
+      reader.synth.resume();
+      setIsreade({ ...isreade, pause: false });
     } else {
-      reader.synth.cancel();
-      setIsreade(false);
+      reader.synth.pause();
+      setIsreade({ ...isreade, pause: true });
     }
+
+    console.log(isreade);
   };
 
+  const handleReadeCansel = () => {
+    if (!reader) return;
+    reader.synth.cancel();
+    setIsreade({ read: false, pause: false });
+  };
   return (
     <div>
       <Button onClick={toggleDrawer(true)}>
@@ -76,10 +86,18 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
             >
               <Button onClick={handleReade}>
                 <Typography color={'var(--text-book)'}>
-                  {!isreade ? 'Старт' : 'Стоп'}
+                  {!isreade.read
+                    ? 'Старт'
+                    : isreade.pause
+                    ? 'Продовжити'
+                    : 'Пауза'}
                 </Typography>
               </Button>
-
+              {isreade.read && (
+                <Button onClick={handleReadeCansel}>
+                  <Typography color={'var(--text-book)'}>Стоп</Typography>
+                </Button>
+              )}
               <Select
                 id="demo-simple-select"
                 value={reader.voice}
