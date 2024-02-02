@@ -7,7 +7,7 @@ interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
 }
-// add text bg
+// add rate and pitch
 export const StartReader = ({ book, changeText }: StartReaderProps) => {
   const [synth, setfirst] = useState<SpeechSynthesis>();
 
