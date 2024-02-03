@@ -8,6 +8,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Slider,
   SvgIcon,
   Typography,
   debounce,
@@ -112,6 +113,11 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   );
                 })}
               </Select>
+
+              <Box>
+                <Slider min={0} max={4} />
+                <Slider min={0} max={4} />
+              </Box>
             </Box>
           }
         </Drawer>
