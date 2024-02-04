@@ -51,13 +51,32 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     }
   }
 
+  const handleChangeParams = ({
+    rate,
+    pitch,
+  }: {
+    rate?: number;
+    pitch?: number;
+  }) => {
+    console.log(rate, pitch);
+    if (rate) {
+      utterThis.rate = rate;
+    } else if (pitch) {
+      utterThis.pitch = pitch;
+    }
+    if (synth.speaking) {
+      synth.speak(utterThis);
+    }
+  };
   const handleChangeVoice = (name: string) => {
     const voice = voices.find(voice => voice.name === name);
     if (voice) {
       utterThis.voice = voice;
     }
 
-    synth.speak(utterThis);
+    if (synth.speaking) {
+      synth.speak(utterThis);
+    }
   };
 
   utterThis.addEventListener('boundary', event => {
@@ -71,5 +90,6 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     voices,
     voice: options.language,
     handleChangeVoice,
+    handleChangeParams,
   };
 };

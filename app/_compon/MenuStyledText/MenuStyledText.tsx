@@ -28,6 +28,7 @@ const MenuStyledText = () => {
   const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
     localStorage.setItem(key, value);
     document.documentElement.style.setProperty(key, value);
+    console.log(value);
   }, 500);
 
   const handldeChange = (value: string, key: AllowedKeys) => {

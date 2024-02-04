@@ -1,31 +1,44 @@
 'use client';
 import { StartReader } from '@/lib/reader';
 import { READER_KEY } from '@/type/book';
+
 import {
   Box,
   Button,
   Drawer,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   Slider,
   SvgIcon,
+  ThemeProvider,
   Typography,
-  debounce,
+  createTheme,
 } from '@mui/material';
+import debounce from 'lodash.debounce';
 
 import { useState } from 'react';
+
 interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
 }
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
 const Reader = ({ book, changeText }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
 
   const reader = StartReader({ book, changeText });
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
     reader?.synth.cancel();
     handleChangeLocalStorage(value, READER_KEY.voice);
@@ -61,17 +74,28 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
       reader.synth.pause();
       setIsreade({ ...isreade, pause: true });
     }
-
-    console.log(isreade);
   };
 
-  const handleReadeCansel = () => {
+  const handleReadeCancel = () => {
     if (!reader) return;
     reader.synth.cancel();
     setIsreade({ read: false, pause: false });
   };
+
+  const handleSliderParams = (event: Event, value: number | number[]) => {
+    if (!event || !event.target) {
+      return;
+    }
+    const element = event.target as HTMLInputElement;
+    const key: string = element.name;
+
+    debounce(() => {
+      reader?.handleChangeParams({ [key]: value });
+    }, 1000)();
+  };
+
   return (
-    <div>
+    <ThemeProvider theme={darkTheme}>
       <Button onClick={toggleDrawer(true)}>
         <ReaderIcon />
       </Button>
@@ -83,6 +107,8 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                 p: '10px',
                 bgcolor: 'var(--bg-color-menu)',
                 flex: 1,
+                display: 'flex',
+                gap: 5,
               }}
             >
               <Button onClick={handleReade}>
@@ -94,35 +120,60 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                     : 'Пауза'}
                 </Typography>
               </Button>
+
               {isreade.read && (
-                <Button onClick={handleReadeCansel}>
+                <Button onClick={handleReadeCancel}>
                   <Typography color={'var(--text-book)'}>Стоп</Typography>
                 </Button>
               )}
-              <Select
-                id="demo-simple-select"
-                value={reader.voice}
-                label="voice"
-                onChange={handleChange}
-              >
-                {reader.voices.map((elem, index) => {
-                  return (
-                    <MenuItem key={index} value={elem.name}>
-                      {elem.name}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-
-              <Box>
-                <Slider min={0} max={4} />
-                <Slider min={0} max={4} />
+              <Box width={500}>
+                <FormControl>
+                  <InputLabel id="select-reader">Голос</InputLabel>
+                  <Select
+                    id="select-reader"
+                    value={reader.voice}
+                    label="voice"
+                    onChange={handleChangeSelect}
+                  >
+                    {reader.voices.map((elem, index) => {
+                      return (
+                        <MenuItem key={index} value={elem.name}>
+                          {elem.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
+              <Box width={300}>
+                <Typography id="input-slider" gutterBottom>
+                  Швидкість
+                </Typography>
+                <Slider
+                  name="rate"
+                  onChange={handleSliderParams}
+                  min={0}
+                  max={4}
+                  step={0.1}
+                  valueLabelDisplay="auto"
+                />
+                <Typography id="input-slider" gutterBottom>
+                  Тон
+                </Typography>
+                <Slider
+                  name="pitch"
+                  onChange={handleSliderParams}
+                  min={0}
+                  max={4}
+                  step={0.1}
+                  valueLabelDisplay="auto"
+                />
               </Box>
             </Box>
           }
         </Drawer>
       )}
-    </div>
+    </ThemeProvider>
   );
 };
 
