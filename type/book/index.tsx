@@ -6,6 +6,8 @@ export enum AllowedKeys {
 }
 export const READER_KEY = {
   voice: 'voice',
+  rate: 'rate',
+  pitch: 'pitch',
 };
 
 export const STORAGE_KEY = [

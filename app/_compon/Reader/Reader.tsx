@@ -1,4 +1,5 @@
 'use client';
+import { getStorage, handleChangeLocalStorage } from '@/lib/getStorage';
 import { StartReader } from '@/lib/reader';
 import { READER_KEY } from '@/type/book';
 
@@ -19,7 +20,7 @@ import {
 } from '@mui/material';
 import debounce from 'lodash.debounce';
 
-import { useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 
 interface StartReaderProps {
   book: string[];
@@ -32,11 +33,25 @@ const darkTheme = createTheme({
   },
 });
 
+interface ParamsOfReader {
+  pitch: number;
+  rate: number;
+}
+
 const Reader = ({ book, changeText }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
+  const [paramsReader, setParamsReader] = useState<ParamsOfReader>();
 
   const reader = StartReader({ book, changeText });
+
+  useEffect(() => {
+    const storage = {
+      pitch: Number(getStorage(READER_KEY.pitch)) || 2,
+      rate: Number(getStorage(READER_KEY.rate)) || 2,
+    };
+    setParamsReader(storage);
+  }, []);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
@@ -45,9 +60,6 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
     reader?.handleChangeVoice(value);
   };
 
-  const handleChangeLocalStorage = debounce((value: string, key: string) => {
-    localStorage.setItem(key, value);
-  }, 500);
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -88,10 +100,19 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
     }
     const element = event.target as HTMLInputElement;
     const key: string = element.name;
+    setParamsReader(prev => {
+      if (prev) {
+        return {
+          ...prev,
+          [key]: value,
+        };
+      }
+    });
 
     debounce(() => {
       reader?.handleChangeParams({ [key]: value });
     }, 1000)();
+    handleChangeLocalStorage(value + '', key);
   };
 
   return (
@@ -155,6 +176,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   min={0}
                   max={4}
                   step={0.1}
+                  value={paramsReader?.rate}
                   valueLabelDisplay="auto"
                 />
                 <Typography id="input-slider" gutterBottom>
@@ -165,7 +187,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   onChange={handleSliderParams}
                   min={0}
                   max={4}
-                  step={0.1}
+                  value={paramsReader?.pitch}
                   valueLabelDisplay="auto"
                 />
               </Box>

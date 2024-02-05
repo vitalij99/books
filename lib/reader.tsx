@@ -7,7 +7,7 @@ interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
 }
-// add rate and pitch
+
 export const StartReader = ({ book, changeText }: StartReaderProps) => {
   const [synth, setfirst] = useState<SpeechSynthesis>();
 
@@ -22,8 +22,8 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
   let voices = synth.getVoices();
   const options = {
     language: getStorage(READER_KEY.voice) || '',
-    pitch: 2,
-    rate: 2,
+    pitch: Number(getStorage(READER_KEY.pitch)) || 2,
+    rate: Number(getStorage(READER_KEY.rate)) || 2,
     reade: false,
     timer: 2,
     paragraf: 0,
@@ -58,14 +58,10 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     rate?: number;
     pitch?: number;
   }) => {
-    console.log(rate, pitch);
     if (rate) {
       utterThis.rate = rate;
     } else if (pitch) {
       utterThis.pitch = pitch;
-    }
-    if (synth.speaking) {
-      synth.speak(utterThis);
     }
   };
   const handleChangeVoice = (name: string) => {
