@@ -3,10 +3,10 @@
 import { getStorageRootValue } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
-import { translate } from '@/lib/translate.google';
+import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
-import { SetStateAction, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
 
 interface BookProps {
@@ -37,7 +37,7 @@ const Book = ({
 
       for (let index = 0; index < data.book.length; index++) {
         const element = data.book[index];
-        const result = await translate(element);
+        const result = await translateGoogle(element);
         allTextBook.push(...result);
         if (index === 30) {
           setTextBook(allTextBook);

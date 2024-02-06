@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const link =
+const linkGoogle =
   'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=uk&hl=uk&dt=t&dt=bd&dj=1&source=input';
 
-export const translate = async (text: string) => {
+export const translateGoogle = async (text: string) => {
   const encodeText = encodeURI(text);
 
   if (!encodeText) {
@@ -11,7 +11,7 @@ export const translate = async (text: string) => {
     return text;
   }
 
-  const { data } = await axios.get(`${link}&q=${encodeText}`);
+  const { data } = await axios.get(`${linkGoogle}&q=${encodeText}`);
   if (!data) undefined;
 
   const result = data.sentences.map(
