@@ -39,7 +39,7 @@ const Book = ({
         const element = data.book[index];
         const result = await translateGoogle(element);
         allTextBook.push(...result);
-        if (index === 30) {
+        if (index % 10 === 0) {
           setTextBook(allTextBook);
         }
       }
