@@ -1,5 +1,5 @@
 'use client';
-import { getStorage, handleChangeLocalStorage } from '@/lib/getStorage';
+import { getStorage } from '@/lib/getStorage';
 import { StartReader } from '@/lib/reader';
 import { READER_KEY } from '@/type/book';
 
@@ -33,15 +33,14 @@ const darkTheme = createTheme({
   },
 });
 
-interface ParamsOfReader {
-  pitch: number;
-  rate: number;
-}
-
 const Reader = ({ book, changeText }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
-  const [paramsReader, setParamsReader] = useState<ParamsOfReader>();
+  const [paramsReader, setParamsReader] = useState({
+    pitch: 2,
+    rate: 2,
+    language: '',
+  });
 
   const reader = StartReader({ book, changeText });
 
@@ -49,15 +48,17 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
     const storage = {
       pitch: Number(getStorage(READER_KEY.pitch)) || 2,
       rate: Number(getStorage(READER_KEY.rate)) || 2,
+      language: getStorage(READER_KEY.voice) || '',
     };
     setParamsReader(storage);
   }, []);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
-    reader?.synth.cancel();
-    handleChangeLocalStorage(value, READER_KEY.voice);
+    // reader?.synth.cancel();
+
     reader?.handleChangeVoice(value);
+    setParamsReader(prev => ({ ...prev, language: value }));
   };
 
   const toggleDrawer =
@@ -100,19 +101,14 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
     }
     const element = event.target as HTMLInputElement;
     const key: string = element.name;
-    setParamsReader(prev => {
-      if (prev) {
-        return {
-          ...prev,
-          [key]: value,
-        };
-      }
-    });
+
+    if (key) {
+      setParamsReader(prev => ({ ...prev, [key]: value }));
+    }
 
     debounce(() => {
       reader?.handleChangeParams({ [key]: value });
     }, 1000)();
-    handleChangeLocalStorage(value + '', key);
   };
 
   return (
@@ -152,7 +148,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   <InputLabel id="select-reader">Голос</InputLabel>
                   <Select
                     id="select-reader"
-                    value={reader.voice}
+                    value={paramsReader.language}
                     label="voice"
                     onChange={handleChangeSelect}
                   >
