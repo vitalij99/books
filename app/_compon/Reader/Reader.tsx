@@ -152,7 +152,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                     label="voice"
                     onChange={handleChangeSelect}
                   >
-                    {reader.voices.map((elem, index) => {
+                    {reader.voices?.map((elem, index) => {
                       return (
                         <MenuItem key={index} value={elem.name}>
                           {elem.name}
