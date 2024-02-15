@@ -49,13 +49,13 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     paragraf: 0,
   };
 
-  function speak() {
+  const speak = () => {
     if (!synth || !utterThis) {
       return;
     }
 
     synth.speak(utterThis);
-  }
+  };
 
   const handleChangeParams = ({
     rate,
