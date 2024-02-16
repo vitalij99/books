@@ -23,10 +23,10 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     const text = book.reduce((acum, text) => acum + text, '');
     const firstUtterThis = new SpeechSynthesisUtterance(text);
 
-    firstUtterThis.addEventListener('boundary', (event: { charIndex: any }) => {
+    firstUtterThis.onboundary = event => {
       const index = event.charIndex;
       changeText(index);
-    });
+    };
     firstSynth.onvoiceschanged = event => {
       const firstVoices = firstSynth.getVoices();
       setVoices(firstVoices);

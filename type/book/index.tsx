@@ -9,6 +9,7 @@ export const READER_KEY = {
   rate: 'rate',
   pitch: 'pitch',
   volume: 'volume',
+  language: 'language',
 };
 
 export const STORAGE_KEY = [

@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import debounce from 'lodash.debounce';
 
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface StartReaderProps {
   book: string[];
@@ -146,7 +146,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   <Typography color={'var(--text-book)'}>Стоп</Typography>
                 </Button>
               )}
-              <Box width={500}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <FormControl>
                   <InputLabel id="select-reader">Голос</InputLabel>
                   <Select
