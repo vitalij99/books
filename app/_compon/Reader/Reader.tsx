@@ -33,14 +33,17 @@ const darkTheme = createTheme({
   },
 });
 
+const initParamsReader = {
+  pitch: 2,
+  rate: 2,
+  language: '',
+  volume: 1,
+};
+
 const Reader = ({ book, changeText }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
-  const [paramsReader, setParamsReader] = useState({
-    pitch: 2,
-    rate: 2,
-    language: '',
-  });
+  const [paramsReader, setParamsReader] = useState(initParamsReader);
 
   const reader = StartReader({ book, changeText });
 
@@ -49,13 +52,13 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
       pitch: Number(getStorage(READER_KEY.pitch)) || 2,
       rate: Number(getStorage(READER_KEY.rate)) || 2,
       language: getStorage(READER_KEY.voice) || '',
+      volume: Number(getStorage(READER_KEY.volume)) || 1,
     };
     setParamsReader(storage);
   }, []);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
-    // reader?.synth.cancel();
 
     reader?.handleChangeVoice(value);
     setParamsReader(prev => ({ ...prev, language: value }));
@@ -162,10 +165,8 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   </Select>
                 </FormControl>
               </Box>
-              <Box width={300}>
-                <Typography id="input-slider" gutterBottom>
-                  Швидкість
-                </Typography>
+              <Box width={250}>
+                <Typography>Швидкість</Typography>
                 <Slider
                   name="rate"
                   onChange={handleSliderParams}
@@ -175,15 +176,23 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
                   value={paramsReader?.rate}
                   valueLabelDisplay="auto"
                 />
-                <Typography id="input-slider" gutterBottom>
-                  Тон
-                </Typography>
+                <Typography>Тон</Typography>
                 <Slider
                   name="pitch"
                   onChange={handleSliderParams}
                   min={0}
                   max={4}
                   value={paramsReader?.pitch}
+                  valueLabelDisplay="auto"
+                />
+                <Typography>Гучність</Typography>
+                <Slider
+                  name="volume"
+                  onChange={handleSliderParams}
+                  min={0}
+                  step={0.1}
+                  max={1}
+                  value={paramsReader?.volume}
                   valueLabelDisplay="auto"
                 />
               </Box>
