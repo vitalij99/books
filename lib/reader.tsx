@@ -16,6 +16,7 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[] | undefined>(
     undefined
   );
+  const [paragraf, setParagraf] = useState({ p: -1, textLength: 0 });
 
   useEffect(() => {
     const firstSynth = window.speechSynthesis;
@@ -36,6 +37,7 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
 
     setSynth(firstSynth);
   }, [book, changeText]);
+
   if (!synth || !utterThis || !voices) {
     return;
   }
