@@ -65,7 +65,7 @@ const Book = ({
   if (!data) {
     return <div>Error</div>;
   }
-
+  // textLength delete
   const changeTextRead = (textReadeIndex: number) => {
     let textIndex = 0;
 

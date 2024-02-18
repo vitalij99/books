@@ -16,7 +16,11 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[] | undefined>(
     undefined
   );
-  const [paragraf, setParagraf] = useState({ p: -1, textLength: 0 });
+  const [paragraf, setParagraf] = useState({
+    p: -1,
+    textLength: 0,
+    allTextmass: 0,
+  });
 
   useEffect(() => {
     const firstSynth = window.speechSynthesis;
@@ -25,8 +29,23 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     const firstUtterThis = new SpeechSynthesisUtterance(text);
 
     firstUtterThis.onboundary = event => {
-      const index = event.charIndex;
-      changeText(index);
+      const textIndex = event.charIndex;
+      let allTextref = paragraf.allTextmass;
+
+      for (let index = paragraf.p || 0; index < book.length; index++) {
+        const text = book[index];
+        allTextref += text.length;
+
+        if (allTextref >= textIndex) {
+          changeText(index);
+          setParagraf({
+            p: index,
+            textLength: allTextref,
+            allTextmass: allTextref,
+          });
+          break;
+        }
+      }
     };
     firstSynth.onvoiceschanged = event => {
       const firstVoices = firstSynth.getVoices();
