@@ -29,7 +29,7 @@ const Book = ({
   timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
-  const [textIsRead, setTextIsRead] = useState({ p: -1, textLength: 0 });
+  const [textIsRead, setTextIsRead] = useState(-1);
 
   useMemo(() => {
     async function getTranslate() {
@@ -69,12 +69,14 @@ const Book = ({
   const changeTextRead = (textReadeIndex: number) => {
     let textIndex = 0;
 
-    for (let index = 0; index < textBook.length; index++) {
+    const startIndexPar = textIsRead === -1 ? 0 : textIsRead;
+
+    for (let index = startIndexPar; index < textBook.length; index++) {
       const text = textBook[index];
       textIndex += text.length;
 
       if (textIndex >= textReadeIndex) {
-        setTextIsRead({ p: index, textLength: textIndex });
+        setTextIsRead(index);
         break;
       }
     }
@@ -91,7 +93,7 @@ const Book = ({
         <Reader book={textBook} changeText={changeTextRead} />
       </Box>
       {textBook.map((text, index) => {
-        const sxStyled = textIsRead.p === index;
+        const sxStyled = textIsRead === index;
         return (
           <Typography
             sx={{

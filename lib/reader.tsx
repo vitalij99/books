@@ -32,7 +32,9 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
       const textIndex = event.charIndex;
       let allTextref = paragraf.allTextmass;
 
-      for (let index = paragraf.p || 0; index < book.length; index++) {
+      const startIndexPar = paragraf.p === -1 ? 0 : paragraf.p;
+
+      for (let index = startIndexPar; index < book.length; index++) {
         const text = book[index];
         allTextref += text.length;
 
