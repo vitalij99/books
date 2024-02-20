@@ -1,5 +1,6 @@
 import { getBookSearchByName } from '@/lib/novelmin';
 import { Listbooks } from '../_compon/ListBooks/Listbooks';
+import Loading from '../_compon/Loading/Loading';
 
 const search = async ({
   searchParams,
@@ -8,10 +9,11 @@ const search = async ({
 }) => {
   const books = await getBookSearchByName({
     name: searchParams.search,
-    page: 1,
   });
-
-  return <>{<Listbooks books={books} />}</>;
+  if (!books) {
+    return <Loading />;
+  }
+  return <>{<Listbooks books={books.book} />}</>;
 };
 
 export default search;

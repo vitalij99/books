@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { transformInHtml } from './htmlTransform';
 import { HTMLElement } from 'node-html-parser';
+import { text } from 'stream/consumers';
 
 const link = 'https://novelmin.com/';
 
@@ -10,14 +11,8 @@ const link = 'https://novelmin.com/';
 //   return data;
 // };
 
-export const getBookSearchByName = async ({
-  name,
-  page = 1,
-}: {
-  name: string;
-  page: number;
-}) => {
-  const linkSearch = `${link}/page/${page}/?s=${name}`;
+export const getBookSearchByName = async ({ name }: { name: string }) => {
+  const linkSearch = `${link}/?s=${name}`;
 
   const { data } = await axios.get(linkSearch);
 
@@ -25,7 +20,7 @@ export const getBookSearchByName = async ({
     html: data,
     elem: 'article',
   });
-  if (!result) return [];
+  if (!result) return undefined;
 
   const links = result.map(item => item.querySelector('a'));
 
@@ -33,58 +28,87 @@ export const getBookSearchByName = async ({
 
   links.forEach(link => {
     if (link !== null) {
-      const name = link.textContent || '';
+      const name = link.getAttribute('title') || '';
       const href = link.getAttribute('href') || '';
-      const book = href.replace('https://novelmin.com/', '');
+      const book = href.replace('https://novelmin.com/series/', '');
       const web = 'novelmin';
       linkInfoArray.push({ name, book, web });
     }
   });
 
-  return linkInfoArray;
+  return { book: linkInfoArray, web: 'novelmin' };
 };
-export const getBookLink = async ({ book }: { book: string }) => {
-  const linkBook = `${link}${book}/`;
+
+export const getBookLinks = async ({ book }: { book: string }) => {
+  const linkBook = `${link}/series/${book}/`;
 
   const { data } = await axios.get(linkBook);
 
   const result = transformInHtml({
     html: data,
-    elem: '.gmr-box-content.gmr-single',
+    elem: '.eplister.eplisterfull',
   });
   if (!result) return undefined;
 
   const element = result[0];
-  const htmlBookText = element.querySelector(
-    '.entry-content.entry-content-single'
-  );
 
-  if (!htmlBookText) return undefined;
+  const textHtmlAll = element.querySelectorAll('ul > li');
 
-  const textHtmlAll = element.querySelectorAll(
-    '.entry-content.entry-content-single > p'
-  );
+  const linksBook = [];
 
-  const textBook = textHtmlAll.map(parag => parag.text);
+  for (let i = 0; i < textHtmlAll.length; i++) {
+    const parag = textHtmlAll[i];
+    const url = parag.querySelector('a')?.getAttribute('href');
+    if (url) {
+      const indexOfChapter = url.lastIndexOf('-chapter-');
+
+      linksBook.push({
+        book: url.slice(indexOfChapter + 9),
+        name: url.replace('https://novelmin.com/', ''),
+        web: 'novelmin',
+      });
+    }
+  }
+
+  return { linksBook, web: 'novelmin', bookHref: book };
+};
+export const getBookFromLink = async ({
+  book,
+  chapter,
+}: {
+  book: string;
+  chapter: string;
+}) => {
+  // https://novelmin.com/surviving-the-game-as-a-barbarian-chapter-607/
+  const linkBook = `${link}/${book}-chapter-${chapter}`;
+
+  const { data } = await axios.get(linkBook);
+
+  const result = transformInHtml({
+    html: data,
+    elem: '.epwrapper',
+  });
+  if (!result) return undefined;
+
+  const element = result[0];
+
+  const textHtmlAll = element.querySelectorAll('.entry-content > p');
+
+  const allText = textHtmlAll.map(parag => parag.textContent);
+
   // next page
-  const prevHtmlPage = element.querySelector('.nav-previous > a');
-  const nextHtmlPage = element.querySelector('.nav-next > a');
+  const pages = element.querySelectorAll('.left a');
+  const prevPage = pages[0]?.getAttribute('href') || '';
+  const nextPage = pages[1]?.getAttribute('href') || '';
+  const prevText = pages[0]?.textContent || '';
+  const nextText = pages[1]?.textContent || '';
 
-  const bookContent = {
-    book: textBook,
-    nav: {
-      nextPage: transformBookHref(prevHtmlPage, 'novelmin'),
-      prevPage: transformBookHref(prevHtmlPage, 'novelmin'),
-      nextText: nextHtmlPage?.textContent || '',
-      prevText: prevHtmlPage?.textContent || '',
-    },
+  const nav = {
+    nextPage,
+    prevPage,
+    nextText,
+    prevText,
   };
 
-  return bookContent;
-};
-const transformBookHref = (href: HTMLElement | null, web: string) => {
-  const newHref = href?.getAttribute('href') || '';
-  const book = newHref.replace('https://novelmin.com/', '');
-
-  return `/books/${book}?web=novelmin`;
+  return { book: allText, nav };
 };

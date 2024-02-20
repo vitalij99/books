@@ -1,5 +1,6 @@
-import Book from '@/app/_compon/Book/Book';
-import { getBookLink } from '@/lib/novelmin';
+import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
+import { getBookLinks } from '@/lib/novelmin';
+import Link from 'next/link';
 
 const page = async ({
   params,
@@ -8,8 +9,15 @@ const page = async ({
   params: { book: string };
   searchParams: { [key: string]: string | '' };
 }) => {
-  const book = await getBookLink({ book: params.book });
-  return <>{book && <Book data={book} translate={false} timeReader={'2'} />}</>;
+  const book = await getBookLinks({ book: params.book });
+  if (!book) {
+    return <>error</>;
+  }
+  return (
+    <>
+      <Listbooks link={book.bookHref} books={book.linksBook} web={book.web} />
+    </>
+  );
 };
 
 export default page;

@@ -3,8 +3,8 @@ import { parse } from 'node-html-parser';
 export const transformInHtml = ({
   html,
   elem,
-  wrappFirst = '<main',
-  wrappLast = '</main>',
+  wrappFirst = '<body',
+  wrappLast = '</body>',
 }: {
   html: string;
   elem: string;
