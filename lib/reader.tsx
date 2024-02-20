@@ -30,29 +30,18 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
 
     firstUtterThis.onboundary = event => {
       const textIndex = event.charIndex;
-      let allTextref = paragraf.allTextmass;
 
-      const startIndexPar = paragraf.p === -1 ? 0 : paragraf.p;
-
-      for (let index = startIndexPar; index < book.length; index++) {
-        const text = book[index];
-        allTextref += text.length;
-
-        if (allTextref >= textIndex) {
-          changeText(index);
-          setParagraf({
-            p: index,
-            textLength: allTextref,
-            allTextmass: allTextref,
-          });
-          break;
-        }
-      }
+      changeText(textIndex);
     };
     firstSynth.onvoiceschanged = event => {
       const firstVoices = firstSynth.getVoices();
       setVoices(firstVoices);
-      console.log(event);
+    };
+    firstUtterThis.onend = event => {
+      changeText(-1);
+    };
+    firstUtterThis.onerror = event => {
+      changeText(-1);
     };
     setUtterThis(firstUtterThis);
 

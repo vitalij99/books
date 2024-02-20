@@ -18,7 +18,10 @@ interface BookProps {
     prevText: string;
   };
 }
-
+const initTextIsRead = {
+  p: -1,
+  allTextmass: 0,
+};
 const BookRead = ({
   data,
   translate: tran,
@@ -29,7 +32,7 @@ const BookRead = ({
   timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
-  const [textIsRead, setTextIsRead] = useState(-1);
+  const [textIsRead, setTextIsRead] = useState(initTextIsRead);
 
   useMemo(() => {
     async function getTranslate() {
@@ -65,18 +68,25 @@ const BookRead = ({
   if (!data) {
     return <div>Error</div>;
   }
-  // textLength delete
+
   const changeTextRead = (textReadeIndex: number) => {
-    let textIndex = 0;
+    if (textReadeIndex === -1) {
+      setTextIsRead(initTextIsRead);
+      return;
+    }
+    let allTextref = textIsRead.allTextmass;
 
-    const startIndexPar = textIsRead === -1 ? 0 : textIsRead;
+    const startIndexPar = textIsRead.p === -1 ? 0 : textIsRead.p;
 
-    for (let index = startIndexPar; index < textBook.length; index++) {
-      const text = textBook[index];
-      textIndex += text.length;
-
-      if (textIndex >= textReadeIndex) {
-        setTextIsRead(index);
+    for (let index = startIndexPar; index < data.book.length; index++) {
+      console.log('for');
+      const text = data.book[index];
+      allTextref += text.length;
+      if (allTextref >= textReadeIndex) {
+        setTextIsRead({
+          p: index,
+          allTextmass: allTextref,
+        });
         break;
       }
     }
@@ -93,7 +103,7 @@ const BookRead = ({
         <Reader book={textBook} changeText={changeTextRead} />
       </Box>
       {textBook.map((text, index) => {
-        const sxStyled = textIsRead === index;
+        const sxStyled = textIsRead.p === index;
         return (
           <Typography
             sx={{

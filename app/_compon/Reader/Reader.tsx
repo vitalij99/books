@@ -95,6 +95,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
   const handleReadeCancel = () => {
     if (!reader) return;
     reader.synth.cancel();
+    changeText(-1);
     setIsreade({ read: false, pause: false });
   };
 
