@@ -79,7 +79,6 @@ const BookRead = ({
     const startIndexPar = textIsRead.p === -1 ? 0 : textIsRead.p;
 
     for (let index = startIndexPar; index < data.book.length; index++) {
-      console.log('for');
       const text = data.book[index];
       allTextref += text.length;
       if (allTextref >= textReadeIndex) {
