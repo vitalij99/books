@@ -1,6 +1,8 @@
 'use client';
-import { Link, Typography } from '@mui/material';
+import { Box, Link, Pagination, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
+import { useEffect, useState } from 'react';
+import DarkProvider from '../DarkProvider/DarkProvider';
 
 interface Book {
   name: string;
@@ -11,11 +13,37 @@ interface ListbooksProps {
   link?: string;
   web?: string;
 }
+const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListbooksProps) => {
+  const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
+  const [pagination, setPagination] = useState(0);
+
+  useEffect(() => {
+    setCorectBooks(
+      books.slice(
+        (pagination - 1) * amountBook,
+        pagination * amountBook + amountBook
+      )
+    );
+  }, [books, pagination]);
+
+  const handlePagination = (even: any, page: number) => {
+    setPagination(page);
+  };
+
+  if (!books) {
+    return <Loading />;
+  }
   return (
-    <>
-      {books ? (
-        books.map((book, index) => (
+    <DarkProvider>
+      <Box padding={3}>
+        <Pagination
+          onChange={handlePagination}
+          count={Math.floor(books.length / amountBook)}
+        />
+      </Box>
+      <Box width={400} padding={3}>
+        {corectBooks.map((book, index) => (
           <Link
             key={index}
             href={
@@ -24,12 +52,10 @@ export const Listbooks = ({ books, link, web }: ListbooksProps) => {
                 : `/books/${book.book}?web=${web}`
             }
           >
-            <Typography>{book.name}</Typography>
+            <Typography paddingTop={1}>{book.name}</Typography>
           </Link>
-        ))
-      ) : (
-        <Loading />
-      )}
-    </>
+        ))}
+      </Box>
+    </DarkProvider>
   );
 };
