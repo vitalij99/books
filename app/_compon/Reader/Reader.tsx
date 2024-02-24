@@ -14,24 +14,17 @@ import {
   SelectChangeEvent,
   Slider,
   SvgIcon,
-  ThemeProvider,
   Typography,
-  createTheme,
 } from '@mui/material';
 import debounce from 'lodash.debounce';
 
 import { useEffect, useState } from 'react';
+import DarkProvider from '../DarkProvider/DarkProvider';
 
 interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
 }
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 const initParamsReader = {
   pitch: 2,
@@ -116,7 +109,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <DarkProvider>
       <Button onClick={toggleDrawer(true)}>
         <ReaderIcon />
       </Button>
@@ -201,7 +194,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
           }
         </Drawer>
       )}
-    </ThemeProvider>
+    </DarkProvider>
   );
 };
 

@@ -1,23 +1,11 @@
 'use client';
 
-import {
-  Box,
-  Link,
-  TextField,
-  ThemeProvider,
-  Typography,
-  createTheme,
-} from '@mui/material';
+import { Box, Link, TextField, Typography, createTheme } from '@mui/material';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useState } from 'react';
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+import DarkProvider from '../DarkProvider/DarkProvider';
 
 const Search = () => {
   const searchParams = useSearchParams();
@@ -46,7 +34,7 @@ const Search = () => {
       >
         <Typography>Пошук</Typography>
       </Link>
-      <ThemeProvider theme={darkTheme}>
+      <DarkProvider>
         <form
           onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
             handleSubmit(event);
@@ -63,7 +51,7 @@ const Search = () => {
             }}
           />
         </form>
-      </ThemeProvider>
+      </DarkProvider>
     </Box>
   );
 };
