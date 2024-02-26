@@ -13,7 +13,11 @@ const search = async ({
   if (!books) {
     return <Loading />;
   }
-  return <>{<Listbooks books={books.book} />}</>;
+  return (
+    <>
+      <Listbooks books={books.book} />
+    </>
+  );
 };
 
 export default search;

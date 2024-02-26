@@ -1,14 +1,21 @@
 'use client';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
 import React from 'react';
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 const DarkProvider = ({ children }: { children: React.ReactNode }) => {
-  return <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>;
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode]
+  );
+
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
 
 export default DarkProvider;

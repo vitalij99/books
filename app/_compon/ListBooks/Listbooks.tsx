@@ -3,20 +3,12 @@ import { Box, Link, Pagination, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { useEffect, useState } from 'react';
 import DarkProvider from '../DarkProvider/DarkProvider';
+import { ListbooksProps } from '@/type/book';
 
-interface Book {
-  name: string;
-  book: string;
-}
-interface ListbooksProps {
-  books: Book[];
-  link?: string;
-  web?: string;
-}
 const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListbooksProps) => {
   const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
-  const [pagination, setPagination] = useState(0);
+  const [pagination, setPagination] = useState(1);
 
   useEffect(() => {
     setCorectBooks(

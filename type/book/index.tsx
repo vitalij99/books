@@ -18,3 +18,12 @@ export const STORAGE_KEY = [
   AllowedKeys.BgColor,
   AllowedKeys.BkPadding,
 ];
+export interface Book {
+  name: string;
+  book: string;
+}
+export interface ListbooksProps {
+  books: Book[];
+  link?: string;
+  web?: string;
+}
