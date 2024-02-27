@@ -1,3 +1,4 @@
+'use client';
 import { getStorageRootValue } from '@/lib/getStorage';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import {
@@ -12,6 +13,7 @@ import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { ColorModeContext } from '../DarkProvider/DarkProvider';
 
 type StorageType = {
   [key in AllowedKeys]: string;
@@ -24,22 +26,18 @@ const defaultStorage = (): StorageType => {
   });
   return storage;
 };
-
+const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
+  localStorage.setItem(key, value);
+  document.documentElement.style.setProperty(key, value);
+}, 500);
 const MenuStyledText = () => {
   const [storage, setStorage] = useState(defaultStorage);
-  const [theme, setTheme] = useState('light');
 
-  const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
-    localStorage.setItem(key, value);
-    document.documentElement.style.setProperty(key, value);
-  }, 500);
+  const colorMode = React.useContext(ColorModeContext);
 
   const handldeChange = (value: string, key: AllowedKeys) => {
     setStorage({ ...storage, [key]: value });
     debouncedHandleChange(value, key);
-  };
-  const handleTheme = () => {
-    setTheme(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
   return (
@@ -56,8 +54,16 @@ const MenuStyledText = () => {
           p: 3,
         }}
       >
-        <IconButton onClick={handleTheme} sx={{ ml: 1 }} color="inherit">
-          {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        <IconButton
+          onClick={colorMode.toggleColorMode}
+          sx={{ ml: 1 }}
+          color="inherit"
+        >
+          {colorMode.mode === 'dark' ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
         </IconButton>
       </Box>
 
