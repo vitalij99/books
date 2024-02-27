@@ -19,7 +19,6 @@ import {
 import debounce from 'lodash.debounce';
 
 import { useEffect, useState } from 'react';
-import DarkProvider from '../DarkProvider/DarkProvider';
 
 interface StartReaderProps {
   book: string[];
@@ -109,7 +108,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
   };
 
   return (
-    <DarkProvider>
+    <>
       <Button onClick={toggleDrawer(true)}>
         <ReaderIcon />
       </Button>
@@ -194,7 +193,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
           }
         </Drawer>
       )}
-    </DarkProvider>
+    </>
   );
 };
 

@@ -5,7 +5,6 @@ import { Box, Link, TextField, Typography, createTheme } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useState } from 'react';
-import DarkProvider from '../DarkProvider/DarkProvider';
 
 const Search = () => {
   const searchParams = useSearchParams();
@@ -34,7 +33,7 @@ const Search = () => {
       >
         <Typography>Пошук</Typography>
       </Link>
-      <DarkProvider>
+      <>
         <form
           onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
             handleSubmit(event);
@@ -51,7 +50,7 @@ const Search = () => {
             }}
           />
         </form>
-      </DarkProvider>
+      </>
     </Box>
   );
 };

@@ -2,7 +2,7 @@
 import { Box, Link, Pagination, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { useEffect, useState } from 'react';
-import DarkProvider from '../DarkProvider/DarkProvider';
+
 import { ListbooksProps } from '@/type/book';
 
 const amountBook = 10;
@@ -27,7 +27,7 @@ export const Listbooks = ({ books, link, web }: ListbooksProps) => {
     return <Loading />;
   }
   return (
-    <DarkProvider>
+    <>
       <Box padding={3}>
         <Pagination
           onChange={handlePagination}
@@ -48,6 +48,6 @@ export const Listbooks = ({ books, link, web }: ListbooksProps) => {
           </Link>
         ))}
       </Box>
-    </DarkProvider>
+    </>
   );
 };

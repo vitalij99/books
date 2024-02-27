@@ -8,7 +8,10 @@ import {
   debounce,
 } from '@mui/material';
 import { MuiColorInput } from 'mui-color-input';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 type StorageType = {
   [key in AllowedKeys]: string;
@@ -24,6 +27,7 @@ const defaultStorage = (): StorageType => {
 
 const MenuStyledText = () => {
   const [storage, setStorage] = useState(defaultStorage);
+  const [theme, setTheme] = useState('light');
 
   const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
     localStorage.setItem(key, value);
@@ -34,9 +38,29 @@ const MenuStyledText = () => {
     setStorage({ ...storage, [key]: value });
     debouncedHandleChange(value, key);
   };
+  const handleTheme = () => {
+    setTheme(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+  };
 
   return (
-    <Box>
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'background.default',
+          color: 'text.primary',
+          borderRadius: 1,
+          p: 3,
+        }}
+      >
+        <IconButton onClick={handleTheme} sx={{ ml: 1 }} color="inherit">
+          {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+      </Box>
+
       <InputLabel
         sx={{ color: `var(${AllowedKeys.TextBook})` }}
         htmlFor="outlined-adornment-amount"
@@ -102,7 +126,7 @@ const MenuStyledText = () => {
           handldeChange(event.target.value + 'px', AllowedKeys.BkPadding);
         }}
       />
-    </Box>
+    </>
   );
 };
 
