@@ -41,17 +41,15 @@ const MenuStyledText = () => {
   };
 
   return (
-    <>
+    <Box>
       <Box
         sx={{
           display: 'flex',
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
-          bgcolor: 'background.default',
           color: 'text.primary',
           borderRadius: 1,
-          p: 3,
         }}
       >
         <IconButton
@@ -67,14 +65,8 @@ const MenuStyledText = () => {
         </IconButton>
       </Box>
 
-      <InputLabel
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
-        htmlFor="outlined-adornment-amount"
-      >
-        Розмір тексту
-      </InputLabel>
+      <InputLabel htmlFor="outlined-adornment-amount">Розмір тексту</InputLabel>
       <OutlinedInput
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
         id="outlined-adornment-amount"
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="font size"
@@ -84,14 +76,8 @@ const MenuStyledText = () => {
           handldeChange(event.target.value + 'px', AllowedKeys.FontSize);
         }}
       />
-      <InputLabel
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
-        htmlFor="mui-color-input"
-      >
-        Колір тексту
-      </InputLabel>
+      <InputLabel htmlFor="mui-color-input">Колір тексту</InputLabel>
       <MuiColorInput
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
         id="mui-color-input"
         value={storage[AllowedKeys.TextBook]}
         format="hex"
@@ -100,12 +86,7 @@ const MenuStyledText = () => {
           handldeChange(value, AllowedKeys.TextBook);
         }}
       />
-      <InputLabel
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
-        htmlFor="mui-color-bg"
-      >
-        Колір фону
-      </InputLabel>
+      <InputLabel htmlFor="mui-color-bg">Колір фону</InputLabel>
       <MuiColorInput
         id="mui-color-bg"
         value={storage[AllowedKeys.BgColor]}
@@ -115,14 +96,8 @@ const MenuStyledText = () => {
           handldeChange(value, AllowedKeys.BgColor);
         }}
       />
-      <InputLabel
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
-        htmlFor="pageWidth"
-      >
-        Ширина сторінки
-      </InputLabel>
+      <InputLabel htmlFor="pageWidth">Ширина сторінки</InputLabel>
       <OutlinedInput
-        sx={{ color: `var(${AllowedKeys.TextBook})` }}
         id="pageWidth"
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="font size"
@@ -132,7 +107,7 @@ const MenuStyledText = () => {
           handldeChange(event.target.value + 'px', AllowedKeys.BkPadding);
         }}
       />
-    </>
+    </Box>
   );
 };
 

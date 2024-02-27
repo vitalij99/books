@@ -29,7 +29,7 @@ const BookMenu = () => {
           <Box
             sx={{
               p: '10px',
-              bgcolor: 'var(--bg-color-menu)',
+
               flex: 1,
             }}
           >

@@ -118,14 +118,14 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
             <Box
               sx={{
                 p: '10px',
-                bgcolor: 'var(--bg-color-menu)',
+
                 flex: 1,
                 display: 'flex',
                 gap: 5,
               }}
             >
               <Button onClick={handleReade}>
-                <Typography color={'var(--text-book)'}>
+                <Typography>
                   {!isreade.read
                     ? 'Старт'
                     : isreade.pause
@@ -136,7 +136,7 @@ const Reader = ({ book, changeText }: StartReaderProps) => {
 
               {isreade.read && (
                 <Button onClick={handleReadeCancel}>
-                  <Typography color={'var(--text-book)'}>Стоп</Typography>
+                  <Typography>Стоп</Typography>
                 </Button>
               )}
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
