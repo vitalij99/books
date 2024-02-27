@@ -12,14 +12,6 @@
   --book-padding: 20px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --first-color: #ffffff;
-    --sec-color: #000;
-  }
-}
 
-body {
-  color: var(--first-color);
-  background-color: var(--sec-color);
-}
+
+
