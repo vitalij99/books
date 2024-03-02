@@ -33,7 +33,7 @@ const BookRead = ({
 }) => {
   const [textBook, setTextBook] = useState(data.book);
   const [textIsRead, setTextIsRead] = useState(initTextIsRead);
-  // try translate add bind
+
   useMemo(() => {
     async function getTranslate() {
       const allTextBook: string[] = [];
