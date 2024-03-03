@@ -1,16 +1,23 @@
 'use client';
 import { ListbooksProps } from '@/type/book';
-import { Box, Link, Typography } from '@mui/material';
+import {
+  Box,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  Link,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 
 const ListBooksCard = ({ books, link, web }: ListbooksProps) => {
   return (
     <Box padding={4}>
-      <Box
+      <ImageList
         sx={{
-          overflowX: 'scroll',
-          overflowY: 'hidden',
-          whiteSpace: 'nowrap',
+          gridAutoFlow: 'column',
+          gridTemplateColumns: 'repeat(auto-fill,minmax(160px,1fr)) !important',
+          gridAutoColumns: 'minmax(160px, 1fr)',
         }}
       >
         {books.map((book, index) => (
@@ -22,12 +29,19 @@ const ListBooksCard = ({ books, link, web }: ListbooksProps) => {
                   : `/books/${book.book}?web=${web}`
               }
             >
-              <Image src={book.img} width={90} height={120} alt={book.name} />
-              <Typography>{book.name}</Typography>
+              <ImageListItem>
+                <Image
+                  src={book.img}
+                  width={150}
+                  height={200}
+                  alt={book.name}
+                />
+                <ImageListItemBar title={book.name} subtitle={book.name} />
+              </ImageListItem>
             </Link>
           </Box>
         ))}
-      </Box>
+      </ImageList>
     </Box>
   );
 };
