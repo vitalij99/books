@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 
-const ListBooksCard = ({ books, link, web }: ListbooksProps) => {
+const ListBooksCard = ({ books, web }: ListbooksProps) => {
   return (
     <Box padding={4}>
       <ImageList
@@ -22,13 +22,7 @@ const ListBooksCard = ({ books, link, web }: ListbooksProps) => {
       >
         {books.map((book, index) => (
           <Box key={index} sx={{ display: 'inline-block', p: 2 }}>
-            <Link
-              href={
-                link
-                  ? `/books/${link}/${book.book}?web=${web}`
-                  : `/books/${book.book}?web=${web}`
-              }
-            >
+            <Link href={`/books/${book.book}?web=${web}`}>
               <ImageListItem>
                 <Image
                   src={book.img}

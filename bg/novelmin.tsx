@@ -19,7 +19,6 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
   const linkInfoArray: {
     name: string;
     book: string;
-    web: string;
     img: string;
   }[] = [];
 
@@ -29,9 +28,9 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
       const image = link.querySelector('img');
       const img = image?.getAttribute('src') || '';
       const href = link.getAttribute('href') || '';
-      const book = href.replace(`${link}/series/`, '');
-      const web = 'novelmin';
-      linkInfoArray.push({ name, book, web, img });
+      const book = href.replace(`https://novelmin.com/series/`, '');
+
+      linkInfoArray.push({ name, book, img });
     }
   });
 

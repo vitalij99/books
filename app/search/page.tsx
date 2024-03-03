@@ -16,7 +16,7 @@ const search = async ({
   }
   return (
     <>
-      <ListBooksCard books={books.book} />
+      <ListBooksCard books={books.book} web={books.web} />
     </>
   );
 };
