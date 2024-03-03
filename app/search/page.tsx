@@ -1,6 +1,7 @@
-import { getBookSearchByName } from '@/lib/novelmin';
-import { Listbooks } from '../_compon/ListBooks/Listbooks';
+import { getBookSearchByName } from '@/bg/novelmin';
+
 import Loading from '../_compon/Loading/Loading';
+import ListBooksCard from '../_compon/ListBooksCard/ListBooksCard';
 
 const search = async ({
   searchParams,
@@ -15,7 +16,7 @@ const search = async ({
   }
   return (
     <>
-      <Listbooks books={books.book} />
+      <ListBooksCard books={books.book} />
     </>
   );
 };

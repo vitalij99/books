@@ -1,15 +1,7 @@
 import axios from 'axios';
-import { transformInHtml } from './htmlTransform';
-import { HTMLElement } from 'node-html-parser';
-import { text } from 'stream/consumers';
+import { transformInHtml } from '../lib/htmlTransform';
 
 const link = 'https://novelmin.com/';
-
-// export const getAllBooks = async ({ page = 1 }) => {
-//   const { data } = await axios.get(`${link}=${page}`);
-//   console.log(data);
-//   return data;
-// };
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
   const linkSearch = `${link}/?s=${name}`;
@@ -24,15 +16,22 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
 
   const links = result.map(item => item.querySelector('a'));
 
-  const linkInfoArray: { name: string; book: string; web: string }[] = [];
+  const linkInfoArray: {
+    name: string;
+    book: string;
+    web: string;
+    img: string;
+  }[] = [];
 
   links.forEach(link => {
     if (link !== null) {
       const name = link.getAttribute('title') || '';
+      const image = link.querySelector('img');
+      const img = image?.getAttribute('src') || '';
       const href = link.getAttribute('href') || '';
-      const book = href.replace('https://novelmin.com/series/', '');
+      const book = href.replace(`${link}/series/`, '');
       const web = 'novelmin';
-      linkInfoArray.push({ name, book, web });
+      linkInfoArray.push({ name, book, web, img });
     }
   });
 
@@ -64,7 +63,7 @@ export const getBookLinks = async ({ book }: { book: string }) => {
 
       linksBook.push({
         book: url.slice(indexOfChapter + 9),
-        name: url.replace('https://novelmin.com/', ''),
+        name: url.replace(link, ''),
         web: 'novelmin',
       });
     }

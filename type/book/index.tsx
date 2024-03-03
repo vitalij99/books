@@ -21,6 +21,7 @@ export const STORAGE_KEY = [
 export interface Book {
   name: string;
   book: string;
+  img: string;
 }
 export interface ListbooksProps {
   books: Book[];

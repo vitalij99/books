@@ -1,5 +1,5 @@
 import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
-import { getBookLinks } from '@/lib/novelmin';
+import { getBookLinks } from '@/bg/novelmin';
 import Link from 'next/link';
 
 const page = async ({
