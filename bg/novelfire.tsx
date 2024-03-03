@@ -4,9 +4,12 @@ import { transformInHtml } from '../lib/htmlTransform';
 const link = 'https://novelfire.net/';
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
-  const linkSearch = `${link}/?s=${name}`;
+  // https://novelfire.net/ajax/searchLive?inputContent=Barbarian
+  const linkSearch = `${link}/ajax/searchLive?inputContent=${name}`;
 
   const { data } = await axios.get(linkSearch);
+
+  console.log(data);
 
   const result = transformInHtml({
     html: data,
