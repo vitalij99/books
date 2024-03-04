@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { transformInHtml } from '../lib/htmlTransform';
-import { parse } from 'node-html-parser';
 
 const link = 'https://novelfire.net/';
 
@@ -17,7 +16,6 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
     });
 
     if (!result) throw new Error();
-    console.log(result);
 
     const links = result.map(item => item.querySelector('a'));
 
@@ -31,7 +29,7 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
       if (link !== null) {
         const name = link.getAttribute('title') || '';
         const href = link.getAttribute('href') || '';
-        const book = href.replace(`${link}/series/`, '');
+        const book = href.replace(`https://novelfire.net/book/`, '');
         const image = link.querySelector('img');
         const img = image?.getAttribute('src') || '';
 
