@@ -4,37 +4,41 @@ import { transformInHtml } from '../lib/htmlTransform';
 const link = 'https://novelmin.com/';
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
-  const linkSearch = `${link}/?s=${name}`;
+  try {
+    const linkSearch = `${link}/?s=${name}`;
 
-  const { data } = await axios.get(linkSearch);
+    const { data } = await axios.get(linkSearch);
 
-  const result = transformInHtml({
-    html: data,
-    elem: 'article',
-  });
-  if (!result) return undefined;
+    const result = transformInHtml({
+      html: data,
+      elem: 'article',
+    });
+    if (!result) throw new Error();
 
-  const links = result.map(item => item.querySelector('a'));
+    const links = result.map(item => item.querySelector('a'));
 
-  const linkInfoArray: {
-    name: string;
-    book: string;
-    img: string;
-  }[] = [];
+    const linkInfoArray: {
+      name: string;
+      book: string;
+      img: string;
+    }[] = [];
 
-  links.forEach(link => {
-    if (link !== null) {
-      const name = link.getAttribute('title') || '';
-      const image = link.querySelector('img');
-      const img = image?.getAttribute('src') || '';
-      const href = link.getAttribute('href') || '';
-      const book = href.replace(`https://novelmin.com/series/`, '');
+    links.forEach(link => {
+      if (link !== null) {
+        const name = link.getAttribute('title') || '';
+        const image = link.querySelector('img');
+        const img = image?.getAttribute('src') || '';
+        const href = link.getAttribute('href') || '';
+        const book = href.replace(`https://novelmin.com/series/`, '');
 
-      linkInfoArray.push({ name, book, img });
-    }
-  });
+        linkInfoArray.push({ name, book, img });
+      }
+    });
 
-  return { book: linkInfoArray, web: 'novelmin' };
+    return { books: linkInfoArray, web: 'novelmin' };
+  } catch (error) {
+    return { books: [], web: 'novelmin' };
+  }
 };
 
 export const getBookLinks = async ({ book }: { book: string }) => {

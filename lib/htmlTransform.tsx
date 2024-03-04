@@ -24,5 +24,11 @@ export const transformInHtml = ({
     const elements = root.querySelectorAll(elem);
 
     return elements;
+  } else {
+    const root = parse(html);
+
+    const elements = root.querySelectorAll(elem);
+
+    return elements;
   }
 };

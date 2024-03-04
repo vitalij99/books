@@ -1,37 +1,48 @@
 import axios from 'axios';
 import { transformInHtml } from '../lib/htmlTransform';
+import { parse } from 'node-html-parser';
 
 const link = 'https://novelfire.net/';
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
   // https://novelfire.net/ajax/searchLive?inputContent=Barbarian
-  const linkSearch = `${link}/ajax/searchLive?inputContent=${name}`;
+  try {
+    const linkSearch = `${link}ajax/searchLive?inputContent=${name}`;
 
-  const { data } = await axios.get(linkSearch);
+    const { data } = await axios.get(linkSearch);
 
-  console.log(data);
+    const result = transformInHtml({
+      html: data.html,
+      elem: 'li',
+    });
 
-  const result = transformInHtml({
-    html: data,
-    elem: 'article',
-  });
-  if (!result) return undefined;
+    if (!result) throw new Error();
+    console.log(result);
 
-  const links = result.map(item => item.querySelector('a'));
+    const links = result.map(item => item.querySelector('a'));
 
-  const linkInfoArray: { name: string; book: string; web: string }[] = [];
+    const linkInfoArray: {
+      name: string;
+      book: string;
+      img: string;
+    }[] = [];
 
-  links.forEach(link => {
-    if (link !== null) {
-      const name = link.getAttribute('title') || '';
-      const href = link.getAttribute('href') || '';
-      const book = href.replace(`${link}/series/`, '');
-      const web = 'novelmin';
-      linkInfoArray.push({ name, book, web });
-    }
-  });
+    links.forEach(link => {
+      if (link !== null) {
+        const name = link.getAttribute('title') || '';
+        const href = link.getAttribute('href') || '';
+        const book = href.replace(`${link}/series/`, '');
+        const image = link.querySelector('img');
+        const img = image?.getAttribute('src') || '';
 
-  return { book: linkInfoArray, web: 'novelmin' };
+        linkInfoArray.push({ name, book, img });
+      }
+    });
+
+    return { books: linkInfoArray, web: 'novelfire' };
+  } catch (error) {
+    return { books: [], web: 'novelfire' };
+  }
 };
 
 export const getBookLinks = async ({ book }: { book: string }) => {
@@ -60,12 +71,12 @@ export const getBookLinks = async ({ book }: { book: string }) => {
       linksBook.push({
         book: url.slice(indexOfChapter + 9),
         name: url.replace(link, ''),
-        web: 'novelmin',
+        web: 'novelfire',
       });
     }
   }
 
-  return { linksBook, web: 'novelmin', bookHref: book };
+  return { linksBook, web: 'novelfire', bookHref: book };
 };
 export const getBookFromLink = async ({
   book,
@@ -74,7 +85,7 @@ export const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
-  // https://novelmin.com/surviving-the-game-as-a-barbarian-chapter-607/
+  // https://novelfire.com/surviving-the-game-as-a-barbarian-chapter-607/
   const linkBook = `${link}/${book}-chapter-${chapter}`;
 
   const { data } = await axios.get(linkBook);

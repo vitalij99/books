@@ -1,22 +1,28 @@
-import { getBookSearchByName } from '@/bg/novelmin';
-
 import Loading from '../_compon/Loading/Loading';
 import ListBooksCard from '../_compon/ListBooksCard/ListBooksCard';
+import getBookSearchByNameAll from '@/bg';
 
 const search = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | '' };
 }) => {
-  const books = await getBookSearchByName({
+  const books = await getBookSearchByNameAll({
     name: searchParams.search,
   });
   if (!books) {
     return <Loading />;
   }
+
   return (
     <>
-      <ListBooksCard books={books.book} web={books.web} />
+      {books.map(website => (
+        <ListBooksCard
+          key={website.web}
+          books={website.books}
+          web={website.web}
+        />
+      ))}
     </>
   );
 };
