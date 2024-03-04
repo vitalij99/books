@@ -1,8 +1,7 @@
 import BookRead from '@/app/_compon/BookRead/BookRead';
-import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
+
 import Loading from '@/app/_compon/Loading/Loading';
-import { getBookFromLink, getBookLinks } from '@/bg/novelmin';
-import Link from 'next/link';
+import { getBookFromLinkAll } from '@/bg';
 
 const page = async ({
   params,
@@ -11,9 +10,13 @@ const page = async ({
   params: { chapter: string; book: string };
   searchParams: { [key: string]: string | '' };
 }) => {
-  const books = await getBookFromLink({
+  if (!searchParams.web) {
+    return <>error</>;
+  }
+  const books = await getBookFromLinkAll({
     chapter: params.chapter,
     book: params.book,
+    web: searchParams.web,
   });
   if (!books) {
     return <Loading />;

@@ -28,3 +28,11 @@ export interface ListbooksProps {
   link?: string;
   web?: string;
 }
+export interface ListbooksLink {
+  books: {
+    book: string;
+    name: string;
+  }[];
+  web: string;
+  link: string;
+}

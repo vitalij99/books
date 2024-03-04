@@ -44,38 +44,37 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
 };
 
 export const getBookLinks = async ({ book }: { book: string }) => {
-  const linkBook = `${link}/series/${book}/`;
+  const linkBook = `${link}book/${book}/chapters`;
 
   const { data } = await axios.get(linkBook);
 
   const result = transformInHtml({
     html: data,
-    elem: '.eplister.eplisterfull',
+    elem: '.chapter-list',
   });
   if (!result) return undefined;
 
   const element = result[0];
 
-  const textHtmlAll = element.querySelectorAll('ul > li');
+  const textHtmlAll = element.querySelectorAll('li');
 
   const linksBook = [];
 
   for (let i = 0; i < textHtmlAll.length; i++) {
     const parag = textHtmlAll[i];
     const url = parag.querySelector('a')?.getAttribute('href');
-    if (url) {
-      const indexOfChapter = url.lastIndexOf('-chapter-');
 
+    if (url) {
       linksBook.push({
-        book: url.slice(indexOfChapter + 9),
+        book: transformLink(url),
         name: url.replace(link, ''),
-        web: 'novelfire',
       });
     }
   }
 
   return { linksBook, web: 'novelfire', bookHref: book };
 };
+
 export const getBookFromLink = async ({
   book,
   chapter,
@@ -83,36 +82,45 @@ export const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
-  // https://novelfire.com/surviving-the-game-as-a-barbarian-chapter-607/
-  const linkBook = `${link}/${book}-chapter-${chapter}`;
+  // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1/chapter-26
+  const linkBook = `${link}book/${book}/chapter-${chapter}`;
 
   const { data } = await axios.get(linkBook);
 
   const result = transformInHtml({
     html: data,
-    elem: '.epwrapper',
+    elem: '#chapter-container',
   });
+
   if (!result) return undefined;
 
   const element = result[0];
 
-  const textHtmlAll = element.querySelectorAll('.entry-content > p');
+  const textHtmlAll = element.querySelectorAll('#content p');
 
   const allText = textHtmlAll.map(parag => parag.textContent);
 
   // next page
-  const pages = element.querySelectorAll('.left a');
-  const prevPage = pages[0]?.getAttribute('href') || '';
-  const nextPage = pages[1]?.getAttribute('href') || '';
-  const prevText = pages[0]?.textContent || '';
-  const nextText = pages[1]?.textContent || '';
+  const pages = element.querySelectorAll('.chapternav.skiptranslate a');
+  const prevPageInit = pages[0]?.getAttribute('href');
+  const nextPageInit = pages[1]?.getAttribute('href');
+  const prevPage = prevPageInit?.startsWith('https') ? prevPageInit : undefined;
+  const nextPage = nextPageInit?.startsWith('https') ? nextPageInit : undefined;
+
+  const prevText = prevPage && 'Попередння';
+  const nextText = nextPage && 'Наступна';
 
   const nav = {
-    nextPage,
-    prevPage,
+    nextPage: nextPage && transformLink(nextPage) + '?web=novelfire',
+    prevPage: prevPage && transformLink(prevPage) + '?web=novelfire',
     nextText,
     prevText,
   };
 
   return { book: allText, nav };
+};
+
+const transformLink = (url: string) => {
+  const indexOfChapter = url.lastIndexOf('chapter-');
+  return url.slice(indexOfChapter + 8);
 };

@@ -1,6 +1,5 @@
 import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
-import { getBookLinks } from '@/bg/novelmin';
-import Link from 'next/link';
+import { getBookLinksAll } from '@/bg';
 
 const page = async ({
   params,
@@ -9,7 +8,13 @@ const page = async ({
   params: { book: string };
   searchParams: { [key: string]: string | '' };
 }) => {
-  const book = await getBookLinks({ book: params.book });
+  if (!searchParams.web) {
+    return <>error</>;
+  }
+  const book = await getBookLinksAll({
+    book: params.book,
+    web: searchParams.web,
+  });
   if (!book) {
     return <>error</>;
   }

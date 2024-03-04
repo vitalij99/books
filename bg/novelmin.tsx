@@ -62,18 +62,16 @@ export const getBookLinks = async ({ book }: { book: string }) => {
     const parag = textHtmlAll[i];
     const url = parag.querySelector('a')?.getAttribute('href');
     if (url) {
-      const indexOfChapter = url.lastIndexOf('-chapter-');
-
       linksBook.push({
-        book: url.slice(indexOfChapter + 9),
+        book: transformLink(url),
         name: url.replace(link, ''),
-        web: 'novelmin',
       });
     }
   }
 
   return { linksBook, web: 'novelmin', bookHref: book };
 };
+
 export const getBookFromLink = async ({
   book,
   chapter,
@@ -100,17 +98,24 @@ export const getBookFromLink = async ({
 
   // next page
   const pages = element.querySelectorAll('.left a');
-  const prevPage = pages[0]?.getAttribute('href') || '';
-  const nextPage = pages[1]?.getAttribute('href') || '';
-  const prevText = pages[0]?.textContent || '';
-  const nextText = pages[1]?.textContent || '';
+  const prevPageInit = pages[0]?.getAttribute('href');
+  const nextPageInit = pages[2]?.getAttribute('href');
+  const prevPage = prevPageInit?.startsWith('https') ? prevPageInit : undefined;
+  const nextPage = nextPageInit?.startsWith('https') ? nextPageInit : undefined;
+
+  const prevText = prevPage && 'Попередння';
+  const nextText = nextPage && 'Наступна';
 
   const nav = {
-    nextPage,
-    prevPage,
+    nextPage: nextPage && transformLink(nextPage) + '?web=novelmin',
+    prevPage: prevPage && transformLink(prevPage) + '?web=novelmin',
     nextText,
     prevText,
   };
 
   return { book: allText, nav };
+};
+const transformLink = (url: string) => {
+  const indexOfChapter = url.lastIndexOf('-chapter-');
+  return url.slice(indexOfChapter + 9);
 };

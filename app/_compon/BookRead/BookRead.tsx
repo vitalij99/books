@@ -12,10 +12,10 @@ import Reader from '../Reader/Reader';
 interface BookProps {
   book: string[];
   nav: {
-    nextPage: string;
-    prevPage: string;
-    nextText: string;
-    prevText: string;
+    nextPage?: string;
+    prevPage?: string;
+    nextText?: string;
+    prevText?: string;
   };
 }
 const initTextIsRead = {
@@ -117,8 +117,12 @@ const BookRead = ({
         );
       })}
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link href={data.nav.prevPage}>{data.nav.prevText}</Link>
-        <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>
+        {data.nav.prevPage && (
+          <Link href={data.nav.prevPage}>{data.nav.prevText}</Link>
+        )}
+        {data.nav.nextPage && (
+          <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>
+        )}
       </Box>
     </Box>
   );

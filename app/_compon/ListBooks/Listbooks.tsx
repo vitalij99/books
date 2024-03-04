@@ -3,10 +3,10 @@ import { Box, Link, Pagination, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { useEffect, useState } from 'react';
 
-import { ListbooksProps } from '@/type/book';
+import { ListbooksLink, ListbooksProps } from '@/type/book';
 
 const amountBook = 10;
-export const Listbooks = ({ books, link, web }: ListbooksProps) => {
+export const Listbooks = ({ books, link, web }: ListbooksLink) => {
   const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
 
@@ -23,7 +23,7 @@ export const Listbooks = ({ books, link, web }: ListbooksProps) => {
     setPagination(page);
   };
 
-  if (!books) {
+  if (books.length === 0) {
     return <Loading />;
   }
   return (
