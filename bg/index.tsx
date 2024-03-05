@@ -24,11 +24,11 @@ export const getBookSearchByNameAll = async ({
 
   const result: ListbooksProps[] = [];
 
-  // const novelmin = await getBookSearchByNameFromNovelMin({ name });
-  const novelfire = await getBookSearchByNameFromNovelFire({ name });
+  const novelmin = await getBookSearchByNameFromNovelMin({ name });
+  // const novelfire = await getBookSearchByNameFromNovelFire({ name });
 
-  // result.push(novelmin);
-  result.push(novelfire);
+  result.push(novelmin);
+  // result.push(novelfire);
 
   return result;
 };

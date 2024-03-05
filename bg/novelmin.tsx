@@ -14,7 +14,7 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
       html: data,
       elem: 'article',
     });
-    if (!result) throw new Error();
+    if (!result) return { books: [], web: 'novelmin' };
 
     const links = result.map(item => item.querySelector('a'));
 
