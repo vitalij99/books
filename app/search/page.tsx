@@ -7,12 +7,12 @@ const search = async ({
 }: {
   searchParams: { [key: string]: string | '' };
 }) => {
-  // const books = await getBookSearchByNameAll({
-  //   name: searchParams.search,
-  // });
-  // if (!books) {
-  //   return <Loading />;
-  // }
+  const books = await getBookSearchByNameAll({
+    name: searchParams.search,
+  });
+  if (!books) {
+    return <Loading />;
+  }
 
   return (
     <>
