@@ -4,6 +4,7 @@ import { transformInHtml } from '../lib/htmlTransform';
 const link = 'https://novelmin.com/';
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
+  console.log('start getBookSearchByName');
   try {
     const linkSearch = `${link}/?s=${name}`;
 
