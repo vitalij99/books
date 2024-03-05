@@ -21,22 +21,16 @@ export const getBookSearchByNameAll = async ({
   name: string;
 }) => {
   console.log('start getBookSearchByNameAll');
-  try {
-    return [{ books: [] }];
-    const result: ListbooksProps[] = [];
 
-    const novelmin = await getBookSearchByNameFromNovelMin({ name });
-    // const novelfire = await getBookSearchByNameFromNovelFire({ name });
+  const result: ListbooksProps[] = [];
 
-    result.push(novelmin);
-    // result.push(novelfire);
-    console.log(result);
+  // const novelmin = await getBookSearchByNameFromNovelMin({ name });
+  const novelfire = await getBookSearchByNameFromNovelFire({ name });
 
-    return result;
-  } catch (error: any) {
-    console.log(error);
-    return [];
-  }
+  // result.push(novelmin);
+  result.push(novelfire);
+
+  return result;
 };
 
 export const getBookLinksAll = async ({
