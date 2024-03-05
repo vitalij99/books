@@ -15,7 +15,11 @@ const WEBSITE = {
   novelfire: 'novelfire',
 };
 
-export const getBookSearchByNameAll = async ({ name }: { name: string }) => {
+export const getBookSearchByNameAll = async ({
+  name = '',
+}: {
+  name: string;
+}) => {
   try {
     const result: ListbooksProps[] = [];
 
