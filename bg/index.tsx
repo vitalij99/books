@@ -16,14 +16,18 @@ const WEBSITE = {
 };
 
 export const getBookSearchByNameAll = async ({ name }: { name: string }) => {
-  const result: ListbooksProps[] = [];
+  try {
+    const result: ListbooksProps[] = [];
 
-  const novelmin = await getBookSearchByNameFromNovelMin({ name });
-  const novelfire = await getBookSearchByNameFromNovelFire({ name });
+    const novelmin = await getBookSearchByNameFromNovelMin({ name });
+    const novelfire = await getBookSearchByNameFromNovelFire({ name });
 
-  result.push(novelmin, novelfire);
+    result.push(novelmin, novelfire);
 
-  return result;
+    return result;
+  } catch (error: any) {
+    console.log(error);
+  }
 };
 
 export const getBookLinksAll = async ({
