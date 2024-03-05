@@ -24,10 +24,12 @@ export const getBookSearchByNameAll = async ({ name }: { name: string }) => {
 
     result.push(novelmin);
     result.push(novelfire);
+    console.log(result);
 
     return result;
   } catch (error: any) {
     console.log(error);
+    return [];
   }
 };
 
