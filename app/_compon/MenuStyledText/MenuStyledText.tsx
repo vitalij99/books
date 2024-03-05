@@ -31,7 +31,7 @@ const MenuStyledText = () => {
   const colorMode = React.useContext(ColorModeContext);
 
   const handldeChange = (value: string, key: AllowedKeys) => {
-    setStorage({ ...storage, [key]: value });
+    setStorage(prev => ({ ...prev, [key]: value }));
     debouncedHandleChange(value, key);
   };
 
