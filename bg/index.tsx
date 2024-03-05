@@ -22,7 +22,8 @@ export const getBookSearchByNameAll = async ({ name }: { name: string }) => {
     const novelmin = await getBookSearchByNameFromNovelMin({ name });
     const novelfire = await getBookSearchByNameFromNovelFire({ name });
 
-    result.push(novelmin, novelfire);
+    result.push(novelmin);
+    result.push(novelfire);
 
     return result;
   } catch (error: any) {
