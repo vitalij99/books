@@ -4,7 +4,6 @@ import { transformInHtml } from '../lib/htmlTransform';
 const link = 'https://novelmin.com/';
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
-  console.log('start getBookSearchByName');
   try {
     const linkSearch = `${link}/?s=${name}`;
 
@@ -14,7 +13,7 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
       html: data,
       elem: 'article',
     });
-    if (!result) return { books: [], web: 'novelmin' };
+    if (!result) throw new Error();
 
     const links = result.map(item => item.querySelector('a'));
 
@@ -38,6 +37,7 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web: 'novelmin' };
   } catch (error) {
+    console.log(error);
     return { books: [], web: 'novelmin' };
   }
 };

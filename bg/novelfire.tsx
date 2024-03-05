@@ -39,6 +39,7 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web: 'novelfire' };
   } catch (error) {
+    console.log(error);
     return { books: [], web: 'novelfire' };
   }
 };

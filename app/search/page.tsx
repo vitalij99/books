@@ -7,7 +7,6 @@ const search = async ({
 }: {
   searchParams: { [key: string]: string | '' };
 }) => {
-  console.log('start searchPage');
   const books = await getBookSearchByNameAll({
     name: searchParams.search,
   });
