@@ -4,7 +4,7 @@ import { getStorage, getStorageRootValue } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
-import { AllowedKeys, READER_KEY, STORAGE_KEY } from '@/type/book';
+import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
@@ -31,6 +31,20 @@ const BookRead = ({
 }) => {
   const [textBook, setTextBook] = useState(data.book);
   const [textIsRead, setTextIsRead] = useState(initTextIsRead);
+  const [translage, setTranslage] = useState(false);
+
+  useEffect(() => {
+    setTranslage(getStorage(AllowedKeys.Translage) === 'true' ? true : false);
+
+    const storage = STORAGE_KEY.map(key => getStorageRootValue(key));
+    if (storage) {
+      storage.forEach((value, index) => {
+        if (value) {
+          setRootValue(STORAGE_KEY[index], value);
+        }
+      });
+    }
+  }, []);
 
   useMemo(() => {
     async function getTranslate() {
@@ -48,20 +62,10 @@ const BookRead = ({
       setTextBook(allTextBook);
     }
 
-    if (getStorage(READER_KEY.translage) === 'true' ? true : false) {
+    if (translage) {
       getTranslate();
     }
-  }, [data.book]);
-  useEffect(() => {
-    const storage = STORAGE_KEY.map(key => getStorageRootValue(key));
-    if (storage) {
-      storage.forEach((value, index) => {
-        if (value) {
-          setRootValue(STORAGE_KEY[index], value);
-        }
-      });
-    }
-  }, []);
+  }, [data.book, translage]);
 
   if (!data) {
     return <div>Error</div>;

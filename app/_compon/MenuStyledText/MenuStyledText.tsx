@@ -31,7 +31,7 @@ const defaultStorage = (): StorageType => {
 const MenuStyledText = () => {
   const [storageDef, setStorageDef] = useState(defaultStorage);
   const [translate, setTranslate] = useState(
-    getStorage(READER_KEY.translage) === 'true' ? true : false
+    getStorage(AllowedKeys.Translage) === 'true' ? true : false
   );
 
   const colorMode = React.useContext(ColorModeContext);
@@ -43,7 +43,7 @@ const MenuStyledText = () => {
   const handleTranslate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTranslate(event.target.checked);
     const storageValue = event.target.checked + '';
-    setStorage(storageValue, READER_KEY.translage);
+    setStorage(storageValue, AllowedKeys.Translage);
   };
 
   return (

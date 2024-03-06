@@ -3,13 +3,13 @@ export enum AllowedKeys {
   TextBook = '--text-book',
   BgColor = '--bg-color-book',
   BkPadding = '--book-padding',
+  Translage = 'translage',
 }
 export const READER_KEY = {
   voice: 'voice',
   rate: 'rate',
   pitch: 'pitch',
   volume: 'volume',
-  translage: 'translage',
 };
 
 export const STORAGE_KEY = [

@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { dark } from '@mui/material/styles/createPalette';
-import React, { createContext } from 'react';
+import React, { createContext, useEffect } from 'react';
 
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
@@ -16,13 +16,17 @@ export const ColorModeContext = createContext({
 
 const DarkProvider = ({ children }: { children: React.ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const storageMode = getStorage('darkmode');
-  const defaultMode =
-    storageMode !== '' ? storageMode === 'dark' : prefersDarkMode;
 
   const [mode, setMode] = React.useState<'light' | 'dark'>(
-    defaultMode ? 'dark' : 'light'
+    prefersDarkMode ? 'dark' : 'light'
   );
+
+  useEffect(() => {
+    const storageMode = getStorage('darkmode');
+    const defaultMode =
+      storageMode !== '' ? storageMode === 'dark' : prefersDarkMode;
+    setMode(defaultMode ? 'dark' : 'light');
+  }, [prefersDarkMode]);
 
   const toggleColorMode = () => {
     setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));

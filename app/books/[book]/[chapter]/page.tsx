@@ -18,6 +18,7 @@ const page = async ({
     book: params.book,
     web: searchParams.web,
   });
+
   if (!books) {
     return <Loading />;
   }
