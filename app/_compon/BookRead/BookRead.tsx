@@ -1,10 +1,10 @@
 'use client';
 
-import { getStorageRootValue } from '@/lib/getStorage';
+import { getStorage, getStorageRootValue } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
-import { AllowedKeys, STORAGE_KEY } from '@/type/book';
+import { AllowedKeys, READER_KEY, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
@@ -24,11 +24,9 @@ const initTextIsRead = {
 };
 const BookRead = ({
   data,
-  translate: tran,
   timeReader,
 }: {
   data: BookProps;
-  translate?: boolean;
   timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
@@ -50,10 +48,10 @@ const BookRead = ({
       setTextBook(allTextBook);
     }
 
-    if (tran) {
+    if (getStorage(READER_KEY.translage) === 'true' ? true : false) {
       getTranslate();
     }
-  }, [data.book, tran]);
+  }, [data.book]);
   useEffect(() => {
     const storage = STORAGE_KEY.map(key => getStorageRootValue(key));
     if (storage) {

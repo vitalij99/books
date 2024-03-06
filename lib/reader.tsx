@@ -1,6 +1,6 @@
 'use client';
 import { READER_KEY } from '@/type/book';
-import { getStorage, handleChangeLocalStorage } from './getStorage';
+import { getStorage, setStorage } from './getStorage';
 import { useEffect, useState } from 'react';
 
 interface StartReaderProps {
@@ -82,14 +82,14 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
       return;
     } else if (rate) {
       utterThis.rate = rate;
-      handleChangeLocalStorage(rate + '', READER_KEY.rate);
+      setStorage(rate + '', READER_KEY.rate);
     } else if (pitch) {
       utterThis.pitch = pitch;
-      handleChangeLocalStorage(pitch + '', READER_KEY.pitch);
+      setStorage(pitch + '', READER_KEY.pitch);
     } else if (volume) {
       console.log(volume);
       utterThis.volume = volume;
-      handleChangeLocalStorage(volume + '', READER_KEY.volume);
+      setStorage(volume + '', READER_KEY.volume);
     }
     if (synth.speaking) {
       synth.cancel();
@@ -100,7 +100,7 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     const voice = voices.find(voice => voice.name === name);
     if (voice) {
       utterThis.voice = voice;
-      handleChangeLocalStorage(voice.name, READER_KEY.voice);
+      setStorage(voice.name, READER_KEY.voice);
     }
     if (synth.speaking) {
       synth.cancel();

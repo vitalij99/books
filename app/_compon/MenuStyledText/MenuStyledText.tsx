@@ -1,7 +1,13 @@
 'use client';
-import { getStorageRootValue } from '@/lib/getStorage';
-import { AllowedKeys, STORAGE_KEY } from '@/type/book';
-import { Box, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { getStorage, getStorageRootValue, setStorage } from '@/lib/getStorage';
+import { AllowedKeys, READER_KEY, STORAGE_KEY } from '@/type/book';
+import {
+  Box,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Switch,
+} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input';
 import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -21,18 +27,23 @@ const defaultStorage = (): StorageType => {
   });
   return storage;
 };
-const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
-  localStorage.setItem(key, value);
-  document.documentElement.style.setProperty(key, value);
-}, 500);
+
 const MenuStyledText = () => {
-  const [storage, setStorage] = useState(defaultStorage);
+  const [storageDef, setStorageDef] = useState(defaultStorage);
+  const [translate, setTranslate] = useState(
+    getStorage(READER_KEY.translage) === 'true' ? true : false
+  );
 
   const colorMode = React.useContext(ColorModeContext);
 
-  const handldeChange = (value: string, key: AllowedKeys) => {
-    setStorage(prev => ({ ...prev, [key]: value }));
+  const handleChange = (value: string, key: AllowedKeys) => {
+    setStorageDef(prev => ({ ...prev, [key]: value }));
     debouncedHandleChange(value, key);
+  };
+  const handleTranslate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTranslate(event.target.checked);
+    const storageValue = event.target.checked + '';
+    setStorage(storageValue, READER_KEY.translage);
   };
 
   return (
@@ -66,29 +77,29 @@ const MenuStyledText = () => {
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="font size"
         type="number"
-        defaultValue={parseFloat(storage[AllowedKeys.FontSize])}
+        defaultValue={parseFloat(storageDef[AllowedKeys.FontSize])}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handldeChange(event.target.value + 'px', AllowedKeys.FontSize);
+          handleChange(event.target.value + 'px', AllowedKeys.FontSize);
         }}
       />
       <InputLabel htmlFor="mui-color-input">Колір тексту</InputLabel>
       <MuiColorInput
         id="mui-color-input"
-        value={storage[AllowedKeys.TextBook]}
+        value={storageDef[AllowedKeys.TextBook]}
         format="hex"
         isAlphaHidden
         onChange={(value: string) => {
-          handldeChange(value, AllowedKeys.TextBook);
+          handleChange(value, AllowedKeys.TextBook);
         }}
       />
       <InputLabel htmlFor="mui-color-bg">Колір фону</InputLabel>
       <MuiColorInput
         id="mui-color-bg"
-        value={storage[AllowedKeys.BgColor]}
+        value={storageDef[AllowedKeys.BgColor]}
         isAlphaHidden
         format="hex"
         onChange={(value: string) => {
-          handldeChange(value, AllowedKeys.BgColor);
+          handleChange(value, AllowedKeys.BgColor);
         }}
       />
       <InputLabel htmlFor="pageWidth">Ширина сторінки</InputLabel>
@@ -97,13 +108,18 @@ const MenuStyledText = () => {
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="font size"
         type="number"
-        defaultValue={parseFloat(storage[AllowedKeys.BkPadding])}
+        defaultValue={parseFloat(storageDef[AllowedKeys.BkPadding])}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handldeChange(event.target.value + 'px', AllowedKeys.BkPadding);
+          handleChange(event.target.value + 'px', AllowedKeys.BkPadding);
         }}
       />
+      <InputLabel htmlFor="pageWidth">Переклад</InputLabel>
+      <Switch checked={translate} onChange={handleTranslate} />
     </Box>
   );
 };
-
+const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
+  localStorage.setItem(key, value);
+  document.documentElement.style.setProperty(key, value);
+}, 500);
 export default MenuStyledText;
