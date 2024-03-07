@@ -8,7 +8,7 @@ import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
-import { TranslateContext } from '../DarkProvider/DarkProvider';
+import { TranslateContext } from '../DarkTranslateProvider/DarkTranslateProvider';
 
 interface BookProps {
   book: string[];

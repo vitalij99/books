@@ -20,7 +20,7 @@ export const TranslateContext = createContext({
   translate: false,
 });
 
-const DarkProvider = ({ children }: { children: React.ReactNode }) => {
+const DarkTranslateProvider = ({ children }: { children: React.ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const [translate, setTranslate] = React.useState(false);
@@ -77,4 +77,4 @@ const DarkProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default DarkProvider;
+export default DarkTranslateProvider;

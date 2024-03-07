@@ -13,11 +13,12 @@ import React, { createContext, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+import debounce from 'lodash.debounce';
 import {
   ColorModeContext,
   TranslateContext,
-} from '../DarkProvider/DarkProvider';
-import debounce from 'lodash.debounce';
+} from '../DarkTranslateProvider/DarkTranslateProvider';
 
 type StorageType = {
   [key in AllowedKeys]: string;

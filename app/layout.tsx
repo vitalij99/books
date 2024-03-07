@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 import Header from './_compon/Header/Header';
-import DarkProvider from './_compon/DarkProvider/DarkProvider';
+import DarkTranslateProvider from './_compon/DarkTranslateProvider/DarkTranslateProvider';
 
 export const metadata: Metadata = {
   title: 'Books uk',
@@ -17,10 +17,10 @@ export default function RootLayout({
   return (
     <html lang="uk">
       <body>
-        <DarkProvider>
+        <DarkTranslateProvider>
           <Header />
           {children}
-        </DarkProvider>
+        </DarkTranslateProvider>
       </body>
     </html>
   );
