@@ -1,6 +1,6 @@
 'use client';
 import { getStorage, getStorageRootValue, setStorage } from '@/lib/getStorage';
-import { AllowedKeys, READER_KEY, STORAGE_KEY } from '@/type/book';
+import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import {
   Box,
   InputAdornment,
@@ -9,11 +9,14 @@ import {
   Switch,
 } from '@mui/material';
 import { MuiColorInput } from 'mui-color-input';
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { ColorModeContext } from '../DarkProvider/DarkProvider';
+import {
+  ColorModeContext,
+  TranslateContext,
+} from '../DarkProvider/DarkProvider';
 import debounce from 'lodash.debounce';
 
 type StorageType = {
@@ -30,20 +33,13 @@ const defaultStorage = (): StorageType => {
 
 const MenuStyledText = () => {
   const [storageDef, setStorageDef] = useState(defaultStorage);
-  const [translate, setTranslate] = useState(
-    getStorage(AllowedKeys.Translage) === 'true' ? true : false
-  );
 
   const colorMode = React.useContext(ColorModeContext);
+  const translate = React.useContext(TranslateContext);
 
   const handleChange = (value: string, key: AllowedKeys) => {
     setStorageDef(prev => ({ ...prev, [key]: value }));
     debouncedHandleChange(value, key);
-  };
-  const handleTranslate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTranslate(event.target.checked);
-    const storageValue = event.target.checked + '';
-    setStorage(storageValue, AllowedKeys.Translage);
   };
 
   return (
@@ -114,7 +110,10 @@ const MenuStyledText = () => {
         }}
       />
       <InputLabel htmlFor="pageWidth">Переклад</InputLabel>
-      <Switch checked={translate} onChange={handleTranslate} />
+      <Switch
+        checked={translate.translate}
+        onChange={event => translate.handleTranslate(event.target.checked)}
+      />
     </Box>
   );
 };

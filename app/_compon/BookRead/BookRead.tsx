@@ -6,8 +6,9 @@ import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import { Box, Link, Typography } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
+import { TranslateContext } from '../DarkProvider/DarkProvider';
 
 interface BookProps {
   book: string[];
@@ -31,11 +32,10 @@ const BookRead = ({
 }) => {
   const [textBook, setTextBook] = useState(data.book);
   const [textIsRead, setTextIsRead] = useState(initTextIsRead);
-  const [translage, setTranslage] = useState(false);
+
+  const translate = useContext(TranslateContext);
 
   useEffect(() => {
-    setTranslage(getStorage(AllowedKeys.Translage) === 'true' ? true : false);
-
     const storage = STORAGE_KEY.map(key => getStorageRootValue(key));
     if (storage) {
       storage.forEach((value, index) => {
@@ -47,11 +47,11 @@ const BookRead = ({
   }, []);
 
   useMemo(() => {
-    async function getTranslate() {
+    async function getTranslate(bookTranslate: string | any[]) {
       const allTextBook: string[] = [];
 
-      for (let index = 0; index < data.book.length; index++) {
-        const element = data.book[index];
+      for (let index = 0; index < bookTranslate.length; index++) {
+        const element = bookTranslate[index];
         const result = await translateGoogle(element);
         allTextBook.push(...result);
         if (index % 10 === 0) {
@@ -62,10 +62,10 @@ const BookRead = ({
       setTextBook(allTextBook);
     }
 
-    if (translage) {
-      getTranslate();
-    }
-  }, [data.book, translage]);
+    if (translate.translate) {
+      getTranslate(data.book);
+    } else setTextBook(data.book);
+  }, [data.book, translate]);
 
   if (!data) {
     return <div>Error</div>;

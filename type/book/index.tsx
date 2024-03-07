@@ -3,7 +3,7 @@ export enum AllowedKeys {
   TextBook = '--text-book',
   BgColor = '--bg-color-book',
   BkPadding = '--book-padding',
-  Translage = 'translage',
+  Translate = 'translate',
 }
 export const READER_KEY = {
   voice: 'voice',
