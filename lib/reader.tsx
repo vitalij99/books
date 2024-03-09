@@ -2,13 +2,19 @@
 import { READER_KEY } from '@/type/book';
 import { getStorage, setStorage } from './getStorage';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
+  srcNextPage?: string;
 }
 
-export const StartReader = ({ book, changeText }: StartReaderProps) => {
+export const StartReader = ({
+  book,
+  changeText,
+  srcNextPage,
+}: StartReaderProps) => {
   const [synth, setSynth] = useState<SpeechSynthesis>();
   const [utterThis, setUtterThis] = useState<
     SpeechSynthesisUtterance | undefined
@@ -21,6 +27,7 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     textLength: 0,
     allTextmass: 0,
   });
+  const router = useRouter();
 
   useEffect(() => {
     const firstSynth = window.speechSynthesis;
@@ -39,6 +46,7 @@ export const StartReader = ({ book, changeText }: StartReaderProps) => {
     };
     firstUtterThis.onend = event => {
       changeText(-1);
+      if (srcNextPage) router.push(srcNextPage);
     };
     firstUtterThis.onerror = event => {
       changeText(-1);

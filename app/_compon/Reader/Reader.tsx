@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react';
 interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
+  srcNextPage?: string;
 }
 
 const initParamsReader = {
@@ -32,12 +33,12 @@ const initParamsReader = {
   volume: 1,
 };
 
-const Reader = ({ book, changeText }: StartReaderProps) => {
+const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
 
-  const reader = StartReader({ book, changeText });
+  const reader = StartReader({ book, changeText, srcNextPage });
 
   useEffect(() => {
     const storage = {

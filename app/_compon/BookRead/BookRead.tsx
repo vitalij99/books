@@ -101,7 +101,11 @@ const BookRead = ({
       }}
     >
       <Box sx={{ position: 'fixed', right: '0' }}>
-        <Reader book={textBook} changeText={changeTextRead} />
+        <Reader
+          book={textBook}
+          changeText={changeTextRead}
+          srcNextPage={data.nav.nextPage}
+        />
       </Box>
       {textBook.map((text, index) => {
         const sxStyled = textIsRead.p === index;
