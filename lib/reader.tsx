@@ -22,13 +22,10 @@ export const StartReader = ({
   const [voices, setVoices] = useState<SpeechSynthesisVoice[] | undefined>(
     undefined
   );
-  const [paragraf, setParagraf] = useState({
-    p: -1,
-    textLength: 0,
-    allTextmass: 0,
-  });
-  const router = useRouter();
+  const [timeOut, setTimeOut] = useState({ timer: 2, timeNow: new Date() });
 
+  const router = useRouter();
+  // add tineOut
   useEffect(() => {
     const firstSynth = window.speechSynthesis;
 
@@ -44,6 +41,7 @@ export const StartReader = ({
       const firstVoices = firstSynth.getVoices();
       setVoices(firstVoices);
     };
+
     firstUtterThis.onend = event => {
       changeText(-1);
       if (srcNextPage) router.push(srcNextPage);
@@ -54,7 +52,13 @@ export const StartReader = ({
     setUtterThis(firstUtterThis);
 
     setSynth(firstSynth);
-  }, [book, changeText]);
+  }, [book, changeText, router, srcNextPage]);
+
+  useEffect(() => {
+    const timer = Number(getStorage(READER_KEY.timer)) || 2;
+
+    setTimeOut(prev => ({ ...prev, timer }));
+  }, []);
 
   if (!synth || !utterThis || !voices) {
     return;
@@ -65,7 +69,7 @@ export const StartReader = ({
     pitch: Number(getStorage(READER_KEY.pitch)) || 2,
     rate: Number(getStorage(READER_KEY.rate)) || 2,
     reade: false,
-    timer: 2,
+
     paragraf: 0,
   };
 
@@ -73,7 +77,7 @@ export const StartReader = ({
     if (!synth || !utterThis) {
       return;
     }
-    console.log(utterThis, synth);
+
     synth.speak(utterThis);
   };
 
