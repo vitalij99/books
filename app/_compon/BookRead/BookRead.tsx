@@ -19,10 +19,7 @@ interface BookProps {
     prevText?: string;
   };
 }
-const initTextIsRead = {
-  p: -1,
-  allTextmass: 0,
-};
+
 const BookRead = ({
   data,
   timeReader,
@@ -31,7 +28,7 @@ const BookRead = ({
   timeReader?: string;
 }) => {
   const [textBook, setTextBook] = useState(data.book);
-  const [textIsRead, setTextIsRead] = useState(initTextIsRead);
+  const [textIsRead, setTextIsRead] = useState(-1);
 
   const translate = useContext(TranslateContext);
 
@@ -72,25 +69,7 @@ const BookRead = ({
   }
 
   const changeTextRead = (textReadeIndex: number) => {
-    if (textReadeIndex === -1) {
-      setTextIsRead(initTextIsRead);
-      return;
-    }
-    let allTextref = textIsRead.allTextmass;
-
-    const startIndexPar = textIsRead.p === -1 ? 0 : textIsRead.p;
-
-    for (let index = startIndexPar; index < data.book.length; index++) {
-      const text = data.book[index];
-      allTextref += text.length;
-      if (allTextref >= textReadeIndex) {
-        setTextIsRead({
-          p: index,
-          allTextmass: allTextref,
-        });
-        break;
-      }
-    }
+    setTextIsRead(textReadeIndex);
   };
 
   return (
@@ -108,7 +87,7 @@ const BookRead = ({
         />
       </Box>
       {textBook.map((text, index) => {
-        const sxStyled = textIsRead.p === index;
+        const sxStyled = textIsRead === index;
         return (
           <Typography
             sx={{

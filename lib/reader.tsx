@@ -2,7 +2,7 @@
 import { READER_KEY } from '@/type/book';
 import { getStorage, setStorage } from './getStorage';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface StartReaderProps {
   book: string[];
@@ -22,61 +22,70 @@ export const StartReader = ({
   const [voices, setVoices] = useState<SpeechSynthesisVoice[] | undefined>(
     undefined
   );
-  const [timeOut, setTimeOut] = useState({ timer: 2, timeNow: new Date() });
+  const [paragraf, setParagraf] = useState(0);
+  const [timeOut, setTimeOut] = useState({ timer: 2, timeSave: new Date() });
 
   const router = useRouter();
-  // add tineOut
+
   useEffect(() => {
     const firstSynth = window.speechSynthesis;
-
-    const text = book.reduce((acum, text) => acum + text, '');
-    const firstUtterThis = new SpeechSynthesisUtterance(text);
-
-    firstUtterThis.onboundary = event => {
-      const textIndex = event.charIndex;
-
-      changeText(textIndex);
-    };
     firstSynth.onvoiceschanged = event => {
       const firstVoices = firstSynth.getVoices();
       setVoices(firstVoices);
     };
-
-    firstUtterThis.onend = event => {
-      changeText(-1);
-      if (srcNextPage) router.push(srcNextPage);
-    };
-    firstUtterThis.onerror = event => {
-      changeText(-1);
-    };
-    setUtterThis(firstUtterThis);
-
     setSynth(firstSynth);
-  }, [book, changeText, router, srcNextPage]);
+  }, []);
 
   useEffect(() => {
-    const timer = Number(getStorage(READER_KEY.timer)) || 2;
+    const text = book[paragraf];
+    const firstUtterThis = new SpeechSynthesisUtterance(text);
 
-    setTimeOut(prev => ({ ...prev, timer }));
+    const speakParagrap = () => {
+      if (!synth) {
+        return;
+      }
+
+      synth.speak(firstUtterThis);
+    };
+
+    setUtterThis(firstUtterThis);
+    if (book.length > paragraf && paragraf !== -1) {
+      speakParagrap();
+    }
+  }, [book, paragraf, synth]);
+
+  useEffect(() => {
+    const timer = Number(getStorage(READER_KEY.timer)) || 60;
+
+    const timeSave = new Date();
+    timeSave.setMinutes(timer);
+
+    setTimeOut({ timer: 2, timeSave });
   }, []);
 
   if (!synth || !utterThis || !voices) {
     return;
   }
+  utterThis.onend = event => {
+    setParagraf(prev => (prev += 1));
+    changeText(paragraf + 1);
+  };
+  utterThis.onerror = event => {
+    changeText(-1);
+  };
 
   const options = {
     language: getStorage(READER_KEY.voice) || '',
     pitch: Number(getStorage(READER_KEY.pitch)) || 2,
     rate: Number(getStorage(READER_KEY.rate)) || 2,
     reade: false,
-
     paragraf: 0,
   };
-
   const speak = () => {
-    if (!synth || !utterThis) {
+    if (!synth) {
       return;
     }
+    changeText(paragraf);
 
     synth.speak(utterThis);
   };
@@ -99,7 +108,6 @@ export const StartReader = ({
       utterThis.pitch = pitch;
       setStorage(pitch + '', READER_KEY.pitch);
     } else if (volume) {
-      console.log(volume);
       utterThis.volume = volume;
       setStorage(volume + '', READER_KEY.volume);
     }
@@ -120,12 +128,19 @@ export const StartReader = ({
     }
   };
 
+  const handleCancel = () => {
+    if (!synth) return;
+    synth.cancel();
+    changeText(-1);
+    setParagraf(-1);
+  };
+
   return {
     synth,
     utterThis,
     speak,
     voices,
-    voice: options.language,
+    handleCancel,
     handleChangeVoice,
     handleChangeParams,
   };
