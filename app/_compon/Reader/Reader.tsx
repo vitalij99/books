@@ -107,6 +107,9 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       reader?.handleChangeParams({ [key]: value });
     }, 1000)();
   };
+  const handleChangeParagraf = (event: Event, value: any) => {
+    reader?.handleChangeParagraf(value);
+  };
 
   return (
     <>
@@ -187,6 +190,16 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   step={0.1}
                   max={1}
                   value={paramsReader?.volume}
+                  valueLabelDisplay="auto"
+                />
+                <Typography>Параграф</Typography>
+                <Slider
+                  name="paragraf"
+                  onChange={handleChangeParagraf}
+                  min={0}
+                  step={1}
+                  max={book.length}
+                  value={reader.paragraf}
                   valueLabelDisplay="auto"
                 />
               </Box>

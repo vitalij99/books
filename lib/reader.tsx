@@ -67,8 +67,7 @@ export const StartReader = ({
     return;
   }
   utterThis.onend = event => {
-    setParagraf(prev => (prev += 1));
-    changeText(paragraf + 1);
+    handleChangeParagraf(paragraf + 1);
   };
   utterThis.onerror = event => {
     changeText(-1);
@@ -88,6 +87,13 @@ export const StartReader = ({
     changeText(paragraf);
 
     synth.speak(utterThis);
+  };
+  const handleChangeParagraf = (number: number) => {
+    console.log(number);
+    synth.cancel();
+
+    setParagraf(number);
+    changeText(number);
   };
 
   const handleChangeParams = ({
@@ -140,7 +146,9 @@ export const StartReader = ({
     utterThis,
     speak,
     voices,
+    paragraf,
     handleCancel,
+    handleChangeParagraf,
     handleChangeVoice,
     handleChangeParams,
   };
