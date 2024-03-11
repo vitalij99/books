@@ -10,6 +10,7 @@ interface StartReaderProps {
   srcNextPage?: string;
 }
 
+// add timeOut and initParams
 export const StartReader = ({
   book,
   changeText,
