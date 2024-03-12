@@ -9,7 +9,12 @@ interface StartReaderProps {
   changeText: (number: number) => void;
   srcNextPage?: string;
 }
-
+const initParamsReader = {
+  pitch: 2,
+  rate: 2,
+  voice: '',
+  volume: 1,
+};
 // add timeOut and initParams
 export const StartReader = ({
   book,
@@ -24,6 +29,7 @@ export const StartReader = ({
     undefined
   );
   const [paragraf, setParagraf] = useState(0);
+  const [paramsReader, setParamsReader] = useState(initParamsReader);
   const [timeOut, setTimeOut] = useState({ timer: 2, timeSave: new Date() });
 
   const router = useRouter();
@@ -40,6 +46,15 @@ export const StartReader = ({
   useEffect(() => {
     const text = book[paragraf];
     const firstUtterThis = new SpeechSynthesisUtterance(text);
+    // storage params
+    if (!voices) return;
+    const voice = voices.find(voice => voice.name === paramsReader.voice);
+    if (voice) {
+      firstUtterThis.voice = voice;
+    }
+    firstUtterThis.rate = paramsReader.rate;
+    firstUtterThis.pitch = paramsReader.pitch;
+    firstUtterThis.volume = paramsReader.volume;
 
     const speakParagrap = () => {
       if (!synth) {
@@ -53,7 +68,7 @@ export const StartReader = ({
     if (book.length > paragraf && paragraf !== -1) {
       speakParagrap();
     }
-  }, [book, paragraf, synth]);
+  }, [book, paragraf, paramsReader, synth, voices]);
 
   useEffect(() => {
     const timer = Number(getStorage(READER_KEY.timer)) || 60;
@@ -85,12 +100,9 @@ export const StartReader = ({
     if (!synth) {
       return;
     }
-    changeText(paragraf);
-
-    synth.speak(utterThis);
+    handleChangeParagraf(0);
   };
-  const handleChangeParagraf = (number: number) => {
-    console.log(number);
+  const handleChangeParagraf = (number = 0) => {
     synth.cancel();
 
     setParagraf(number);
@@ -109,29 +121,28 @@ export const StartReader = ({
     if (!utterThis) {
       return;
     } else if (rate) {
-      utterThis.rate = rate;
+      setParamsReader(prev => ({ ...prev, rate }));
       setStorage(rate + '', READER_KEY.rate);
     } else if (pitch) {
-      utterThis.pitch = pitch;
+      setParamsReader(prev => ({ ...prev, pitch }));
       setStorage(pitch + '', READER_KEY.pitch);
     } else if (volume) {
-      utterThis.volume = volume;
+      setParamsReader(prev => ({ ...prev, volume }));
       setStorage(volume + '', READER_KEY.volume);
     }
+
     if (synth.speaking) {
-      synth.cancel();
-      synth.speak(utterThis);
+      handleChangeParagraf(paragraf);
     }
   };
   const handleChangeVoice = (name: string) => {
     const voice = voices.find(voice => voice.name === name);
     if (voice) {
-      utterThis.voice = voice;
+      setParamsReader(prev => ({ ...prev, voice: name }));
       setStorage(voice.name, READER_KEY.voice);
     }
     if (synth.speaking) {
-      synth.cancel();
-      synth.speak(utterThis);
+      handleChangeParagraf(paragraf);
     }
   };
 
