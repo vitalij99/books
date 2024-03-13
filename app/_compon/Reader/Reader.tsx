@@ -38,7 +38,12 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
 
-  const reader = StartReader({ book, changeText, srcNextPage });
+  const reader = StartReader({
+    book,
+    changeText,
+    srcNextPage,
+    isreade,
+  });
 
   useEffect(() => {
     const storage = {
