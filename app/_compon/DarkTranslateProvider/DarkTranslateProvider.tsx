@@ -1,14 +1,16 @@
 'use client';
-import { getStorage, setStorage } from '@/lib/getStorage';
-import { AllowedKeys } from '@/type/book';
+import { setCookies } from '@/lib/cookis';
+import { setStorage } from '@/lib/getStorage';
+import { AllowedKeys, THEME } from '@/type/book';
 import {
   CssBaseline,
   ThemeProvider,
   createTheme,
   useMediaQuery,
 } from '@mui/material';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-import React, { createContext, useEffect } from 'react';
+import React, { createContext, useEffect, useMemo } from 'react';
 
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
@@ -20,37 +22,41 @@ export const TranslateContext = createContext({
   translate: false,
 });
 
-const DarkTranslateProvider = ({ children }: { children: React.ReactNode }) => {
+const DarkTranslateProvider = ({
+  children,
+  theme,
+}: {
+  children: React.ReactNode;
+  theme?: RequestCookie;
+}) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const [translate, setTranslate] = React.useState(false);
   const [mode, setMode] = React.useState<'light' | 'dark'>(
-    prefersDarkMode ? 'dark' : 'light'
+    theme?.value === 'light' ? 'light' : 'dark'
   );
 
   useEffect(() => {
-    const storageMode = getStorage('darkmode');
-    const defaultMode =
-      storageMode !== '' ? storageMode === 'dark' : prefersDarkMode;
-    setMode(defaultMode ? 'dark' : 'light');
-
-    const isTranslate =
-      getStorage(AllowedKeys.Translate) === 'true' ? true : false;
-
-    handleTranslate(isTranslate);
-  }, [prefersDarkMode]);
+    if (!theme) {
+      const newMode = prefersDarkMode ? 'dark' : 'light';
+      setMode(newMode);
+      setCookies(THEME, newMode);
+    }
+  }, [prefersDarkMode, theme]);
 
   const toggleColorMode = () => {
-    setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
-    setStorage(mode === 'light' ? 'dark' : 'light', 'darkmode');
+    const newMode = mode === 'light' ? 'dark' : 'light';
+
+    setMode(newMode);
+    setCookies(THEME, newMode);
   };
   const handleTranslate = (isTranslate: boolean) => {
-    console.log(isTranslate);
     setTranslate(isTranslate);
     const storageValue = isTranslate + '';
     setStorage(storageValue, AllowedKeys.Translate);
   };
-  const theme = React.useMemo(
+
+  const themeMode = useMemo(
     () =>
       createTheme({
         palette: {
@@ -59,7 +65,6 @@ const DarkTranslateProvider = ({ children }: { children: React.ReactNode }) => {
       }),
     [mode]
   );
-
   return (
     <ColorModeContext.Provider value={{ toggleColorMode, mode }}>
       <TranslateContext.Provider
@@ -68,11 +73,11 @@ const DarkTranslateProvider = ({ children }: { children: React.ReactNode }) => {
           translate,
         }}
       >
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={themeMode}>
           <CssBaseline />
           {children}
         </ThemeProvider>
-      </TranslateContext.Provider>
+      </TranslateContext.Provider>{' '}
     </ColorModeContext.Provider>
   );
 };

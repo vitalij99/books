@@ -37,3 +37,4 @@ export interface ListbooksLink {
   web: string;
   link: string;
 }
+export const THEME = 'theme';
