@@ -2,10 +2,15 @@
 import { setCookies } from '@/lib/cookis';
 import { setStorage } from '@/lib/getStorage';
 import { AllowedKeys, THEME } from '@/type/book';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import {
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  useMediaQuery,
+} from '@mui/material';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-import React, { createContext, useMemo } from 'react';
+import React, { createContext, useEffect, useMemo } from 'react';
 
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
@@ -24,10 +29,21 @@ const DarkTranslateProvider = ({
   children: React.ReactNode;
   theme?: RequestCookie;
 }) => {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
   const [translate, setTranslate] = React.useState(false);
   const [mode, setMode] = React.useState<'light' | 'dark'>(
     theme?.value === 'light' ? 'light' : 'dark'
   );
+
+  useEffect(() => {
+    if (!theme) {
+      const newMode = prefersDarkMode ? 'dark' : 'light';
+      setMode(newMode);
+      setCookies(THEME, newMode);
+    }
+  }, [prefersDarkMode, theme]);
+
   const toggleColorMode = () => {
     const newMode = mode === 'light' ? 'dark' : 'light';
 
@@ -39,7 +55,8 @@ const DarkTranslateProvider = ({
     const storageValue = isTranslate + '';
     setStorage(storageValue, AllowedKeys.Translate);
   };
-  const themeMode = React.useMemo(
+
+  const themeMode = useMemo(
     () =>
       createTheme({
         palette: {
