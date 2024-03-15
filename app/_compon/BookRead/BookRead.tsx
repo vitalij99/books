@@ -1,14 +1,15 @@
 'use client';
 
-import { getStorage, getStorageRootValue } from '@/lib/getStorage';
+import { getStorageRootValue } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
 import { TranslateContext } from '../DarkTranslateProvider/DarkTranslateProvider';
+import NavigationPages from '../NavigationPages/NavigationPages';
 
 interface BookProps {
   book: string[];
@@ -86,6 +87,7 @@ const BookRead = ({
           srcNextPage={data.nav.nextPage}
         />
       </Box>
+      <NavigationPages navigate={data.nav} />
       {textBook.map((text, index) => {
         const sxStyled = textIsRead === index;
         return (
@@ -101,14 +103,8 @@ const BookRead = ({
           </Typography>
         );
       })}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {data.nav.prevPage && (
-          <Link href={data.nav.prevPage}>{data.nav.prevText}</Link>
-        )}
-        {data.nav.nextPage && (
-          <Link href={data.nav.nextPage}>{data.nav.nextText}</Link>
-        )}
-      </Box>
+
+      <NavigationPages navigate={data.nav} />
     </Box>
   );
 };
