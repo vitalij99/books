@@ -1,6 +1,13 @@
 'use client';
 
-import { Box, Link, TextField, Typography, createTheme } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  Link,
+  TextField,
+  Typography,
+  createTheme,
+} from '@mui/material';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -39,16 +46,18 @@ const Search = () => {
             handleSubmit(event);
           }}
         >
-          <TextField
-            id="filled-search"
-            label="Поле введення"
-            type="Пошук"
-            variant="filled"
-            value={search}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              handleSearchChange(event.target.value);
-            }}
-          />
+          <FormControl>
+            <TextField
+              name="search"
+              label="Поле введення"
+              type="search"
+              variant="filled"
+              value={search}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                handleSearchChange(event.target.value);
+              }}
+            />
+          </FormControl>
         </form>
       </>
     </Box>
