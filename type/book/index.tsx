@@ -37,4 +37,9 @@ export interface ListbooksLink {
   web: string;
   link: string;
 }
+export interface BooksSave {
+  title: string;
+  link: string;
+  chapter?: string;
+}
 export const THEME = 'theme';

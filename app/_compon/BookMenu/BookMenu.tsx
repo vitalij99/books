@@ -24,6 +24,7 @@ const BookMenu = () => {
       <Button onClick={toggleDrawer(true)}>
         <MenuIcon />
       </Button>
+
       <Drawer anchor="right" open={anchor} onClose={toggleDrawer(false)}>
         {
           <Box

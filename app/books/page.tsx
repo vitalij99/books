@@ -1,10 +1,10 @@
 import React from 'react';
+import SaveBooksLinks from '@/app/_compon/SaveBooksLinks/SaveBooksLinks';
 
 const Books = () => {
   return (
     <>
-      <div>Books</div>
-      <h1>asdasd</h1>
+      <SaveBooksLinks />
     </>
   );
 };

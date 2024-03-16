@@ -11,6 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Search from '../Search/Search';
 
 import BookHeader from '../BookHeader/BookHeader';
+import SaveBook from '../SaveBook/SaveBook';
 
 const NAVLINK = [
   {
@@ -48,6 +49,7 @@ const Header = () => {
           ))}
           <Search />
           <Box sx={{ flexGrow: 1 }} />
+          <SaveBook />
           <BookHeader />
         </Toolbar>
       </AppBar>
