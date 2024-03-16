@@ -8,22 +8,27 @@ import { useEffect, useState } from 'react';
 const SaveBook = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSave[]>([]);
   const [isBooksPath, setIsBooksPath] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const pathname = usePathname();
   const search = useSearchParams();
 
   useEffect(() => {
+    setIsBooksPath(pathname.startsWith('/books/'));
+
     const savedBooksString = localStorage.getItem('savedBooks');
 
     if (savedBooksString) {
       const savedBooksData = JSON.parse(savedBooksString);
       setSaveBooks(savedBooksData);
     }
-  }, []);
-
+  }, [pathname]);
   useEffect(() => {
-    const pathname = document.location.pathname;
-    setIsBooksPath(pathname.startsWith('/books/'));
-  }, []);
+    const nameBook = pathname.split('/');
+    const isSaveBook = saveBooks.find(book => book.title === nameBook[2]);
+
+    setIsAdded(isSaveBook ? true : false);
+  }, [pathname, saveBooks]);
+
   const handleSaveBook = () => {
     if (pathname.startsWith('/books/')) {
       const nameBook = pathname.split('/');
@@ -48,14 +53,31 @@ const SaveBook = () => {
   }
   return (
     <Button onClick={handleSaveBook}>
-      <SaveBookSvg />
+      <SaveBookSvg isSave={isAdded} />
     </Button>
   );
 };
 
 export default SaveBook;
 
-const SaveBookSvg = () => {
+const SaveBookSvg = ({ isSave = false }) => {
+  if (isSave) {
+    return (
+      <SvgIcon>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="100"
+          height="100"
+          viewBox="0 0 30 30"
+        >
+          <path d="M23,27l-8-7l-8,7V5c0-1.105,0.895-2,2-2h12c1.105,0,2,0.895,2,2V27z"></path>
+        </svg>
+      </SvgIcon>
+    );
+  }
+
   return (
     <SvgIcon>
       <svg
