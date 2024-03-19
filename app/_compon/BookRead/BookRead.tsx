@@ -21,13 +21,7 @@ interface BookProps {
   };
 }
 
-const BookRead = ({
-  data,
-  timeReader,
-}: {
-  data: BookProps;
-  timeReader?: string;
-}) => {
+const BookRead = ({ data }: { data: BookProps }) => {
   const [textBook, setTextBook] = useState(data.book);
   const [textIsRead, setTextIsRead] = useState(-1);
 
