@@ -16,7 +16,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
+
 import debounce from 'lodash.debounce';
 
 import { useEffect, useState } from 'react';
