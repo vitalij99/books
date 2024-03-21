@@ -15,34 +15,39 @@ const SaveBook = () => {
   useEffect(() => {
     setIsBooksPath(pathname.startsWith('/books/'));
 
-    const savedBooksString = localStorage.getItem('savedBooks');
+    const savedBooks = getStorage('savedBooks');
 
-    if (savedBooksString) {
-      const savedBooksData = JSON.parse(savedBooksString);
-      setSaveBooks(savedBooksData);
+    if (savedBooks) {
+      setSaveBooks(JSON.parse(savedBooks));
     }
   }, [pathname]);
   useEffect(() => {
     const nameBook = pathname.split('/');
-    const isSaveBook = saveBooks.find(book => book.title === nameBook[2]);
 
-    setIsAdded(isSaveBook ? true : false);
+    const res = findSaveBook(saveBooks, nameBook);
+
+    setIsAdded(res ? true : false);
   }, [pathname, saveBooks]);
 
   const handleSaveBook = () => {
-    if (pathname.startsWith('/books/')) {
-      const nameBook = pathname.split('/');
-      const web = search.get('web');
+    const nameBook = pathname.split('/');
 
-      const book = {
-        title: nameBook[2],
-        link: `${pathname}?web=${web}`,
-        chapter: nameBook[3] ? nameBook[3] : undefined,
-      };
-
+    if (isAdded) {
+      const updateBooks = findAndRemoveBook(saveBooks, nameBook);
+      setSaveBooks(updateBooks);
+      setIsAdded(false);
+      setStorage(updateBooks, 'savedBooks');
+    } else if (pathname.startsWith('/books/')) {
       setSaveBooks(prevBooks => {
+        const web = search.get('web');
+
+        const book = {
+          title: nameBook[2],
+          link: `${pathname}?web=${web}`,
+          chapter: nameBook[3] ? nameBook[3] : undefined,
+        };
         const updatedBooks = [...prevBooks, book];
-        setStorage(JSON.stringify(updatedBooks), 'savedBooks');
+        setStorage(updatedBooks, 'savedBooks');
 
         return updatedBooks;
       });
@@ -96,4 +101,30 @@ const SaveBookSvg = ({ isSave = false }) => {
       </svg>
     </SvgIcon>
   );
+};
+
+const findSaveBook = (saveBooks: BooksSave[], pathnameBook: string[]) => {
+  return saveBooks.find(book => {
+    if (pathnameBook.length >= 3) {
+      if (book.chapter === pathnameBook[3] && book.title === pathnameBook[2])
+        return book;
+    } else if (book.title === pathnameBook[2]) {
+      return book;
+    }
+    return undefined;
+  });
+};
+const findAndRemoveBook = (saveBooks: BooksSave[], pathnameBook: string[]) => {
+  const indexToRemove = saveBooks.findIndex(book => {
+    if (pathnameBook.length >= 3) {
+      return book.chapter === pathnameBook[3] && book.title === pathnameBook[2];
+    } else {
+      return book.title === pathnameBook[2];
+    }
+  });
+
+  if (indexToRemove !== -1) {
+    saveBooks.splice(indexToRemove, 1);
+  }
+  return saveBooks;
 };

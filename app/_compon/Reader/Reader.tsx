@@ -1,5 +1,5 @@
 'use client';
-import { getStorage } from '@/lib/getStorage';
+import { getStorage, setStorage } from '@/lib/getStorage';
 import { StartReader } from '@/lib/reader';
 import { READER_KEY } from '@/type/book';
 
@@ -54,6 +54,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       volume: Number(getStorage(READER_KEY.volume)) || 1,
     };
     setParamsReader(storage);
+    console.log('mountet');
   }, []);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
@@ -80,7 +81,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
     if (!reader) return;
 
     if (!reader.synth.speaking) {
-      reader.speak();
+      reader.speak(reader.paragraf);
       setIsreade({ ...isreade, read: true });
     } else if (isreade.pause) {
       reader.synth.resume();
@@ -89,6 +90,15 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       reader.synth.pause();
       setIsreade({ ...isreade, pause: true });
     }
+
+    const data = new Date();
+    const timer = 60;
+    const timeSave = new Date();
+    timeSave.setMinutes(timer);
+    setStorage(timer + '', READER_KEY.timer);
+    const dataSave = { timeSave, timer };
+
+    localStorage.setItem('timer', JSON.stringify(dataSave));
   };
 
   const handleReadeCancel = () => {

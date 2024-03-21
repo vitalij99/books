@@ -98,30 +98,24 @@ export const StartReader = ({
   ]);
 
   useEffect(() => {
-    const timer = Number(getStorage(READER_KEY.timer)) || 60;
+    const timer = Number(getStorage(READER_KEY.timer));
 
     const timeSave = new Date();
     timeSave.setMinutes(timer);
+    console.log({ timer, timeSave });
 
-    setTimeOut({ timer: 2, timeSave });
+    setTimeOut({ timer, timeSave });
   }, []);
 
   if (!synth || !voices) {
     return;
   }
 
-  const options = {
-    language: getStorage(READER_KEY.voice) || '',
-    pitch: Number(getStorage(READER_KEY.pitch)) || 2,
-    rate: Number(getStorage(READER_KEY.rate)) || 2,
-    reade: false,
-    paragraf: 0,
-  };
-  const speak = () => {
+  const speak = (number = paragraf) => {
     if (!synth) {
       return;
     }
-    handleChangeParagraf(paragraf);
+    handleChangeParagraf(number);
   };
   const handleChangeParagraf = (number = 0) => {
     synth.cancel();
