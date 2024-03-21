@@ -65,7 +65,7 @@ export const StartReader = ({
     firstUtterThis.volume = paramsReader.volume;
     firstUtterThis.onend = event => {
       setParagraf(prev => prev + 1);
-      changeText(paragraf);
+      changeText(paragraf + 1);
     };
     firstUtterThis.onerror = event => {
       changeText(-1);
