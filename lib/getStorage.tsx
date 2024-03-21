@@ -11,5 +11,7 @@ export const getStorage = (key: string) => {
   return res ? res : '';
 };
 export const setStorage = debounce((value: string | {} | [], key: string) => {
-  localStorage.setItem(key, JSON.stringify(value));
+  if (typeof value !== 'string') {
+    localStorage.setItem(key, JSON.stringify(value));
+  } else localStorage.setItem(key, value);
 }, 500);

@@ -30,7 +30,6 @@ export const StartReader = ({
   );
   const [paragraf, setParagraf] = useState(-1);
   const [paramsReader, setParamsReader] = useState(initParamsReader);
-  const [timeOut, setTimeOut] = useState({ timer: 2, timeSave: new Date() });
 
   const router = useRouter();
 
@@ -98,20 +97,26 @@ export const StartReader = ({
   ]);
 
   useEffect(() => {
-    const timer = Number(getStorage(READER_KEY.timer));
+    const timerStr = getStorage(READER_KEY.timer);
+    if (!timerStr) return;
+    const timer: {
+      timeSave: Date;
+      timer: number;
+    } = JSON.parse(timerStr);
+    if (!timer) return;
 
-    const timeSave = new Date();
-    timeSave.setMinutes(timer);
-    console.log({ timer, timeSave });
+    const date1 = new Date(timer.timeSave);
+    const date2 = new Date();
 
-    setTimeOut({ timer, timeSave });
+    if (date1 >= date2) {
+      setParagraf(0);
+    }
   }, []);
-
   if (!synth || !voices) {
     return;
   }
 
-  const speak = (number = paragraf) => {
+  const speak = (number = 0) => {
     if (!synth) {
       return;
     }

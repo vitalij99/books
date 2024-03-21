@@ -54,7 +54,23 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       volume: Number(getStorage(READER_KEY.volume)) || 1,
     };
     setParamsReader(storage);
-    console.log('mountet');
+  }, []);
+
+  useEffect(() => {
+    const timerStr = getStorage(READER_KEY.timer);
+    if (!timerStr) return;
+    const timer: {
+      timeSave: Date;
+      timer: number;
+    } = JSON.parse(timerStr);
+    if (!timer) return;
+
+    const date1 = new Date(timer.timeSave);
+    const date2 = new Date();
+
+    if (date1 >= date2) {
+      setIsreade(prev => ({ ...prev, read: true }));
+    }
   }, []);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
@@ -91,14 +107,12 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       setIsreade({ ...isreade, pause: true });
     }
 
-    const data = new Date();
     const timer = 60;
     const timeSave = new Date();
     timeSave.setMinutes(timer);
-    setStorage(timer + '', READER_KEY.timer);
-    const dataSave = { timeSave, timer };
 
-    localStorage.setItem('timer', JSON.stringify(dataSave));
+    const dataSave = { timeSave, timer };
+    setStorage(dataSave, READER_KEY.timer);
   };
 
   const handleReadeCancel = () => {
