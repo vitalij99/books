@@ -32,6 +32,10 @@ const initParamsReader = {
   rate: 2,
   language: '',
   volume: 1,
+  timer: {
+    timeSave: new Date(),
+    timer: 60,
+  },
 };
 
 const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
@@ -53,7 +57,8 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       language: getStorage(READER_KEY.voice) || '',
       volume: Number(getStorage(READER_KEY.volume)) || 1,
     };
-    setParamsReader(storage);
+
+    setParamsReader(prev => ({ ...prev, ...storage }));
   }, []);
 
   useEffect(() => {
@@ -67,6 +72,8 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
 
     const date1 = new Date(timer.timeSave);
     const date2 = new Date();
+
+    setParamsReader(prev => ({ ...prev, timer }));
 
     if (date1 >= date2) {
       setIsreade(prev => ({ ...prev, read: true }));
@@ -137,6 +144,13 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       reader?.handleChangeParams({ [key]: value });
     }, 1000)();
   };
+  const handleParamsTimer = (event: Event, value: number | number[]) => {
+    const newTimer = paramsReader.timer;
+    if (typeof value === 'number') {
+      newTimer.timer = value;
+      setParamsReader(prev => ({ ...prev, timer: newTimer }));
+    }
+  };
   const handleChangeParagraf = (event: Event, value: any) => {
     reader?.handleChangeParagraf(value);
   };
@@ -152,7 +166,6 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
             <Box
               sx={{
                 p: '10px',
-
                 flex: 1,
                 display: 'flex',
                 gap: 5,
@@ -230,6 +243,16 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   step={1}
                   max={book.length}
                   value={reader.paragraf}
+                  valueLabelDisplay="auto"
+                />
+                <Typography>Таймер</Typography>
+                <Slider
+                  name="timer"
+                  onChange={handleParamsTimer}
+                  min={0}
+                  max={4}
+                  step={0.1}
+                  value={paramsReader?.timer.timer}
                   valueLabelDisplay="auto"
                 />
               </Box>
