@@ -10,6 +10,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
   Slider,
@@ -144,7 +145,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       reader?.handleChangeParams({ [key]: value });
     }, 1000)();
   };
-  const handleParamsTimer = (event: Event, value: number | number[]) => {
+  const handleParamsTimer = (event: any, value: number | number[]) => {
     const newTimer = paramsReader.timer;
     if (typeof value === 'number') {
       newTimer.timer = value;
@@ -254,6 +255,16 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   step={0.1}
                   value={paramsReader?.timer.timer}
                   valueLabelDisplay="auto"
+                />
+                <OutlinedInput
+                  name="timer"
+                  label="Таймер"
+                  type="number"
+                  value={paramsReader?.timer.timer}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const res = Number(event.target.value);
+                    handleParamsTimer(event, res);
+                  }}
                 />
               </Box>
             </Box>
