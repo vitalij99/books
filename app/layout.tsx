@@ -5,6 +5,7 @@ import Header from './_compon/Header/Header';
 import DarkTranslateProvider from './_compon/DarkTranslateProvider/DarkTranslateProvider';
 import { getCookies } from '@/lib/cookis';
 import { THEME } from '@/type/book';
+import { Box } from '@mui/material';
 
 export const metadata: Metadata = {
   title: 'Books uk',
@@ -22,7 +23,7 @@ export default async function RootLayout({
       <body>
         <DarkTranslateProvider theme={theme}>
           <Header />
-          {children}
+          <Box sx={{ paddingTop: '90px' }}>{children}</Box>
         </DarkTranslateProvider>
       </body>
     </html>
