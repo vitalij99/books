@@ -115,12 +115,16 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       setIsreade({ ...isreade, pause: true });
     }
 
-    const timer = 60;
-    const timeSave = new Date();
-    timeSave.setMinutes(timer);
+    setParamsReader(prev => {
+      const timeSave = new Date();
+      timeSave.setMinutes(prev.timer.timer);
 
-    const dataSave = { timeSave, timer };
-    setStorage(dataSave, READER_KEY.timer);
+      const newTimer = { ...prev.timer, timeSave };
+
+      setStorage(newTimer, READER_KEY.timer);
+
+      return { ...prev, timer: newTimer };
+    });
   };
 
   const handleReadeCancel = () => {
@@ -146,10 +150,12 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
     }, 1000)();
   };
   const handleParamsTimer = (event: any, value: number | number[]) => {
-    const newTimer = paramsReader.timer;
     if (typeof value === 'number') {
-      newTimer.timer = value;
-      setParamsReader(prev => ({ ...prev, timer: newTimer }));
+      setParamsReader(prev => {
+        const newTimer = { ...prev.timer, timer: value };
+        setStorage(newTimer, READER_KEY.timer);
+        return { ...prev, timer: newTimer };
+      });
     }
   };
   const handleChangeParagraf = (event: Event, value: any) => {
@@ -162,13 +168,13 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
         <ReaderIcon />
       </Button>
       {reader && (
-        <Drawer anchor="top" open={onOpen} onClose={toggleDrawer(false)}>
+        <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
           {
             <Box
               sx={{
-                p: '10px',
-                flex: 1,
+                p: '20px',
                 display: 'flex',
+                flexDirection: 'column',
                 gap: 5,
               }}
             >
@@ -246,16 +252,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   value={reader.paragraf}
                   valueLabelDisplay="auto"
                 />
-                <Typography>Таймер</Typography>
-                <Slider
-                  name="timer"
-                  onChange={handleParamsTimer}
-                  min={0}
-                  max={4}
-                  step={0.1}
-                  value={paramsReader?.timer.timer}
-                  valueLabelDisplay="auto"
-                />
+                <Typography>Таймер в хв.</Typography>
                 <OutlinedInput
                   name="timer"
                   label="Таймер"
