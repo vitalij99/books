@@ -38,7 +38,7 @@ const initParamsReader = {
     timer: 60,
   },
 };
-
+// add to timer
 const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
@@ -253,6 +253,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   valueLabelDisplay="auto"
                 />
                 <Typography>Таймер в хв.</Typography>
+
                 <OutlinedInput
                   name="timer"
                   label="Таймер"
