@@ -15,7 +15,6 @@ import Search from '../Search/Search';
 
 import BookHeader from '../BookHeader/BookHeader';
 import SaveBook from '../SaveBook/SaveBook';
-import { Props } from 'next/script';
 
 const NAVLINK = [
   {
@@ -28,7 +27,7 @@ const NAVLINK = [
   },
 ];
 
-const Header = (props: Props) => {
+const Header = () => {
   const trigger = useScrollTrigger();
   return (
     <Box sx={{ flexGrow: 1 }}>
