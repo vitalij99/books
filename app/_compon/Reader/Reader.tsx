@@ -6,6 +6,7 @@ import { READER_KEY } from '@/type/book';
 import {
   Box,
   Button,
+  Checkbox,
   Drawer,
   FormControl,
   InputLabel,
@@ -20,7 +21,7 @@ import {
 
 import debounce from 'lodash.debounce';
 
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 interface StartReaderProps {
   book: string[];
@@ -36,6 +37,7 @@ const initParamsReader = {
   timer: {
     timeSave: new Date(),
     timer: 60,
+    checked: false,
   },
 };
 // add to timer
@@ -68,6 +70,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
     const timer: {
       timeSave: Date;
       timer: number;
+      checked: boolean;
     } = JSON.parse(timerStr);
     if (!timer) return;
 
@@ -162,6 +165,17 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
     reader?.handleChangeParagraf(value);
   };
 
+  const handleChangeCheckbox = (
+    event: ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    setParamsReader(prev => {
+      const newTimer = { ...prev.timer, checked: !checked };
+      setStorage(newTimer, READER_KEY.timer);
+      return { ...prev, timer: newTimer };
+    });
+  };
+
   return (
     <>
       <Button onClick={toggleDrawer(true)}>
@@ -253,7 +267,11 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   valueLabelDisplay="auto"
                 />
                 <Typography>Таймер в хв.</Typography>
-
+                <Checkbox
+                  checked={paramsReader.timer.checked}
+                  onChange={handleChangeCheckbox}
+                  inputProps={{ 'aria-label': 'таймер' }}
+                />
                 <OutlinedInput
                   name="timer"
                   label="Таймер"
