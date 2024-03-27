@@ -1,7 +1,7 @@
 'use client';
 import { getStorage, setStorage } from '@/lib/getStorage';
 import { StartReader } from '@/lib/reader';
-import { READER_KEY } from '@/type/book';
+import { READER_KEY, initParamsReader } from '@/type/book';
 
 import {
   Box,
@@ -29,17 +29,6 @@ interface StartReaderProps {
   srcNextPage?: string;
 }
 
-const initParamsReader = {
-  pitch: 2,
-  rate: 2,
-  language: '',
-  volume: 1,
-  timer: {
-    timeSave: new Date(),
-    timer: 60,
-    checked: false,
-  },
-};
 // add to timer
 const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
@@ -170,7 +159,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
     checked: boolean
   ) => {
     setParamsReader(prev => {
-      const newTimer = { ...prev.timer, checked: !checked };
+      const newTimer = { ...prev.timer, checked };
       setStorage(newTimer, READER_KEY.timer);
       return { ...prev, timer: newTimer };
     });
@@ -267,21 +256,24 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   valueLabelDisplay="auto"
                 />
                 <Typography>Таймер в хв.</Typography>
-                <Checkbox
-                  checked={paramsReader.timer.checked}
-                  onChange={handleChangeCheckbox}
-                  inputProps={{ 'aria-label': 'таймер' }}
-                />
-                <OutlinedInput
-                  name="timer"
-                  label="Таймер"
-                  type="number"
-                  value={paramsReader?.timer.timer}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    const res = Number(event.target.value);
-                    handleParamsTimer(event, res);
-                  }}
-                />
+                <Box sx={{ display: 'flex' }}>
+                  <Checkbox
+                    checked={paramsReader.timer.checked}
+                    onChange={handleChangeCheckbox}
+                    inputProps={{ 'aria-label': 'таймер' }}
+                  />
+                  <OutlinedInput
+                    name="timer"
+                    label="Таймер"
+                    type="number"
+                    value={paramsReader?.timer.timer}
+                    disabled={!paramsReader.timer.checked}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      const res = Number(event.target.value);
+                      handleParamsTimer(event, res);
+                    }}
+                  />
+                </Box>
               </Box>
             </Box>
           }

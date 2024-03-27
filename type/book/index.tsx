@@ -43,3 +43,31 @@ export interface BooksSave {
   chapter?: string;
 }
 export const THEME = 'theme';
+
+export interface TimerParams {
+  timeSave: Date;
+  timer: number;
+  checked: boolean;
+}
+
+export interface InitParamsReader {
+  pitch: number;
+  rate: number;
+  language: string;
+  volume: number;
+  timer: TimerParams;
+  voice: string;
+}
+
+export const initParamsReader: InitParamsReader = {
+  pitch: 2,
+  rate: 2,
+  language: '',
+  volume: 1,
+  voice: '',
+  timer: {
+    timeSave: new Date(),
+    timer: 60,
+    checked: false,
+  },
+};

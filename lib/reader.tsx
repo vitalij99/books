@@ -1,5 +1,5 @@
 'use client';
-import { READER_KEY } from '@/type/book';
+import { InitParamsReader, READER_KEY, initParamsReader } from '@/type/book';
 import { getStorage, setStorage } from './getStorage';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -10,12 +10,7 @@ interface StartReaderProps {
   isreade: { read: boolean; pause: boolean };
   srcNextPage?: string;
 }
-const initParamsReader = {
-  pitch: 2,
-  rate: 2,
-  voice: '',
-  volume: 1,
-};
+
 // add timeOut and initParams
 export const StartReader = ({
   book,
@@ -45,12 +40,14 @@ export const StartReader = ({
       rate: Number(getStorage(READER_KEY.rate)) || 2,
       voice: getStorage(READER_KEY.voice) || '',
       volume: Number(getStorage(READER_KEY.volume)) || 1,
+      timer: JSON.parse(getStorage(READER_KEY.timer)) ?? initParamsReader.timer,
     };
-    setParamsReader(storage);
+
+    setParamsReader(prev => ({ ...prev, ...storage }));
   }, []);
 
   useEffect(() => {
-    if (paragraf === -1 || !isreade.read) return;
+    if (paragraf === -1 || !isreade.read || !paramsReader.timer.checked) return;
     const text = book[paragraf];
     const firstUtterThis = new SpeechSynthesisUtterance(text);
     // storage params
@@ -79,7 +76,7 @@ export const StartReader = ({
       synth.speak(firstUtterThis);
     };
 
-    if (book.length > paragraf) {
+    if (book.length >= paragraf) {
       speakParagrap();
     } else if (book.length < paragraf + 1) {
       srcNextPage && router.push(srcNextPage);
