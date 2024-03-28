@@ -50,7 +50,7 @@ export const StartReader = ({
     if (paragraf === -1 || !isreade.read || !paramsReader.timer.checked) return;
     const text = book[paragraf];
     const firstUtterThis = new SpeechSynthesisUtterance(text);
-    // storage params
+
     if (!voices) return;
     const voice = voices.find(voice => voice.name === paramsReader.voice);
 

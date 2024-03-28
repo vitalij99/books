@@ -54,14 +54,11 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   }, []);
 
   useEffect(() => {
-    const timerStr = getStorage(READER_KEY.timer);
-    if (!timerStr) return;
     const timer: {
       timeSave: Date;
       timer: number;
       checked: boolean;
-    } = JSON.parse(timerStr);
-    if (!timer) return;
+    } = JSON.parse(getStorage(READER_KEY.timer)) ?? initParamsReader.timer;
 
     const date1 = new Date(timer.timeSave);
     const date2 = new Date();
