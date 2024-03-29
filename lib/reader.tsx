@@ -47,7 +47,7 @@ export const StartReader = ({
   }, []);
 
   useEffect(() => {
-    if (paragraf === -1 || !isreade.read || !paramsReader.timer.checked) return;
+    if (paragraf === -1 || !isreade.read) return;
     const text = book[paragraf];
     const firstUtterThis = new SpeechSynthesisUtterance(text);
 

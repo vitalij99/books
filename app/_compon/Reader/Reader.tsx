@@ -6,6 +6,7 @@ import { READER_KEY, initParamsReader } from '@/type/book';
 import {
   Box,
   Button,
+  Card,
   Checkbox,
   Drawer,
   FormControl,
@@ -65,10 +66,10 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
 
     setParamsReader(prev => ({ ...prev, timer }));
 
-    if (date1 >= date2) {
+    if (date1 >= date2 && paramsReader.timer.checked) {
       setIsreade(prev => ({ ...prev, read: true }));
     }
-  }, []);
+  }, [paramsReader.timer.checked]);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
@@ -164,9 +165,40 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
 
   return (
     <>
-      <Button onClick={toggleDrawer(true)}>
-        <ReaderIcon />
-      </Button>
+      <Card sx={{ padding: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button onClick={toggleDrawer(true)}>
+            <ReaderIcon />
+          </Button>
+        </Box>
+
+        {reader && isreade.read && (
+          <Box>
+            <Button onClick={handleReade}>
+              <Typography>
+                {!isreade.read
+                  ? 'Старт'
+                  : isreade.pause
+                  ? 'Продовжити'
+                  : 'Пауза'}
+              </Typography>
+            </Button>
+            <Button onClick={handleReadeCancel}>
+              <Typography>Стоп</Typography>
+            </Button>
+            <Typography>Параграф</Typography>
+            <Slider
+              name="paragraf"
+              onChange={handleChangeParagraf}
+              min={0}
+              step={1}
+              max={book.length}
+              value={reader?.paragraf}
+              valueLabelDisplay="auto"
+            />
+          </Box>
+        )}
+      </Card>
       {reader && (
         <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
           {
