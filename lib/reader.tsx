@@ -1,7 +1,7 @@
 'use client';
-import { InitParamsReader, READER_KEY, initParamsReader } from '@/type/book';
+import { READER_KEY, initParamsReader } from '@/type/book';
 import { getStorage, setStorage } from './getStorage';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface StartReaderProps {
@@ -12,7 +12,7 @@ interface StartReaderProps {
 }
 
 // add timeOut and initParams
-export const StartReader = ({
+export const useStartReader = ({
   book,
   changeText,
   srcNextPage,
@@ -30,10 +30,16 @@ export const StartReader = ({
 
   useEffect(() => {
     const firstSynth = window.speechSynthesis;
+
+    // 2 time get voices
+    const firstVoices = firstSynth.getVoices();
+    setVoices(firstVoices);
+
     firstSynth.onvoiceschanged = event => {
       const firstVoices = firstSynth.getVoices();
       setVoices(firstVoices);
     };
+
     setSynth(firstSynth);
     const storage = {
       pitch: Number(getStorage(READER_KEY.pitch)) || 2,

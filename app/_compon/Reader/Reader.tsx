@@ -1,6 +1,7 @@
 'use client';
 import { getStorage, setStorage } from '@/lib/getStorage';
-import { StartReader } from '@/lib/reader';
+import { useStartReader } from '@/lib/reader';
+
 import { READER_KEY, initParamsReader } from '@/type/book';
 
 import {
@@ -36,7 +37,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
 
-  const reader = StartReader({
+  const reader = useStartReader({
     book,
     changeText,
     srcNextPage,
@@ -61,15 +62,14 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       checked: boolean;
     } = JSON.parse(getStorage(READER_KEY.timer)) ?? initParamsReader.timer;
 
-    const date1 = new Date(timer.timeSave);
-    const date2 = new Date();
+    const dateSave = new Date(timer.timeSave);
+    const dateNow = new Date();
 
     setParamsReader(prev => ({ ...prev, timer }));
-
-    if (date1 >= date2 && paramsReader.timer.checked) {
+    if (dateSave >= dateNow && timer.checked) {
       setIsreade(prev => ({ ...prev, read: true }));
     }
-  }, [paramsReader.timer.checked]);
+  }, []);
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
@@ -112,7 +112,6 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
       const newTimer = { ...prev.timer, timeSave };
 
       setStorage(newTimer, READER_KEY.timer);
-
       return { ...prev, timer: newTimer };
     });
   };
@@ -199,33 +198,34 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
           </Box>
         )}
       </Card>
-      {reader && (
-        <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
-          {
-            <Box
-              sx={{
-                p: '20px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 5,
-              }}
-            >
-              <Button onClick={handleReade}>
-                <Typography>
-                  {!isreade.read
-                    ? 'Старт'
-                    : isreade.pause
-                    ? 'Продовжити'
-                    : 'Пауза'}
-                </Typography>
-              </Button>
 
-              {isreade.read && (
-                <Button onClick={handleReadeCancel}>
-                  <Typography>Стоп</Typography>
-                </Button>
-              )}
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
+        {
+          <Box
+            sx={{
+              p: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 5,
+            }}
+          >
+            <Button onClick={handleReade}>
+              <Typography>
+                {!isreade.read
+                  ? 'Старт'
+                  : isreade.pause
+                  ? 'Продовжити'
+                  : 'Пауза'}
+              </Typography>
+            </Button>
+
+            {isreade.read && (
+              <Button onClick={handleReadeCancel}>
+                <Typography>Стоп</Typography>
+              </Button>
+            )}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {reader && (
                 <FormControl>
                   <InputLabel id="select-reader">Голос</InputLabel>
                   <Select
@@ -243,71 +243,71 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                     })}
                   </Select>
                 </FormControl>
-              </Box>
-              <Box width={250}>
-                <Typography>Швидкість</Typography>
-                <Slider
-                  name="rate"
-                  onChange={handleSliderParams}
-                  min={0}
-                  max={4}
-                  step={0.1}
-                  value={paramsReader?.rate}
-                  valueLabelDisplay="auto"
+              )}
+            </Box>
+            <Box width={250}>
+              <Typography>Швидкість</Typography>
+              <Slider
+                name="rate"
+                onChange={handleSliderParams}
+                min={0}
+                max={4}
+                step={0.1}
+                value={paramsReader?.rate}
+                valueLabelDisplay="auto"
+              />
+              <Typography>Тон</Typography>
+              <Slider
+                name="pitch"
+                onChange={handleSliderParams}
+                min={0}
+                max={4}
+                value={paramsReader?.pitch}
+                valueLabelDisplay="auto"
+              />
+              <Typography>Гучність</Typography>
+              <Slider
+                name="volume"
+                onChange={handleSliderParams}
+                min={0}
+                step={0.1}
+                max={1}
+                value={paramsReader?.volume}
+                valueLabelDisplay="auto"
+              />
+              <Typography>Параграф</Typography>
+              <Slider
+                name="paragraf"
+                onChange={handleChangeParagraf}
+                min={0}
+                step={1}
+                max={book.length}
+                value={reader?.paragraf}
+                valueLabelDisplay="auto"
+              />
+              <Typography>Таймер в хв.</Typography>
+              <Box sx={{ display: 'flex' }}>
+                <Checkbox
+                  checked={paramsReader.timer.checked}
+                  onChange={handleChangeCheckbox}
+                  inputProps={{ 'aria-label': 'таймер' }}
                 />
-                <Typography>Тон</Typography>
-                <Slider
-                  name="pitch"
-                  onChange={handleSliderParams}
-                  min={0}
-                  max={4}
-                  value={paramsReader?.pitch}
-                  valueLabelDisplay="auto"
+                <OutlinedInput
+                  name="timer"
+                  label="Таймер"
+                  type="number"
+                  value={paramsReader?.timer.timer}
+                  disabled={!paramsReader.timer.checked}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const res = Number(event.target.value);
+                    handleParamsTimer(event, res);
+                  }}
                 />
-                <Typography>Гучність</Typography>
-                <Slider
-                  name="volume"
-                  onChange={handleSliderParams}
-                  min={0}
-                  step={0.1}
-                  max={1}
-                  value={paramsReader?.volume}
-                  valueLabelDisplay="auto"
-                />
-                <Typography>Параграф</Typography>
-                <Slider
-                  name="paragraf"
-                  onChange={handleChangeParagraf}
-                  min={0}
-                  step={1}
-                  max={book.length}
-                  value={reader.paragraf}
-                  valueLabelDisplay="auto"
-                />
-                <Typography>Таймер в хв.</Typography>
-                <Box sx={{ display: 'flex' }}>
-                  <Checkbox
-                    checked={paramsReader.timer.checked}
-                    onChange={handleChangeCheckbox}
-                    inputProps={{ 'aria-label': 'таймер' }}
-                  />
-                  <OutlinedInput
-                    name="timer"
-                    label="Таймер"
-                    type="number"
-                    value={paramsReader?.timer.timer}
-                    disabled={!paramsReader.timer.checked}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      const res = Number(event.target.value);
-                      handleParamsTimer(event, res);
-                    }}
-                  />
-                </Box>
               </Box>
             </Box>
-          }
-        </Drawer>
-      )}
+          </Box>
+        }
+      </Drawer>
     </>
   );
 };
