@@ -117,7 +117,7 @@ export const StartReader = ({
     if (!synth) {
       return;
     }
-    console.log(paragraf);
+
     handleChangeParagraf(number);
   };
   const handleChangeParagraf = (number = 0) => {
