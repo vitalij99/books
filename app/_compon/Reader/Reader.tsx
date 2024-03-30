@@ -95,7 +95,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
     if (!reader) return;
 
     if (!reader.synth.speaking) {
-      reader.speak(reader.paragraf);
+      reader.speak(reader.paragraf >= 0 ? reader.paragraf : 0);
       setIsreade({ ...isreade, read: true });
     } else if (isreade.pause) {
       reader.synth.resume();
