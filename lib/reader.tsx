@@ -11,7 +11,6 @@ interface StartReaderProps {
   srcNextPage?: string;
 }
 
-// add timeOut and initParams
 export const useStartReader = ({
   book,
   changeText,
@@ -41,12 +40,23 @@ export const useStartReader = ({
     };
 
     setSynth(firstSynth);
+
+    const storageTimer = getStorage(READER_KEY.timer);
+    const timer: {
+      timeSave: Date;
+      timer: number;
+      checked: boolean;
+    } =
+      storageTimer.length === 0
+        ? initParamsReader.timer
+        : JSON.parse(storageTimer);
+
     const storage = {
       pitch: Number(getStorage(READER_KEY.pitch)) || 2,
       rate: Number(getStorage(READER_KEY.rate)) || 2,
       voice: getStorage(READER_KEY.voice) || '',
       volume: Number(getStorage(READER_KEY.volume)) || 1,
-      timer: JSON.parse(getStorage(READER_KEY.timer)) ?? initParamsReader.timer,
+      timer,
     };
 
     setParamsReader(prev => ({ ...prev, ...storage }));
