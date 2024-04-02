@@ -138,9 +138,10 @@ export const useStartReader = ({
   };
   const handleChangeParagraf = (number = 0) => {
     synth.cancel();
-
-    setParagraf(number);
-    changeText(number);
+    if (number >= 0 && number < book.length) {
+      setParagraf(number);
+      changeText(number);
+    }
   };
 
   const handleChangeParams = ({

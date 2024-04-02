@@ -11,6 +11,7 @@ import {
   Checkbox,
   Drawer,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -20,6 +21,8 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 import debounce from 'lodash.debounce';
 
@@ -154,6 +157,13 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const handleChangeParagraf = (event: Event, value: any) => {
     reader?.handleChangeParagraf(value);
   };
+  const handleChangeParagrafNextParagraf = (nextChange = false) => {
+    if (!reader) return;
+
+    const nextParagraf = nextChange ? reader.paragraf + 1 : reader.paragraf - 1;
+
+    reader.handleChangeParagraf(nextParagraf);
+  };
 
   const handleChangeCheckbox = (
     event: ChangeEvent<HTMLInputElement>,
@@ -280,15 +290,30 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                 valueLabelDisplay="auto"
               />
               <Typography>Параграф</Typography>
-              <Slider
-                name="paragraf"
-                onChange={handleChangeParagraf}
-                min={0}
-                step={1}
-                max={book.length}
-                value={reader?.paragraf}
-                valueLabelDisplay="auto"
-              />
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <IconButton
+                  onClick={() => handleChangeParagrafNextParagraf(false)}
+                  disabled={reader && reader.paragraf <= 0}
+                >
+                  <NavigateBeforeIcon />
+                </IconButton>
+
+                <Slider
+                  name="paragraf"
+                  onChange={handleChangeParagraf}
+                  min={0}
+                  step={1}
+                  max={book.length}
+                  value={reader?.paragraf}
+                  valueLabelDisplay="auto"
+                />
+                <IconButton
+                  onClick={() => handleChangeParagrafNextParagraf(true)}
+                  disabled={reader?.paragraf === book.length}
+                >
+                  <NavigateNextIcon />
+                </IconButton>
+              </Box>
               <Typography>Таймер в хв.</Typography>
               <Box sx={{ display: 'flex' }}>
                 <Checkbox
