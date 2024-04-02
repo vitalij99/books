@@ -68,7 +68,7 @@ export const getBookLinks = async ({ book }: { book: string }) => {
     if (url) {
       linksBook.push({
         book: transformLink(url),
-        name: url.replace(link, ''),
+        name: url.replace(`${link}book/`, ''),
       });
     }
   }
