@@ -3,7 +3,7 @@ import { Box, Link, Pagination, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { useEffect, useState } from 'react';
 
-import { ListbooksLink, ListbooksProps } from '@/type/book';
+import { ListbooksLink } from '@/type/book';
 
 const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListbooksLink) => {
@@ -27,27 +27,29 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
     return <Loading />;
   }
   return (
-    <>
-      <Box padding={3}>
-        <Pagination
-          onChange={handlePagination}
-          count={Math.floor(books.length / amountBook)}
-        />
+    <Box padding={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box>
+        <Box>
+          <Pagination
+            onChange={handlePagination}
+            count={Math.floor(books.length / amountBook)}
+          />
+        </Box>
+        <Box>
+          {corectBooks.map((book, index) => (
+            <Link
+              key={index}
+              href={
+                link
+                  ? `/books/${link}/${book.book}?web=${web}`
+                  : `/books/${book.book}?web=${web}`
+              }
+            >
+              <Typography paddingTop={1}>{book.name}</Typography>
+            </Link>
+          ))}
+        </Box>
       </Box>
-      <Box width={400} padding={3}>
-        {corectBooks.map((book, index) => (
-          <Link
-            key={index}
-            href={
-              link
-                ? `/books/${link}/${book.book}?web=${web}`
-                : `/books/${book.book}?web=${web}`
-            }
-          >
-            <Typography paddingTop={1}>{book.name}</Typography>
-          </Link>
-        ))}
-      </Box>
-    </>
+    </Box>
   );
 };
