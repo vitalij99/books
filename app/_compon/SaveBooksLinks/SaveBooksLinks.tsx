@@ -25,16 +25,19 @@ const SaveBooksLinks = () => {
   return (
     <Box sx={{ paddingInline: 5 }}>
       <Typography>Збережені</Typography>
+
       {saveBooks.map((book, index) => {
+        const titleBook = book.chapter
+          ? `${book.title} Параграф: ${book.chapter}`
+          : book.title;
+
         return (
           <Box
             key={book.link + index}
             sx={{ display: 'flex', alignItems: 'center' }}
           >
             <Link href={book.link}>
-              <Typography>
-                {book.title} Параграф {book.chapter}
-              </Typography>
+              <Typography>{titleBook}</Typography>
             </Link>
             <IconButton
               onClick={() => handleDeleteBook(book.link)}
