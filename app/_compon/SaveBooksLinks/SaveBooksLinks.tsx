@@ -1,7 +1,7 @@
 'use client';
 
 import { BooksSave } from '@/type/book';
-import { Box, IconButton, Link, Typography } from '@mui/material';
+import { Box, Card, IconButton, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { setStorage } from '@/lib/getStorage';
@@ -23,31 +23,37 @@ const SaveBooksLinks = () => {
     setStorage(JSON.stringify(updatedBooks), 'savedBooks');
   };
   return (
-    <Box sx={{ paddingInline: 5 }}>
-      <Typography>Збережені</Typography>
+    <Box sx={{ padding: 5 }}>
+      <Typography variant={'h4'}>Збережені</Typography>
+      <Box sx={{ margin: '0 auto' }} width={600}>
+        {saveBooks.map((book, index) => {
+          const titleBook = book.chapter
+            ? `${book.title} Параграф: ${book.chapter}`
+            : book.title;
 
-      {saveBooks.map((book, index) => {
-        const titleBook = book.chapter
-          ? `${book.title} Параграф: ${book.chapter}`
-          : book.title;
-
-        return (
-          <Box
-            key={book.link + index}
-            sx={{ display: 'flex', alignItems: 'center' }}
-          >
-            <Link href={book.link}>
-              <Typography>{titleBook}</Typography>
-            </Link>
-            <IconButton
-              onClick={() => handleDeleteBook(book.link)}
-              aria-label="delete"
+          return (
+            <Card
+              key={book.link + index}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: 2,
+              }}
             >
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        );
-      })}
+              <Link href={book.link} underline={'none'}>
+                <Typography padding={'10px 15px'}>{titleBook}</Typography>
+              </Link>
+              <Box sx={{ flex: '1' }} />
+              <IconButton
+                onClick={() => handleDeleteBook(book.link)}
+                aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Card>
+          );
+        })}
+      </Box>
     </Box>
   );
 };
