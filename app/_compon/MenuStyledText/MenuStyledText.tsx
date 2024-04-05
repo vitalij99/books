@@ -83,7 +83,7 @@ const MenuStyledText = () => {
       <MuiColorInput
         id="mui-color-input"
         value={storageDef[AllowedKeys.TextBook]}
-        format="hex"
+        format="rgb"
         isAlphaHidden
         onChange={(value: string) => {
           handleChange(value, AllowedKeys.TextBook);
@@ -94,7 +94,7 @@ const MenuStyledText = () => {
         id="mui-color-bg"
         value={storageDef[AllowedKeys.BgColor]}
         isAlphaHidden
-        format="hex"
+        format="rgb"
         onChange={(value: string) => {
           handleChange(value, AllowedKeys.BgColor);
         }}
