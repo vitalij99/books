@@ -1,5 +1,5 @@
 'use client';
-import { getStorage, getStorageRootValue, setStorage } from '@/lib/getStorage';
+import { getStorageRootValue } from '@/lib/getStorage';
 import { AllowedKeys, STORAGE_KEY } from '@/type/book';
 import {
   Box,
@@ -8,7 +8,7 @@ import {
   OutlinedInput,
   Switch,
 } from '@mui/material';
-import { MuiColorInput } from 'mui-color-input';
+
 import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -19,6 +19,7 @@ import {
   ColorModeContext,
   TranslateContext,
 } from '../DarkTranslateProvider/DarkTranslateProvider';
+import InputColor from '../InputColor/InputColor';
 
 type StorageType = {
   [key in AllowedKeys]: string;
@@ -70,7 +71,7 @@ const MenuStyledText = () => {
 
       <InputLabel htmlFor="outlined-adornment-amount">Розмір тексту</InputLabel>
       <OutlinedInput
-        id="outlined-adornment-amount"
+        name="outlined-adornment-amount"
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="font size"
         type="number"
@@ -80,22 +81,18 @@ const MenuStyledText = () => {
         }}
       />
       <InputLabel htmlFor="mui-color-input">Колір тексту</InputLabel>
-      <MuiColorInput
-        id="mui-color-input"
+      <InputColor
+        name="mui-color-input"
         value={storageDef[AllowedKeys.TextBook]}
-        format="rgb"
-        isAlphaHidden
-        onChange={(value: string) => {
-          handleChange(value, AllowedKeys.TextBook);
+        onChange={(event: any) => {
+          handleChange(event, AllowedKeys.TextBook);
         }}
       />
       <InputLabel htmlFor="mui-color-bg">Колір фону</InputLabel>
-      <MuiColorInput
-        id="mui-color-bg"
+      <InputColor
+        name="mui-color-bg"
         value={storageDef[AllowedKeys.BgColor]}
-        isAlphaHidden
-        format="rgb"
-        onChange={(value: string) => {
+        onChange={(value: any) => {
           handleChange(value, AllowedKeys.BgColor);
         }}
       />
