@@ -6,6 +6,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Slider,
   Switch,
 } from '@mui/material';
 
@@ -96,16 +97,16 @@ const MenuStyledText = () => {
           handleChange(value, AllowedKeys.BgColor);
         }}
       />
-      <InputLabel htmlFor="pageWidth">Ширина сторінки</InputLabel>
-      <OutlinedInput
-        id="pageWidth"
-        endAdornment={<InputAdornment position="start">px</InputAdornment>}
-        label="font size"
-        type="number"
-        defaultValue={parseFloat(storageDef[AllowedKeys.BkPadding])}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handleChange(event.target.value + 'px', AllowedKeys.BkPadding);
-        }}
+      <InputLabel htmlFor="pageWidth">Ширина сторінки px</InputLabel>
+      <Slider
+        name="pageWidth"
+        min={0}
+        max={1000}
+        value={parseFloat(storageDef[AllowedKeys.BkPadding])}
+        onChange={(event, value) =>
+          handleChange(value + 'px', AllowedKeys.BkPadding)
+        }
+        valueLabelDisplay="auto"
       />
       <InputLabel htmlFor="pageWidth">Переклад</InputLabel>
       <Switch
