@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const linkGoogle =
-  'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=uk&hl=uk&dt=t&dt=bd&dj=1&source=input';
+  'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=uk&hl=uk&dt=t&dt=bd&dj=1&source=input';
 // add bind
 export const translateGoogle = async (text: string) => {
   const encodeText = encodeURI(text);
