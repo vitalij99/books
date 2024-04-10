@@ -114,7 +114,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
 
     setParamsReader(prev => {
       const timeSave = new Date();
-      timeSave.setMinutes(prev.timer.timer);
+      timeSave.setMinutes(timeSave.getMinutes() + prev.timer.timer);
 
       const newTimer = { ...prev.timer, timeSave };
 
