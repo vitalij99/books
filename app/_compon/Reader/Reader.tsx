@@ -314,6 +314,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   <NavigateNextIcon />
                 </IconButton>
               </Box>
+
               <Typography>Таймер в хв.</Typography>
               <Box sx={{ display: 'flex' }}>
                 <Checkbox
@@ -333,6 +334,15 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   }}
                 />
               </Box>
+              <Typography textAlign={'center'}>
+                Кінцевий час:
+                {new Date(
+                  new Date().getTime() + paramsReader.timer.timer * 60000
+                ).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Typography>
             </Box>
           </Box>
         }
