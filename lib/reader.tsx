@@ -1,5 +1,5 @@
 'use client';
-import { READER_KEY, initParamsReader } from '@/type/book';
+import { READER_KEY, initParamsReader } from '@/types/book';
 import { getStorage, setStorage } from './getStorage';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -172,7 +172,6 @@ export const useStartReader = ({
     if (!synth) return;
     synth.cancel();
     changeText(-1);
-    setParagraf(-1);
   };
 
   return {

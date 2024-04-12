@@ -2,7 +2,7 @@
 import { getStorage, setStorage } from '@/lib/getStorage';
 import { useStartReader } from '@/lib/reader';
 
-import { READER_KEY, initParamsReader } from '@/type/book';
+import { READER_KEY, initParamsReader } from '@/types/book';
 
 import {
   Box,
@@ -27,6 +27,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import debounce from 'lodash.debounce';
 
 import { ChangeEvent, useEffect, useState } from 'react';
+import EndTimer from '../EndTimer/EndTimer';
 
 interface StartReaderProps {
   book: string[];
@@ -327,22 +328,14 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
                   label="Таймер"
                   type="number"
                   value={paramsReader?.timer.timer}
-                  disabled={!paramsReader.timer.checked}
+                  disabled={!paramsReader.timer.checked || isreade.read}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     const res = Number(event.target.value);
                     handleParamsTimer(event, res);
                   }}
                 />
               </Box>
-              <Typography textAlign={'center'}>
-                Кінцевий час:
-                {new Date(
-                  new Date().getTime() + paramsReader.timer.timer * 60000
-                ).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Typography>
+              <EndTimer isreade={isreade} paramsReader={paramsReader} />
             </Box>
           </Box>
         }
