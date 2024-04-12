@@ -3,7 +3,7 @@ import { Box, Link, Pagination, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { useEffect, useState } from 'react';
 
-import { ListbooksLink } from '@/type/book';
+import { ListbooksLink } from '@/types/book';
 
 const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListbooksLink) => {

@@ -1,6 +1,6 @@
 'use client';
 import { getStorage, setStorage } from '@/lib/getStorage';
-import { BooksSave } from '@/type/book';
+import { BooksSave } from '@/types/book';
 import { Button, SvgIcon } from '@mui/material';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

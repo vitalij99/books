@@ -1,6 +1,6 @@
 'use client';
 import { getStorageRootValue } from '@/lib/getStorage';
-import { AllowedKeys, STORAGE_KEY } from '@/type/book';
+import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import {
   Box,
   InputAdornment,

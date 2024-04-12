@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Header from './_compon/Header/Header';
 import DarkTranslateProvider from './_compon/DarkTranslateProvider/DarkTranslateProvider';
 import { getCookies } from '@/lib/cookis';
-import { THEME } from '@/type/book';
+import { THEME } from '@/types/book';
 import { Box } from '@mui/material';
 
 export const metadata: Metadata = {

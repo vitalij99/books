@@ -1,6 +1,6 @@
 'use client';
 
-import { BooksSave } from '@/type/book';
+import { BooksSave } from '@/types/book';
 import { Box, Card, IconButton, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';

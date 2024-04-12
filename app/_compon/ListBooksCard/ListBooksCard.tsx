@@ -1,5 +1,5 @@
 'use client';
-import { ListbooksProps } from '@/type/book';
+import { ListbooksProps } from '@/types/book';
 import {
   Box,
   ImageList,

@@ -8,7 +8,7 @@ import {
   getBookLinks as getBookLinksFromNovelFire,
   getBookSearchByName as getBookSearchByNameFromNovelFire,
 } from './novelfire';
-import { ListbooksProps } from '@/type/book';
+import { ListbooksProps } from '@/types/book';
 
 const WEBSITE = {
   novelmin: 'novelmin',

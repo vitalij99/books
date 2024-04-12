@@ -1,7 +1,7 @@
 'use client';
 import { setCookies } from '@/lib/cookis';
 import { setStorage } from '@/lib/getStorage';
-import { AllowedKeys, THEME } from '@/type/book';
+import { AllowedKeys, THEME } from '@/types/book';
 import {
   CssBaseline,
   ThemeProvider,

@@ -4,7 +4,7 @@ import { getStorageRootValue } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
-import { AllowedKeys, STORAGE_KEY } from '@/type/book';
+import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Reader from '../Reader/Reader';
