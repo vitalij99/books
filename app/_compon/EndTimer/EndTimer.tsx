@@ -1,7 +1,7 @@
 'use client';
 
 import { EndTimerProps } from '@/types/book';
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 const EndTimer = ({ isreade, paramsReader }: EndTimerProps) => {
   if (!paramsReader.timer.checked) {
