@@ -33,7 +33,7 @@ const Header = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Slide appear={false} direction="down" in={!trigger}>
         <AppBar>
-          <Toolbar>
+          <Toolbar disableGutters>
             <IconButton
               size="large"
               edge="start"
