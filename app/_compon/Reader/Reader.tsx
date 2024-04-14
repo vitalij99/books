@@ -265,8 +265,8 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
               <Slider
                 name="rate"
                 onChange={handleSliderParams}
-                min={0}
-                max={4}
+                min={0.1}
+                max={2}
                 step={0.1}
                 value={paramsReader?.rate}
                 valueLabelDisplay="auto"
