@@ -25,7 +25,7 @@ const SelectReaderVoice = ({
         <FormControl>
           <InputLabel id="select-reader">Голос</InputLabel>
           <Select
-            id="select-reader"
+            name="select-reader"
             value={paramsReader.language}
             label="voice"
             onChange={handleChangeSelect}

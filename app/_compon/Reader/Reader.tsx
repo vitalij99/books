@@ -7,30 +7,22 @@ import { READER_KEY, initParamsReader } from '@/types/book';
 import {
   Box,
   Button,
-  Card,
   Checkbox,
   Drawer,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
   OutlinedInput,
-  Select,
   SelectChangeEvent,
   Slider,
-  SvgIcon,
   Typography,
 } from '@mui/material';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 import debounce from 'lodash.debounce';
 
 import { ChangeEvent, useEffect, useState } from 'react';
 import EndTimer from '../EndTimer/EndTimer';
-import ReaderIcon from './ReaderIcon';
+
 import ReaderCard from '../ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/SelectReaderVoice/SelectReaderVoice';
+import SliderParagraf from '../SliderParagraf/SliderParagraf';
 
 interface StartReaderProps {
   book: string[];
@@ -160,13 +152,6 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const handleChangeParagraf = (event: Event, value: any) => {
     reader?.handleChangeParagraf(value);
   };
-  const handleChangeParagrafNextParagraf = (nextChange = false) => {
-    if (!reader) return;
-
-    const nextParagraf = nextChange ? reader.paragraf + 1 : reader.paragraf - 1;
-
-    reader.handleChangeParagraf(nextParagraf);
-  };
 
   const handleChangeCheckbox = (
     event: ChangeEvent<HTMLInputElement>,
@@ -215,27 +200,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
             paramsReader={paramsReader}
             handleChangeSelect={handleChangeSelect}
           />
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {reader && (
-              <FormControl>
-                <InputLabel id="select-reader">Голос</InputLabel>
-                <Select
-                  id="select-reader"
-                  value={paramsReader.language}
-                  label="voice"
-                  onChange={handleChangeSelect}
-                >
-                  {reader.voices?.map((elem, index) => {
-                    return (
-                      <MenuItem key={index} value={elem.name}>
-                        {elem.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            )}
-          </Box>
+
           <Box width={250}>
             <Typography>Швидкість</Typography>
             <Slider
@@ -247,6 +212,7 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
               value={paramsReader?.rate}
               valueLabelDisplay="auto"
             />
+
             <Typography>Тон</Typography>
             <Slider
               name="pitch"
@@ -266,32 +232,11 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
               value={paramsReader?.volume}
               valueLabelDisplay="auto"
             />
-            <Typography>Параграф</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton
-                onClick={() => handleChangeParagrafNextParagraf(false)}
-                disabled={reader && reader.paragraf <= 0}
-              >
-                <NavigateBeforeIcon />
-              </IconButton>
-
-              <Slider
-                name="paragraf"
-                onChange={handleChangeParagraf}
-                min={0}
-                step={1}
-                max={book.length}
-                value={reader?.paragraf}
-                valueLabelDisplay="auto"
-              />
-              <IconButton
-                onClick={() => handleChangeParagrafNextParagraf(true)}
-                disabled={reader?.paragraf === book.length}
-              >
-                <NavigateNextIcon />
-              </IconButton>
-            </Box>
-
+            <SliderParagraf
+              reader={reader}
+              handleChangeParagraf={handleChangeParagraf}
+              maxParagraf={book.length}
+            />
             <Typography>Таймер в хв.</Typography>
             <Box sx={{ display: 'flex' }}>
               <Checkbox
