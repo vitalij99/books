@@ -7,9 +7,7 @@ import { READER_KEY, initParamsReader } from '@/types/book';
 import {
   Box,
   Button,
-  Checkbox,
   Drawer,
-  OutlinedInput,
   SelectChangeEvent,
   Slider,
   Typography,
@@ -18,7 +16,6 @@ import {
 import debounce from 'lodash.debounce';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import EndTimer from '../EndTimer/EndTimer';
 
 import ReaderCard from '../ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/SelectReaderVoice/SelectReaderVoice';
