@@ -23,6 +23,7 @@ import EndTimer from '../EndTimer/EndTimer';
 import ReaderCard from '../ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/SelectReaderVoice/SelectReaderVoice';
 import SliderParagraf from '../SliderParagraf/SliderParagraf';
+import Timer from '../Timer/Timer';
 
 interface StartReaderProps {
   book: string[];
@@ -237,26 +238,12 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
               handleChangeParagraf={handleChangeParagraf}
               maxParagraf={book.length}
             />
-            <Typography>Таймер в хв.</Typography>
-            <Box sx={{ display: 'flex' }}>
-              <Checkbox
-                checked={paramsReader.timer.checked}
-                onChange={handleChangeCheckbox}
-                inputProps={{ 'aria-label': 'таймер' }}
-              />
-              <OutlinedInput
-                name="timer"
-                label="Таймер"
-                type="number"
-                value={paramsReader?.timer.timer}
-                disabled={!paramsReader.timer.checked || isreade.read}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  const res = Number(event.target.value);
-                  handleParamsTimer(event, res);
-                }}
-              />
-            </Box>
-            <EndTimer isreade={isreade} paramsReader={paramsReader} />
+            <Timer
+              paramsReader={paramsReader}
+              handleChangeCheckbox={handleChangeCheckbox}
+              isreade={isreade}
+              handleParamsTimer={handleParamsTimer}
+            />
           </Box>
         </Box>
       </Drawer>
