@@ -5,6 +5,7 @@ import {
   FormControl,
   Link,
   TextField,
+  ThemeProvider,
   Typography,
   createTheme,
 } from '@mui/material';
@@ -12,6 +13,12 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useState } from 'react';
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 const Search = () => {
   const searchParams = useSearchParams();
@@ -33,34 +40,36 @@ const Search = () => {
     router.push(`/search?search=${search}`);
   };
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Link
-        href={`/search?search=${search}`}
-        sx={{ my: 2, p: 2, color: 'white', display: 'block' }}
-      >
-        <Typography>Пошук</Typography>
-      </Link>
-      <>
-        <form
-          onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
-            handleSubmit(event);
-          }}
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Link
+          href={`/search?search=${search}`}
+          sx={{ my: 2, p: 2, color: 'white', display: 'block' }}
         >
-          <FormControl>
-            <TextField
-              name="search"
-              label="Поле введення"
-              type="search"
-              variant="filled"
-              value={search}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                handleSearchChange(event.target.value);
-              }}
-            />
-          </FormControl>
-        </form>
-      </>
-    </Box>
+          <Typography>Пошук</Typography>
+        </Link>
+        <>
+          <form
+            onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
+              handleSubmit(event);
+            }}
+          >
+            <FormControl>
+              <TextField
+                name="search"
+                label="Поле введення"
+                type="search"
+                variant="filled"
+                value={search}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  handleSearchChange(event.target.value);
+                }}
+              />
+            </FormControl>
+          </form>
+        </>
+      </Box>
+    </ThemeProvider>
   );
 };
 
