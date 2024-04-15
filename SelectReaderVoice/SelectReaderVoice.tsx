@@ -1,0 +1,47 @@
+import { InitParamsReader, Reader } from '@/types/book';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
+
+interface SelectReaderVoiceProps {
+  reader?: Reader;
+  paramsReader: InitParamsReader;
+  handleChangeSelect: (event: SelectChangeEvent) => void;
+}
+
+const SelectReaderVoice = ({
+  reader,
+  paramsReader,
+  handleChangeSelect,
+}: SelectReaderVoiceProps) => {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      {reader && (
+        <FormControl>
+          <InputLabel id="select-reader">Голос</InputLabel>
+          <Select
+            id="select-reader"
+            value={paramsReader.language}
+            label="voice"
+            onChange={handleChangeSelect}
+          >
+            {reader.voices?.map((elem, index) => {
+              return (
+                <MenuItem key={index} value={elem.name}>
+                  {elem.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      )}
+    </Box>
+  );
+};
+
+export default SelectReaderVoice;

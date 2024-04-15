@@ -28,6 +28,9 @@ import debounce from 'lodash.debounce';
 
 import { ChangeEvent, useEffect, useState } from 'react';
 import EndTimer from '../EndTimer/EndTimer';
+import ReaderIcon from './ReaderIcon';
+import ReaderCard from '../ReaderCard/ReaderCard';
+import SelectReaderVoice from '@/SelectReaderVoice/SelectReaderVoice';
 
 interface StartReaderProps {
   book: string[];
@@ -35,7 +38,6 @@ interface StartReaderProps {
   srcNextPage?: string;
 }
 
-// add to timer
 const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
@@ -179,192 +181,142 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
 
   return (
     <>
-      <Card sx={{ padding: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button onClick={toggleDrawer(true)}>
-            <ReaderIcon />
+      <ReaderCard
+        toggleDrawer={toggleDrawer}
+        reader={reader}
+        isreade={isreade}
+        handleReadeCancel={handleReadeCancel}
+        handleChangeParagraf={handleChangeParagraf}
+        handleReade={handleReade}
+        maxParagraf={book.length}
+      />
+      <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{
+            p: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 5,
+          }}
+        >
+          <Button onClick={handleReade}>
+            <Typography>
+              {!isreade.read ? 'Старт' : isreade.pause ? 'Продовжити' : 'Пауза'}
+            </Typography>
           </Button>
-        </Box>
 
-        {reader && isreade.read && (
-          <Box>
-            <Button onClick={handleReade}>
-              <Typography>
-                {!isreade.read
-                  ? 'Старт'
-                  : isreade.pause
-                  ? 'Продовжити'
-                  : 'Пауза'}
-              </Typography>
-            </Button>
+          {isreade.read && (
             <Button onClick={handleReadeCancel}>
               <Typography>Стоп</Typography>
             </Button>
-            <Typography>Параграф</Typography>
+          )}
+          <SelectReaderVoice
+            reader={reader}
+            paramsReader={paramsReader}
+            handleChangeSelect={handleChangeSelect}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {reader && (
+              <FormControl>
+                <InputLabel id="select-reader">Голос</InputLabel>
+                <Select
+                  id="select-reader"
+                  value={paramsReader.language}
+                  label="voice"
+                  onChange={handleChangeSelect}
+                >
+                  {reader.voices?.map((elem, index) => {
+                    return (
+                      <MenuItem key={index} value={elem.name}>
+                        {elem.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            )}
+          </Box>
+          <Box width={250}>
+            <Typography>Швидкість</Typography>
             <Slider
-              name="paragraf"
-              onChange={handleChangeParagraf}
-              min={0}
-              step={1}
-              max={book.length}
-              value={reader?.paragraf}
+              name="rate"
+              onChange={handleSliderParams}
+              min={0.1}
+              max={2}
+              step={0.1}
+              value={paramsReader?.rate}
               valueLabelDisplay="auto"
             />
-          </Box>
-        )}
-      </Card>
-
-      <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
-        {
-          <Box
-            sx={{
-              p: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 5,
-            }}
-          >
-            <Button onClick={handleReade}>
-              <Typography>
-                {!isreade.read
-                  ? 'Старт'
-                  : isreade.pause
-                  ? 'Продовжити'
-                  : 'Пауза'}
-              </Typography>
-            </Button>
-
-            {isreade.read && (
-              <Button onClick={handleReadeCancel}>
-                <Typography>Стоп</Typography>
-              </Button>
-            )}
+            <Typography>Тон</Typography>
+            <Slider
+              name="pitch"
+              onChange={handleSliderParams}
+              min={0}
+              max={4}
+              value={paramsReader?.pitch}
+              valueLabelDisplay="auto"
+            />
+            <Typography>Гучність</Typography>
+            <Slider
+              name="volume"
+              onChange={handleSliderParams}
+              min={0}
+              step={0.1}
+              max={1}
+              value={paramsReader?.volume}
+              valueLabelDisplay="auto"
+            />
+            <Typography>Параграф</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {reader && (
-                <FormControl>
-                  <InputLabel id="select-reader">Голос</InputLabel>
-                  <Select
-                    id="select-reader"
-                    value={paramsReader.language}
-                    label="voice"
-                    onChange={handleChangeSelect}
-                  >
-                    {reader.voices?.map((elem, index) => {
-                      return (
-                        <MenuItem key={index} value={elem.name}>
-                          {elem.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              )}
-            </Box>
-            <Box width={250}>
-              <Typography>Швидкість</Typography>
-              <Slider
-                name="rate"
-                onChange={handleSliderParams}
-                min={0.1}
-                max={2}
-                step={0.1}
-                value={paramsReader?.rate}
-                valueLabelDisplay="auto"
-              />
-              <Typography>Тон</Typography>
-              <Slider
-                name="pitch"
-                onChange={handleSliderParams}
-                min={0}
-                max={4}
-                value={paramsReader?.pitch}
-                valueLabelDisplay="auto"
-              />
-              <Typography>Гучність</Typography>
-              <Slider
-                name="volume"
-                onChange={handleSliderParams}
-                min={0}
-                step={0.1}
-                max={1}
-                value={paramsReader?.volume}
-                valueLabelDisplay="auto"
-              />
-              <Typography>Параграф</Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <IconButton
-                  onClick={() => handleChangeParagrafNextParagraf(false)}
-                  disabled={reader && reader.paragraf <= 0}
-                >
-                  <NavigateBeforeIcon />
-                </IconButton>
+              <IconButton
+                onClick={() => handleChangeParagrafNextParagraf(false)}
+                disabled={reader && reader.paragraf <= 0}
+              >
+                <NavigateBeforeIcon />
+              </IconButton>
 
-                <Slider
-                  name="paragraf"
-                  onChange={handleChangeParagraf}
-                  min={0}
-                  step={1}
-                  max={book.length}
-                  value={reader?.paragraf}
-                  valueLabelDisplay="auto"
-                />
-                <IconButton
-                  onClick={() => handleChangeParagrafNextParagraf(true)}
-                  disabled={reader?.paragraf === book.length}
-                >
-                  <NavigateNextIcon />
-                </IconButton>
-              </Box>
-
-              <Typography>Таймер в хв.</Typography>
-              <Box sx={{ display: 'flex' }}>
-                <Checkbox
-                  checked={paramsReader.timer.checked}
-                  onChange={handleChangeCheckbox}
-                  inputProps={{ 'aria-label': 'таймер' }}
-                />
-                <OutlinedInput
-                  name="timer"
-                  label="Таймер"
-                  type="number"
-                  value={paramsReader?.timer.timer}
-                  disabled={!paramsReader.timer.checked || isreade.read}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    const res = Number(event.target.value);
-                    handleParamsTimer(event, res);
-                  }}
-                />
-              </Box>
-              <EndTimer isreade={isreade} paramsReader={paramsReader} />
+              <Slider
+                name="paragraf"
+                onChange={handleChangeParagraf}
+                min={0}
+                step={1}
+                max={book.length}
+                value={reader?.paragraf}
+                valueLabelDisplay="auto"
+              />
+              <IconButton
+                onClick={() => handleChangeParagrafNextParagraf(true)}
+                disabled={reader?.paragraf === book.length}
+              >
+                <NavigateNextIcon />
+              </IconButton>
             </Box>
+
+            <Typography>Таймер в хв.</Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Checkbox
+                checked={paramsReader.timer.checked}
+                onChange={handleChangeCheckbox}
+                inputProps={{ 'aria-label': 'таймер' }}
+              />
+              <OutlinedInput
+                name="timer"
+                label="Таймер"
+                type="number"
+                value={paramsReader?.timer.timer}
+                disabled={!paramsReader.timer.checked || isreade.read}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  const res = Number(event.target.value);
+                  handleParamsTimer(event, res);
+                }}
+              />
+            </Box>
+            <EndTimer isreade={isreade} paramsReader={paramsReader} />
           </Box>
-        }
+        </Box>
       </Drawer>
     </>
   );
 };
 
 export default Reader;
-const ReaderIcon = () => {
-  return (
-    <SvgIcon>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 64 64"
-        strokeWidth={1.5}
-        stroke="var(--bg-color-menu)"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M46.0136986,31.1054993L25.1973,20.6973c-0.3096008-0.1532993-0.6777992-0.1387005-0.9727001,0.0438995 C23.9297009,20.9237995,23.75,21.2451,23.75,21.5918007v20.8163986c0,0.3467026,0.1797009,0.6679993,0.4745998,0.8506012 C24.3848,43.3583984,24.5674,43.4081993,24.75,43.4081993c0.1532993,0,0.3057003-0.035099,0.4473-0.1054001l20.8163986-10.4081993 c0.3388023-0.1699982,0.5527-0.5157013,0.5527-0.8945999C46.5663986,31.6210995,46.3525009,31.2754002,46.0136986,31.1054993z M25.75,40.7901001v-17.580101L43.330101,32L25.75,40.7901001z"
-        />
-        <path
-          xmlns="http://www.w3.org/2000/svg"
-          d="M32,0C14.3268995,0,0,14.3268995,0,32s14.3268995,32,32,32s32-14.3269005,32-32S49.6730995,0,32,0z M32,62 C15.4579,62,2,48.542099,2,32C2,15.4580002,15.4579,2,32,2c16.5419998,0,30,13.4580002,30,30C62,48.542099,48.5419998,62,32,62z"
-        />
-      </svg>
-    </SvgIcon>
-  );
-};

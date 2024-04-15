@@ -79,3 +79,21 @@ export interface EndTimerProps {
   isreade: Isreade;
   paramsReader: InitParamsReader;
 }
+export interface Reader {
+  synth: SpeechSynthesis;
+  speak: (number?: number) => void;
+  voices: SpeechSynthesisVoice[];
+  paragraf: number;
+  handleCancel: () => void;
+  handleChangeParagraf: (number?: number) => void;
+  handleChangeVoice: (name: string) => void;
+  handleChangeParams: ({
+    rate,
+    pitch,
+    volume,
+  }: {
+    rate?: number;
+    pitch?: number;
+    volume?: number;
+  }) => void;
+}
