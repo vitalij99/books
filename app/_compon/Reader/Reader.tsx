@@ -7,6 +7,7 @@ import { READER_KEY, initParamsReader } from '@/types/book';
 import {
   Box,
   Button,
+  Checkbox,
   Drawer,
   SelectChangeEvent,
   Slider,
@@ -26,9 +27,18 @@ interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
   srcNextPage?: string;
+  autoScroll: {
+    handleAutoScroll: () => void;
+    isAutoScroll: boolean;
+  };
 }
 
-const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
+const Reader = ({
+  book,
+  changeText,
+  srcNextPage,
+  autoScroll,
+}: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
@@ -240,6 +250,11 @@ const Reader = ({ book, changeText, srcNextPage }: StartReaderProps) => {
               handleChangeCheckbox={handleChangeCheckbox}
               isreade={isreade}
               handleParamsTimer={handleParamsTimer}
+            />
+            <Typography>Ауто скрол за текстом</Typography>
+            <Checkbox
+              checked={autoScroll.isAutoScroll}
+              onChange={autoScroll.handleAutoScroll}
             />
           </Box>
         </Box>

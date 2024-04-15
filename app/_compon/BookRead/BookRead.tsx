@@ -1,6 +1,6 @@
 'use client';
 
-import { getStorageRootValue } from '@/lib/getStorage';
+import { getStorage, getStorageRootValue, setStorage } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
@@ -21,9 +21,12 @@ interface BookProps {
   };
 }
 
+const IS_AUTO_SCROLL = 'isAutoScroll';
+
 const BookRead = ({ data }: { data: BookProps }) => {
   const [textBook, setTextBook] = useState(data.book);
   const [textIsRead, setTextIsRead] = useState(-1);
+  const [isAutoScroll, setisAutoScroll] = useState(false);
 
   const translate = useContext(TranslateContext);
 
@@ -35,6 +38,12 @@ const BookRead = ({ data }: { data: BookProps }) => {
           setRootValue(STORAGE_KEY[index], value);
         }
       });
+    }
+
+    const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
+
+    if (storageAutoScroll === 'true') {
+      setisAutoScroll(true);
     }
   }, []);
 
@@ -59,12 +68,32 @@ const BookRead = ({ data }: { data: BookProps }) => {
     } else setTextBook(data.book);
   }, [data.book, translate]);
 
+  // autoScroll
+  useEffect(() => {
+    if (!isAutoScroll) return;
+
+    const paragraf = document.getElementsByClassName(IS_AUTO_SCROLL);
+
+    paragraf[0]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  }, [isAutoScroll, textIsRead]);
+
   if (!data) {
     return <div>Error</div>;
   }
 
   const changeTextRead = (textReadeIndex: number) => {
     setTextIsRead(textReadeIndex);
+  };
+
+  const handleAutoScroll = () => {
+    setisAutoScroll(prev => {
+      setStorage(!prev, IS_AUTO_SCROLL);
+
+      return !prev;
+    });
   };
 
   return (
@@ -78,6 +107,7 @@ const BookRead = ({ data }: { data: BookProps }) => {
         <Reader
           book={textBook}
           changeText={changeTextRead}
+          autoScroll={{ handleAutoScroll, isAutoScroll }}
           srcNextPage={data.nav.nextPage}
         />
       </Box>
@@ -91,6 +121,7 @@ const BookRead = ({ data }: { data: BookProps }) => {
               fontSize: 'var(--font-size)',
               bgcolor: sxStyled ? '#FFFF00' : undefined,
             }}
+            className={sxStyled ? IS_AUTO_SCROLL : ' '}
             key={index}
           >
             {text}
