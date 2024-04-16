@@ -1,5 +1,5 @@
 'use client';
-import { getStorageRootValue } from '@/lib/getStorage';
+import { getStorageRootValue, setPropertyStyle } from '@/lib/getStorage';
 import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import {
   Box,
@@ -15,7 +15,6 @@ import IconButton from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-import debounce from 'lodash.debounce';
 import {
   ColorModeContext,
   TranslateContext,
@@ -42,7 +41,7 @@ const MenuStyledText = () => {
 
   const handleChange = (value: string, key: AllowedKeys) => {
     setStorageDef(prev => ({ ...prev, [key]: value }));
-    debouncedHandleChange(value, key);
+    setPropertyStyle(value, key);
   };
 
   return (
@@ -116,8 +115,5 @@ const MenuStyledText = () => {
     </Box>
   );
 };
-const debouncedHandleChange = debounce((value: string, key: AllowedKeys) => {
-  localStorage.setItem(key, value);
-  document.documentElement.style.setProperty(key, value);
-}, 500);
+
 export default MenuStyledText;
