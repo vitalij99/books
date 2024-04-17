@@ -2,8 +2,6 @@
 import { getStorage, setStorage } from '@/lib/getStorage';
 import { useStartReader } from '@/lib/reader';
 
-import { READER_KEY, initParamsReader } from '@/types/book';
-
 import {
   Box,
   Button,
@@ -22,16 +20,7 @@ import ReaderCard from '../ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/SelectReaderVoice/SelectReaderVoice';
 import SliderParagraf from '../SliderParagraf/SliderParagraf';
 import Timer from '../Timer/Timer';
-
-interface StartReaderProps {
-  book: string[];
-  changeText: (number: number) => void;
-  srcNextPage?: string;
-  autoScroll: {
-    handleAutoScroll: () => void;
-    isAutoScroll: boolean;
-  };
-}
+import { READER_KEY, StartReaderProps, initParamsReader } from '@/types/reader';
 
 const Reader = ({
   book,

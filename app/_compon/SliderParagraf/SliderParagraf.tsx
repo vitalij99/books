@@ -1,12 +1,12 @@
 import { Box, IconButton, Slider, Typography } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import { Reader } from '@/types/book';
+import { ReaderProps } from '@/types/reader';
 
 interface SliderParagrafProps {
   maxParagraf: number;
   handleChangeParagraf: (event: Event, value: any) => void;
-  reader?: Reader;
+  reader?: ReaderProps;
 }
 
 const SliderParagraf = ({

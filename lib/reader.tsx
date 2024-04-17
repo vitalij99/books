@@ -1,8 +1,9 @@
 'use client';
-import { READER_KEY, initParamsReader } from '@/types/book';
+
 import { getStorage, setStorage } from './getStorage';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { READER_KEY, initParamsReader } from '@/types/reader';
 
 interface StartReaderProps {
   book: string[];

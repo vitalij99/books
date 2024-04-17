@@ -1,6 +1,6 @@
 'use client';
 
-import { EndTimerProps } from '@/types/book';
+import { EndTimerProps } from '@/types/endTimer';
 import { Box, Typography } from '@mui/material';
 
 const EndTimer = ({ isreade, paramsReader }: EndTimerProps) => {

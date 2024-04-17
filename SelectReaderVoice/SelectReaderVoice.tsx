@@ -1,4 +1,4 @@
-import { InitParamsReader, Reader } from '@/types/book';
+import { InitParamsReader, ReaderProps } from '@/types/reader';
 import {
   Box,
   FormControl,
@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 
 interface SelectReaderVoiceProps {
-  reader?: Reader;
+  reader?: ReaderProps;
   paramsReader: InitParamsReader;
   handleChangeSelect: (event: SelectChangeEvent) => void;
 }
