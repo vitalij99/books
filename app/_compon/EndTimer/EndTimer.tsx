@@ -10,7 +10,7 @@ const EndTimer = ({ isreade, paramsReader }: EndTimerProps) => {
   return (
     <Typography textAlign={'center'}>
       Кінцевий час:
-      <Box component="span" color={'red'}>
+      <Box component="span" color={'green'}>
         {isreade.read
           ? new Date(paramsReader.timer.timeSave).toLocaleTimeString([], {
               hour: '2-digit',
