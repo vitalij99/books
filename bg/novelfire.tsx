@@ -44,6 +44,48 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
   }
 };
 
+export const getBookPopular = async () => {
+  // https://novelfire.net/monthly-rank
+  try {
+    const linkSearch = `${link}monthly-rank`;
+
+    const { data } = await axios.get(linkSearch);
+
+    const result = transformInHtml({
+      html: data,
+      elem: '.novel-item',
+    });
+
+    if (!result) throw new Error();
+
+    const links = result.map(item => item.querySelector('a'));
+
+    const linkInfoArray: {
+      name: string;
+      book: string;
+      img: string;
+    }[] = [];
+
+    links.forEach(link => {
+      if (link !== null) {
+        const name = link.getAttribute('title') || '';
+        const href = link.getAttribute('href') || '';
+        const book = href.replace(`https://novelfire.net/book/`, '');
+        const image = link.querySelector('img');
+
+        const img = image?.getAttribute('data-src') || '';
+
+        linkInfoArray.push({ name, book, img });
+      }
+    });
+
+    return { books: linkInfoArray, web: 'novelfire' };
+  } catch (error) {
+    console.log(error);
+    return { books: [], web: 'novelfire' };
+  }
+};
+
 export const getBookLinks = async ({ book }: { book: string }) => {
   const linkBook = `${link}book/${book}/chapters`;
 

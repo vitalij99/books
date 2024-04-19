@@ -7,6 +7,7 @@ import {
   getBookFromLink as getBookFromLinkFromNovelFire,
   getBookLinks as getBookLinksFromNovelFire,
   getBookSearchByName as getBookSearchByNameFromNovelFire,
+  getBookPopular as getBookPopularFromNovelFire,
 } from './novelfire';
 import { ListbooksProps } from '@/types/book';
 
@@ -27,6 +28,20 @@ export const getBookSearchByNameAll = async ({
     const novelfire = await getBookSearchByNameFromNovelFire({ name });
 
     result.push(novelmin);
+    result.push(novelfire);
+
+    return result;
+  } catch (error) {
+    return [{ books: [], web: 'novelfire' }];
+  }
+};
+
+export const getBooksPopularAll = async () => {
+  try {
+    const result: ListbooksProps[] = [];
+
+    const novelfire = await getBookPopularFromNovelFire();
+
     result.push(novelfire);
 
     return result;
