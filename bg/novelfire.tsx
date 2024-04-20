@@ -66,6 +66,7 @@ export const getBookPopular = async () => {
       img: string;
     }[] = [];
 
+    // popular have data-src
     links.forEach(link => {
       if (link !== null) {
         const name = link.getAttribute('title') || '';
