@@ -17,23 +17,33 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
       {books.length > 0 ? (
         <ImageList
           sx={{
-            gridAutoFlow: 'column',
+            gridAutoFlow: 'column', // Змінити вирівнювання на рядок
             gridTemplateColumns:
-              'repeat(auto-fill,minmax(160px,1fr)) !important',
+              'repeat(auto-fill, minmax(160px, 1fr)) !important',
             gridAutoColumns: 'minmax(160px, 1fr)',
+            overflow: 'auto',
           }}
         >
           {books.map((book, index) => (
-            <Box key={index} sx={{ display: 'inline-block', p: 2 }}>
+            <Box
+              key={index}
+              sx={{
+                display: 'inline-block',
+                p: 2,
+              }}
+            >
               <Link href={`/books/${book.book}?web=${web}`}>
                 <ImageListItem>
-                  <Image
-                    src={book.img}
-                    width={150}
-                    height={200}
-                    alt={book.name}
-                  />
-                  <ImageListItemBar title={book.name} subtitle={book.name} />
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '150px',
+                      height: '180px',
+                    }}
+                  >
+                    <Image src={book.img} fill alt={book.name} />
+                    <ImageListItemBar title={book.name} subtitle={book.name} />
+                  </Box>
                 </ImageListItem>
               </Link>
             </Box>
