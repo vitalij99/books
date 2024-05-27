@@ -17,10 +17,9 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
       {books.length > 0 ? (
         <ImageList
           sx={{
-            gridAutoFlow: 'column', // Змінити вирівнювання на рядок
-            gridTemplateColumns:
-              'repeat(auto-fill, minmax(160px, 1fr)) !important',
-            gridAutoColumns: 'minmax(160px, 1fr)',
+            gridAutoFlow: 'column',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
+            gridAutoColumns: 'minmax(200px)',
             overflow: 'auto',
           }}
         >
@@ -37,11 +36,11 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                   <Box
                     sx={{
                       position: 'relative',
-                      width: '150px',
-                      height: '180px',
+                      width: '200px',
+                      height: '250px',
                     }}
                   >
-                    <Image src={book.img} fill alt={book.name} />
+                    <Image src={book.img} fill sizes="300px" alt={book.name} />
                     <ImageListItemBar title={book.name} subtitle={book.name} />
                   </Box>
                 </ImageListItem>
