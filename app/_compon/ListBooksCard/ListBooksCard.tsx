@@ -40,7 +40,13 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                       height: '250px',
                     }}
                   >
-                    <Image src={book.img} fill sizes="300px" alt={book.name} />
+                    <Image
+                      priority={index < 4 ? true : false}
+                      src={book.img}
+                      fill
+                      sizes="300px"
+                      alt={book.name}
+                    />
                     <ImageListItemBar title={book.name} subtitle={book.name} />
                   </Box>
                 </ImageListItem>
