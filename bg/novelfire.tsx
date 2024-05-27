@@ -27,7 +27,8 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
 
     links.forEach(link => {
       if (link !== null) {
-        const name = link.getAttribute('title') || '';
+        const nameSelector = link.querySelector('.novel-title');
+        const name = nameSelector?.textContent || '';
         const href = link.getAttribute('href') || '';
         const book = href.replace(`https://novelfire.net/book/`, '');
         const image = link.querySelector('img');

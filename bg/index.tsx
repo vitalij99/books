@@ -12,7 +12,6 @@ import {
 import { ListbooksProps } from '@/types/book';
 
 const WEBSITE = {
-  novelmin: 'novelmin',
   novelfire: 'novelfire',
 };
 
@@ -57,9 +56,7 @@ export const getBookLinksAll = async ({
   book: string;
   web: string;
 }) => {
-  if (web === WEBSITE.novelmin) {
-    return await getBookLinksFromNovelMin({ book });
-  } else if (web === WEBSITE.novelfire) {
+  if (web === WEBSITE.novelfire) {
     return await getBookLinksFromNovelFire({ book });
   }
 };
@@ -72,9 +69,7 @@ export const getBookFromLinkAll = async ({
   chapter: string;
   web: string;
 }) => {
-  if (web === WEBSITE.novelmin) {
-    return await getBookFromLinkFromNovelMin({ book, chapter });
-  } else if (web === WEBSITE.novelfire) {
+  if (web === WEBSITE.novelfire) {
     return await getBookFromLinkFromNovelFire({ book, chapter });
   }
 };
