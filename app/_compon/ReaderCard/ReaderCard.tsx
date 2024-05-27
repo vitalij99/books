@@ -1,6 +1,7 @@
 import { Box, Button, Card, Slider, Typography } from '@mui/material';
 import React from 'react';
-import ReaderIcon from '../Reader/ReaderIcon';
+
+import Image from 'next/image';
 
 interface ReaderCardProps {
   toggleDrawer: (
@@ -31,7 +32,12 @@ const ReaderCard = ({
     <Card sx={{ padding: 1 }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button onClick={toggleDrawer(true)}>
-          <ReaderIcon />
+          <Image
+            src="/reader.svg"
+            width={40}
+            height={40}
+            alt="синтез мовлення"
+          />
         </Button>
       </Box>
 

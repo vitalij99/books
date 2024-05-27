@@ -1,7 +1,8 @@
 'use client';
 import { getStorage, setStorage } from '@/lib/getStorage';
 import { BooksSave } from '@/types/book';
-import { Button, SvgIcon } from '@mui/material';
+import { Button } from '@mui/material';
+import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -58,50 +59,17 @@ const SaveBook = () => {
   }
   return (
     <Button onClick={handleSaveBook}>
-      <SaveBookSvg isSave={isAdded} />
+      <Image
+        src={isAdded ? '/save-book.svg' : '/save-book-add.svg'}
+        alt="зберегти книжку"
+        width={24}
+        height={24}
+      />
     </Button>
   );
 };
 
 export default SaveBook;
-
-const SaveBookSvg = ({ isSave = false }) => {
-  if (isSave) {
-    return (
-      <SvgIcon>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          width="100"
-          height="100"
-          viewBox="0 0 30 30"
-        >
-          <path d="M23,27l-8-7l-8,7V5c0-1.105,0.895-2,2-2h12c1.105,0,2,0.895,2,2V27z"></path>
-        </svg>
-      </SvgIcon>
-    );
-  }
-
-  return (
-    <SvgIcon>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="100"
-        height="100"
-        viewBox="0 0 50 50"
-        fill="none"
-        stroke="#fff"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M 13 2 A 1.0001 1.0001 0 0 0 12 3 L 12 47 A 1.0001 1.0001 0 0 0 13.503906 47.863281 L 25 41.158203 L 36.496094 47.863281 A 1.0001 1.0001 0 0 0 38 47 L 38 3 A 1.0001 1.0001 0 0 0 37 2 L 13 2 z M 14 4 L 36 4 L 36 45.259766 L 25.503906 39.136719 A 1.0001 1.0001 0 0 0 24.496094 39.136719 L 14 45.259766 L 14 4 z"
-        ></path>
-      </svg>
-    </SvgIcon>
-  );
-};
 
 const findSaveBook = (saveBooks: BooksSave[], pathnameBook: string[]) => {
   return saveBooks.find(book => {
