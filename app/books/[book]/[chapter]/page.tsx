@@ -1,7 +1,7 @@
 import BookRead from '@/app/_compon/BookRead/BookRead';
 
 import Loading from '@/app/_compon/Loading/Loading';
-import { getBookFromLinkAll } from '@/bg';
+import { getBookFromLinkAll } from '@/db';
 
 const page = async ({
   params,

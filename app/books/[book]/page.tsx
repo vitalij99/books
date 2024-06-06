@@ -1,5 +1,5 @@
 import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
-import { getBookLinksAll } from '@/bg';
+import { getBookLinksAll } from '@/db';
 
 const page = async ({
   params,
