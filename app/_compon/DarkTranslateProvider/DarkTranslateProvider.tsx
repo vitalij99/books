@@ -77,7 +77,7 @@ const DarkTranslateProvider = ({
           <CssBaseline />
           {children}
         </ThemeProvider>
-      </TranslateContext.Provider>{' '}
+      </TranslateContext.Provider>
     </ColorModeContext.Provider>
   );
 };

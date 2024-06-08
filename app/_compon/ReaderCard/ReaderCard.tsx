@@ -1,7 +1,7 @@
-import { Box, Button, Card, Slider, Typography } from '@mui/material';
+import { Box, Button, Card, Slider, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
 
-import Image from 'next/image';
+import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
 
 interface ReaderCardProps {
   toggleDrawer: (
@@ -30,14 +30,15 @@ const ReaderCard = ({
 }: ReaderCardProps) => {
   return (
     <Card sx={{ padding: 1 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button onClick={toggleDrawer(true)}>
-          <Image
-            src="/reader.svg"
-            width={40}
-            height={40}
-            alt="синтез мовлення"
-          />
+      <Box
+        sx={{
+          display: 'flex',
+          borderRadius: '10px',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Button sx={{ p: 1 }} onClick={toggleDrawer(true)}>
+          <PlayCircleFilledWhiteOutlinedIcon sx={{ width: 45, height: 45 }} />
         </Button>
       </Box>
 

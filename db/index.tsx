@@ -1,9 +1,4 @@
 import {
-  getBookFromLink as getBookFromLinkFromNovelMin,
-  getBookLinks as getBookLinksFromNovelMin,
-  getBookSearchByName as getBookSearchByNameFromNovelMin,
-} from './novelmin';
-import {
   getBookFromLink as getBookFromLinkFromNovelFire,
   getBookLinks as getBookLinksFromNovelFire,
   getBookSearchByName as getBookSearchByNameFromNovelFire,
@@ -23,10 +18,8 @@ export const getBookSearchByNameAll = async ({
   try {
     const result: ListbooksProps[] = [];
 
-    const novelmin = await getBookSearchByNameFromNovelMin({ name });
     const novelfire = await getBookSearchByNameFromNovelFire({ name });
 
-    result.push(novelmin);
     result.push(novelfire);
 
     return result;
