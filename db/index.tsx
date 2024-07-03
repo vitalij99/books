@@ -10,8 +10,6 @@ const WEBSITE = {
   novelfire: 'novelfire',
 };
 
-// TODO add https://ranobehub.org/
-
 export const getBookSearchByNameAll = async ({
   name = '',
 }: {
