@@ -6,10 +6,11 @@ import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import { Box, Typography } from '@mui/material';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Reader from '../Reader/Reader';
-import { TranslateContext } from '../DarkTranslateProvider/DarkTranslateProvider';
+
 import NavigationPages from '../NavigationPages/NavigationPages';
+import { TranslateContext } from '../DarkTranslateProvider/TranslateProvider';
 
 interface BookProps {
   book: string[];
@@ -39,7 +40,7 @@ const BookRead = ({ data }: { data: BookProps }) => {
         }
       });
     }
-
+    console.log('f');
     const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
 
     if (storageAutoScroll === 'true') {
@@ -47,7 +48,7 @@ const BookRead = ({ data }: { data: BookProps }) => {
     }
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
     async function getTranslate(bookTranslate: string | any[]) {
       const allTextBook: string[] = [];
 
@@ -62,11 +63,15 @@ const BookRead = ({ data }: { data: BookProps }) => {
 
       setTextBook(allTextBook);
     }
-
+    console.log('hs');
     if (translate.translate) {
       getTranslate(data.book);
     } else setTextBook(data.book);
-  }, [data.book, translate]);
+  }, [data.book, translate.translate]);
+
+  useEffect(() => {
+    console.log('data.book');
+  }, [data.book]);
 
   // autoScroll
   useEffect(() => {
