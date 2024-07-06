@@ -41,7 +41,7 @@ const BookRead = ({
   searchParams: { [key: string]: string | '' };
 }) => {
   const [data, setData] = useState<BookProps>(initBook);
-  const [textBook, setTextBook] = useState<string[] | null>(null);
+  const [textBook, setTextBook] = useState(['loading']);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
 
@@ -86,7 +86,7 @@ const BookRead = ({
         const element = bookTranslate[index];
         const result = await translateGoogle(element);
         allTextBook.push(...result);
-        if (index % 10 === 0) {
+        if (index % 20 === 0) {
           setTextBook(allTextBook);
         }
       }

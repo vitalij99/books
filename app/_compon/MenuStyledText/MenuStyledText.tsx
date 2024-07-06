@@ -94,14 +94,14 @@ const MenuStyledText = () => {
           handleChange(value, AllowedKeys.BgColor);
         }}
       />
-      <InputLabel htmlFor="pageWidth">Ширина сторінки px</InputLabel>
+      <InputLabel htmlFor="pageWidth">Ширина сторінки %</InputLabel>
       <Slider
         name="pageWidth"
         min={0}
-        max={1000}
+        max={30}
         value={parseFloat(storageDef[AllowedKeys.BkPadding])}
         onChange={(event, value) =>
-          handleChange(value + 'px', AllowedKeys.BkPadding)
+          handleChange(value + '%', AllowedKeys.BkPadding)
         }
         valueLabelDisplay="auto"
       />
