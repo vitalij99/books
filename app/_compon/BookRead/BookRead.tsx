@@ -11,6 +11,7 @@ import Reader from '../Reader/Reader';
 
 import NavigationPages from '../NavigationPages/NavigationPages';
 import { TranslateContext } from '../DarkTranslateProvider/TranslateProvider';
+import { getBookFromLinkAll } from '@/db';
 
 interface BookProps {
   book: string[];
@@ -21,11 +22,26 @@ interface BookProps {
     prevText?: string;
   };
 }
-
+const initBook = {
+  book: ['loading'],
+  nav: {
+    nextPage: '',
+    prevPage: '',
+    nextText: '',
+    prevText: '',
+  },
+};
 const IS_AUTO_SCROLL = 'isAutoScroll';
 
-const BookRead = ({ data }: { data: BookProps }) => {
-  const [textBook, setTextBook] = useState(data.book);
+const BookRead = ({
+  params,
+  searchParams,
+}: {
+  params: { chapter: string; book: string };
+  searchParams: { [key: string]: string | '' };
+}) => {
+  const [data, setData] = useState<BookProps>(initBook);
+  const [textBook, setTextBook] = useState<string[] | null>(null);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
 
@@ -40,13 +56,27 @@ const BookRead = ({ data }: { data: BookProps }) => {
         }
       });
     }
-    console.log('f');
+
     const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
 
     if (storageAutoScroll === 'true') {
       setisAutoScroll(true);
     }
   }, []);
+
+  useEffect(() => {
+    const getBook = async () => {
+      const result = await getBookFromLinkAll({
+        chapter: params.chapter,
+        book: params.book,
+        web: searchParams.web,
+      });
+      if (result) {
+        setData(result);
+      }
+    };
+    getBook();
+  }, [params.book, params.chapter, searchParams.web]);
 
   useEffect(() => {
     async function getTranslate(bookTranslate: string | any[]) {
@@ -63,15 +93,14 @@ const BookRead = ({ data }: { data: BookProps }) => {
 
       setTextBook(allTextBook);
     }
-    console.log('hs');
+
+    if (!data.book) {
+      return;
+    }
     if (translate.translate) {
       getTranslate(data.book);
     } else setTextBook(data.book);
   }, [data.book, translate.translate]);
-
-  useEffect(() => {
-    console.log('data.book');
-  }, [data.book]);
 
   // autoScroll
   useEffect(() => {
@@ -85,10 +114,6 @@ const BookRead = ({ data }: { data: BookProps }) => {
     });
   }, [isAutoScroll, textIsRead]);
 
-  if (!data) {
-    return <div>Error</div>;
-  }
-
   const changeTextRead = (textReadeIndex: number) => {
     setTextIsRead(textReadeIndex);
   };
@@ -100,6 +125,10 @@ const BookRead = ({ data }: { data: BookProps }) => {
       return !prev;
     });
   };
+
+  if (!data || !textBook) {
+    return <></>;
+  }
 
   return (
     <Box

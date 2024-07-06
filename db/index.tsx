@@ -1,3 +1,4 @@
+'use server';
 import {
   getBookFromLink as getBookFromLinkFromNovelFire,
   getBookLinks as getBookLinksFromNovelFire,

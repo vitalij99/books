@@ -13,18 +13,10 @@ const page = async ({
   if (!searchParams.web) {
     return <>error</>;
   }
-  const books = await getBookFromLinkAll({
-    chapter: params.chapter,
-    book: params.book,
-    web: searchParams.web,
-  });
 
-  if (!books) {
-    return <Loading />;
-  }
   return (
     <>
-      <BookRead data={books} />
+      <BookRead params={params} searchParams={searchParams} />
     </>
   );
 };
