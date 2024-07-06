@@ -1,5 +1,4 @@
 import axios from 'axios';
-import translate from 'google-translate-api';
 
 const linkGoogle =
   'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=uk&hl=uk&dt=t&dt=bd&dj=1&source=input';
@@ -19,8 +18,4 @@ export const translateGoogle = async (text: string) => {
     (textTrans: { trans: string }) => textTrans.trans
   );
   return result;
-};
-export const translateApiGoogle = async (text: string) => {
-  const result = await translate(text, { to: 'uk' });
-  return result.text;
 };
