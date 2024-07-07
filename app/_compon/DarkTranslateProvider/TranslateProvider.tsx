@@ -1,9 +1,9 @@
 'use client';
 
-import { setStorage } from '@/lib/getStorage';
+import { getStorage, setStorage } from '@/lib/getStorage';
 import { AllowedKeys } from '@/types/book';
 
-import React, { createContext } from 'react';
+import React, { createContext, useEffect } from 'react';
 
 export const TranslateContext = createContext({
   handleTranslate: (isTranslate: boolean) => {},
@@ -12,6 +12,12 @@ export const TranslateContext = createContext({
 
 const TranslateProvider = ({ children }: { children: React.ReactNode }) => {
   const [translate, setTranslate] = React.useState(false);
+
+  useEffect(() => {
+    const data = getStorage(AllowedKeys.Translate);
+    const result = data === 'true' ? true : false;
+    setTranslate(result);
+  }, []);
 
   const handleTranslate = (isTranslate: boolean) => {
     setTranslate(isTranslate);
