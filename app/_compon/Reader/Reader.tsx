@@ -16,11 +16,11 @@ import debounce from 'lodash.debounce';
 
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import ReaderCard from '../ReaderCard/ReaderCard';
-import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice';
-import SliderParagraf from '../SliderParagraf/SliderParagraf';
-import Timer from '../Timer/Timer';
 import { READER_KEY, StartReaderProps, initParamsReader } from '@/types/reader';
+import ReaderCard from '@/app/_compon/ReaderCard/ReaderCard';
+import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice';
+import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
+import Timer from '@/app/_compon/Timer/Timer';
 
 const Reader = ({
   book,

@@ -7,11 +7,11 @@ import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import Reader from '../Reader/Reader';
 
-import NavigationPages from '../NavigationPages/NavigationPages';
-import { TranslateContext } from '../DarkTranslateProvider/TranslateProvider';
 import { getBookFromLinkAll } from '@/db';
+import { TranslateContext } from '@/app/_compon/DarkTranslateProvider/TranslateProvider';
+import Reader from '@/app/_compon/Reader/Reader';
+import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 
 interface BookProps {
   book: string[];

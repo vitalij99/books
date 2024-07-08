@@ -1,7 +1,8 @@
 import { Box, Checkbox, OutlinedInput, Typography } from '@mui/material';
-import EndTimer from '../EndTimer/EndTimer';
+
 import { ChangeEvent } from 'react';
 import { InitParamsReader } from '@/types/reader';
+import EndTimer from '@/app/_compon/EndTimer/EndTimer';
 
 interface TimerProps {
   paramsReader: InitParamsReader;

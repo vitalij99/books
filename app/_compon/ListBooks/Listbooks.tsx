@@ -1,9 +1,10 @@
 'use client';
 import { Box, Link, Pagination, Typography } from '@mui/material';
-import Loading from '../Loading/Loading';
+
 import { useEffect, useState } from 'react';
 
 import { ListbooksLink } from '@/types/book';
+import Loading from '@/app/_compon/Loading/Loading';
 
 const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListbooksLink) => {

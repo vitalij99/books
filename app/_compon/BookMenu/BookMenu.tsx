@@ -1,8 +1,9 @@
 'use client';
 import { Box, Button, Drawer } from '@mui/material';
 import { useState } from 'react';
-import MenuStyledText from '../MenuStyledText/MenuStyledText';
+
 import Image from 'next/image';
+import MenuStyledText from '@/app/_compon/MenuStyledText/MenuStyledText';
 
 const BookMenu = () => {
   const [anchor, setAnchor] = useState(false);

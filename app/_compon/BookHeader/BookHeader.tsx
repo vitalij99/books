@@ -1,7 +1,7 @@
 'use client';
 
+import BookMenu from '@/app/_compon/BookMenu/BookMenu';
 import { useEffect, useState } from 'react';
-import BookMenu from '../BookMenu/BookMenu';
 
 const BookHeader = () => {
   const [isBooksPath, setIsBooksPath] = useState(false);

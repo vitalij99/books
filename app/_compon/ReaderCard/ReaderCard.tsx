@@ -1,4 +1,4 @@
-import { Box, Button, Card, Slider, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Card, Slider, Typography } from '@mui/material';
 import React from 'react';
 
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';

@@ -1,11 +1,9 @@
 'use client';
+import BookHeader from '@/app/_compon/BookHeader/BookHeader';
+import NavLinks from '@/app/_compon/NavLinks/NavLinks';
+import SaveBook from '@/app/_compon/SaveBook/SaveBook';
+import Search from '@/app/_compon/Search/Search';
 import { AppBar, Box, Slide, Toolbar, useScrollTrigger } from '@mui/material';
-
-import Search from '../Search/Search';
-
-import BookHeader from '../BookHeader/BookHeader';
-import SaveBook from '../SaveBook/SaveBook';
-import NavLinks from '../NavLinks/NavLinks';
 
 const Header = () => {
   const trigger = useScrollTrigger();
