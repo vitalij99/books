@@ -41,7 +41,7 @@ const Reader = ({
 
   useEffect(() => {
     const storage = {
-      pitch: Number(getStorage(READER_KEY.pitch)) || 2,
+      pitch: Number(getStorage(READER_KEY.pitch)) || 1,
       rate: Number(getStorage(READER_KEY.rate)) || 2,
       language: getStorage(READER_KEY.voice) || '',
       volume: Number(getStorage(READER_KEY.volume)) || 1,
@@ -204,7 +204,7 @@ const Reader = ({
             <Slider
               name="rate"
               onChange={handleSliderParams}
-              min={0.1}
+              min={0}
               max={2}
               step={0.1}
               value={paramsReader?.rate}
@@ -216,7 +216,7 @@ const Reader = ({
               name="pitch"
               onChange={handleSliderParams}
               min={0}
-              max={4}
+              max={2}
               value={paramsReader?.pitch}
               valueLabelDisplay="auto"
             />
