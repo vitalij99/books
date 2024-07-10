@@ -1,7 +1,7 @@
 import React from 'react';
 import ListBooksCard from '../_compon/ListBooksCard/ListBooksCard';
 import Loading from '../_compon/Loading/Loading';
-import { getBooksPopularAll } from '@/db';
+import { getBooksPopularAll } from '@/back';
 
 const popular = async () => {
   const books = await getBooksPopularAll();

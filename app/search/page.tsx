@@ -1,6 +1,6 @@
 import Loading from '../_compon/Loading/Loading';
 import ListBooksCard from '../_compon/ListBooksCard/ListBooksCard';
-import { getBookSearchByNameAll } from '@/db';
+import { getBookSearchByNameAll } from '@/back';
 
 const search = async ({
   searchParams,

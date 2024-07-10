@@ -8,7 +8,7 @@ import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
-import { getBookFromLinkAll } from '@/db';
+import { getBookFromLinkAll } from '@/back';
 import { TranslateContext } from '@/app/_compon/DarkTranslateProvider/TranslateProvider';
 import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
