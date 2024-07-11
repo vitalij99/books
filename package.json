@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.4.1",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/base": "^5.0.0-beta.11",
@@ -25,6 +26,7 @@
     "eslint-config-next": "^14.0.4",
     "lodash.debounce": "^4.0.8",
     "next": "^14.0.4",
+    "next-auth": "^5.0.0-beta.19",
     "node-html-parser": "^6.1.12",
     "postcss": "8.4.27",
     "prisma": "^5.16.2",

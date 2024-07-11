@@ -7,6 +7,7 @@ import { getCookies } from '@/lib/cookis';
 import { THEME } from '@/types/book';
 import { Box } from '@mui/material';
 import TranslateProvider from './_compon/DarkTranslateProvider/TranslateProvider';
+import SessionWrapper from '@/app/_compon/SessionWrapper/SessionWrapper';
 
 export const metadata: Metadata = {
   title: 'Books uk',
@@ -19,15 +20,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const theme = await getCookies(THEME);
+
   return (
     <html lang="uk">
       <body>
-        <TranslateProvider>
-          <DarkProvider theme={theme}>
-            <Header />
-            <Box sx={{ paddingTop: '90px' }}>{children}</Box>
-          </DarkProvider>
-        </TranslateProvider>
+        <SessionWrapper>
+          <TranslateProvider>
+            <DarkProvider theme={theme}>
+              <Header />
+              <Box sx={{ paddingTop: '90px' }}>{children}</Box>
+            </DarkProvider>
+          </TranslateProvider>
+        </SessionWrapper>
       </body>
     </html>
   );
