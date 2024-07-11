@@ -6,7 +6,7 @@ import { login } from '@/lib/auth';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 
-export default function page() {
+export default function Auth() {
   // extracting data from usesession as session
   const { data: session } = useSession();
 
@@ -15,14 +15,14 @@ export default function page() {
     // rendering components for logged in users
     return (
       <>
-        <p>Welcome {session.user?.name}. Signed In As</p>
         <Image
           src={session.user?.image as string}
-          fill
+          width={50}
+          height={50}
           alt=""
           className="object-cover rounded-full"
         />
-        <p>{session.user?.email}</p>
+
         <button onClick={() => signOut()}>Sign out</button>
       </>
     );
