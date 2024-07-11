@@ -1,11 +1,12 @@
 // mark as client component
 'use client';
 
+import { login } from '@/lib/auth';
 // importing necessary functions
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 
-export default function Auth() {
+export default function page() {
   // extracting data from usesession as session
   const { data: session } = useSession();
 
@@ -30,7 +31,7 @@ export default function Auth() {
   // rendering components for not logged in users
   return (
     <>
-      <button onClick={() => signIn('github')}>Sign in with github</button>
+      <button onClick={() => login()}>Sign in with github</button>
     </>
   );
 }
