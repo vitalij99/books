@@ -8,6 +8,7 @@ import { setStorage } from '@/lib/getStorage';
 
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSave[]>([]);
+
   useEffect(() => {
     const savedBooksString = localStorage.getItem('savedBooks');
 

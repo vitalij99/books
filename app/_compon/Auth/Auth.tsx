@@ -31,7 +31,7 @@ export default function Auth() {
   // rendering components for not logged in users
   return (
     <>
-      <button onClick={() => login()}>Sign in with github</button>
+      <button onClick={() => login()}>Sign in</button>
     </>
   );
 }
