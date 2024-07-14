@@ -19,3 +19,11 @@ export const setSaveBook = async () => {
   const res = await prisma.books.create({data})
   return res
 }
+
+export const getSaveBooks = async () => {
+  const session = await auth()
+  if (session?.user) {
+    const res = await prisma.books.findMany({where:{users:session?.user}})
+    return res
+  }
+}
