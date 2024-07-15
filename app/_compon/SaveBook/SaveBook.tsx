@@ -1,4 +1,5 @@
 'use client';
+import { getSaveBooks } from '@/lib/db';
 import { getStorage, setStorage } from '@/lib/getStorage';
 import { BooksSave } from '@/types/book';
 import { Button } from '@mui/material';
@@ -30,8 +31,11 @@ const SaveBook = () => {
     setIsAdded(res ? true : false);
   }, [pathname, saveBooks]);
 
-  const handleSaveBook = () => {
+  const handleSaveBook = async () => {
     const nameBook = pathname.split('/');
+
+    const res = await getSaveBooks();
+    console.log(res);
 
     if (isAdded) {
       const updateBooks = findAndRemoveBook(saveBooks, nameBook);

@@ -7,23 +7,31 @@ export const getUsers = async () => {
 }
 
 export const setSaveBook = async () => {
-  const sesion = await auth()
-  console.log(sesion);
+  const session = await auth()
+  if (!session?.user || !session?.user?.id)  return
+
   const data = {
-    title:"",
+    title: "",
     link: "",
     chapter: 0,
     image: "",
-    users: ""
+    userId: session.user.id
   }
-  const res = await prisma.books.create({data})
+  const res = await prisma.books.create({data   
+  })
   return res
 }
 
 export const getSaveBooks = async () => {
   const session = await auth()
-  if (session?.user) {
-    const res = await prisma.books.findMany({where:{users:session?.user}})
+   if (!session?.user || !session?.user?.id)  return
+    const user =  await prisma.user.findFirst({where: {id:session.user.id}})
+  if (!user) return
+
+  console.log(user);
+
+  if (session?.user || session?.user?.id) {
+    const res = await prisma.books.findMany({})
     return res
   }
 }
