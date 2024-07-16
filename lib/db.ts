@@ -25,13 +25,9 @@ export const setSaveBook = async () => {
 export const getSaveBooks = async () => {
   const session = await auth()
    if (!session?.user || !session?.user?.id)  return
-    const user =  await prisma.user.findFirst({where: {id:session.user.id}})
-  if (!user) return
-
-  console.log(user);
 
   if (session?.user || session?.user?.id) {
-    const res = await prisma.books.findMany({})
+    const res = await prisma.books.findMany({where:{userId:session.user.id}})
     return res
   }
 }
