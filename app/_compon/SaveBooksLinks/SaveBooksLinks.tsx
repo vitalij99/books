@@ -5,6 +5,7 @@ import { Box, Card, IconButton, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { setStorage } from '@/lib/getStorage';
+import { getSaveBooks } from '@/lib/db';
 
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSave[]>([]);
@@ -16,6 +17,10 @@ const SaveBooksLinks = () => {
       const savedBooksData = JSON.parse(savedBooksString);
       setSaveBooks(savedBooksData);
     }
+
+    getSaveBooks().then(prev => {
+      console.log(prev);
+    });
   }, []);
 
   const handleDeleteBook = (bookLink: string) => {

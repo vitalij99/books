@@ -1,5 +1,5 @@
 'use client';
-import { getSaveBooks } from '@/lib/db';
+import { setSaveBook } from '@/lib/db';
 import { getStorage, setStorage } from '@/lib/getStorage';
 import { BooksSave } from '@/types/book';
 import { Button } from '@mui/material';
@@ -34,26 +34,30 @@ const SaveBook = () => {
   const handleSaveBook = async () => {
     const nameBook = pathname.split('/');
 
-    const res = await getSaveBooks();
-    console.log(res);
-
     if (isAdded) {
       const updateBooks = findAndRemoveBook(saveBooks, nameBook);
       setSaveBooks(updateBooks);
       setIsAdded(false);
       setStorage(updateBooks, 'savedBooks');
     } else if (pathname.startsWith('/books/')) {
-      setSaveBooks(prevBooks => {
-        const web = search.get('web');
+      const web = search.get('web');
+      if (!web) return;
 
-        const book = {
-          title: nameBook[2],
-          link: `${pathname}?web=${web}`,
-          chapter: nameBook[3] ? nameBook[3] : undefined,
-        };
+      const book = {
+        title: nameBook[2],
+        link: `${pathname}?web=${web}`,
+        chapter: nameBook[3] ? nameBook[3] : undefined,
+      };
+      const res = await setSaveBook({
+        title: book.title,
+        link: book.link,
+        chapter: Number(book.chapter),
+        web,
+      });
+      console.log(res);
+      setSaveBooks(prevBooks => {
         const updatedBooks = [...prevBooks, book];
         setStorage(updatedBooks, 'savedBooks');
-
         return updatedBooks;
       });
     }

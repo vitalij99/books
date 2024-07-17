@@ -4,6 +4,7 @@ import {
   getBookLinks as getBookLinksFromNovelFire,
   getBookSearchByName as getBookSearchByNameFromNovelFire,
   getBookPopular as getBookPopularFromNovelFire,
+  getBookImageLink as getBookImageLinkFromNovelFire,
 } from './novelfire';
 import { ListbooksProps } from '@/types/book';
 
@@ -65,5 +66,17 @@ export const getBookFromLinkAll = async ({
 }) => {
   if (web === WEBSITE.novelfire) {
     return await getBookFromLinkFromNovelFire({ book, chapter });
+  }
+};
+
+export const getBookImageLinkAll = async ({
+  book,
+  web,
+}: {
+  book: string;
+  web: string;
+}) => {
+  if (web === WEBSITE.novelfire) {
+    return await getBookImageLinkFromNovelFire({ book });
   }
 };
