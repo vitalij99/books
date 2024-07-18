@@ -1,12 +1,13 @@
 'use client';
 import { setSaveBook } from '@/lib/db';
-import { getStorage, setStorage } from '@/lib/getStorage';
+import { getStorage } from '@/lib/getStorage';
 import { BooksSave } from '@/types/book';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+// TODO rework take from db
 const SaveBook = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSave[]>([]);
   const [isBooksPath, setIsBooksPath] = useState(false);
@@ -35,10 +36,8 @@ const SaveBook = () => {
     const nameBook = pathname.split('/');
 
     if (isAdded) {
-      const updateBooks = findAndRemoveBook(saveBooks, nameBook);
-      setSaveBooks(updateBooks);
-      setIsAdded(false);
-      setStorage(updateBooks, 'savedBooks');
+      // TODO
+      // setIsAdded(false);
     } else if (pathname.startsWith('/books/')) {
       const web = search.get('web');
       if (!web) return;
@@ -48,17 +47,12 @@ const SaveBook = () => {
         link: `${pathname}?web=${web}`,
         chapter: nameBook[3] ? nameBook[3] : undefined,
       };
-      const res = await setSaveBook({
+      setSaveBooks(prevBooks => [...prevBooks, book]);
+      await setSaveBook({
         title: book.title,
         link: book.link,
         chapter: Number(book.chapter),
         web,
-      });
-      console.log(res);
-      setSaveBooks(prevBooks => {
-        const updatedBooks = [...prevBooks, book];
-        setStorage(updatedBooks, 'savedBooks');
-        return updatedBooks;
       });
     }
   };

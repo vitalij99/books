@@ -1,33 +1,36 @@
 'use client';
 
-import { BooksSave } from '@/types/book';
-import { Box, Card, IconButton, Link, Typography } from '@mui/material';
+import { BooksSaveDB } from '@/types/book';
+import {
+  Box,
+  Card,
+  IconButton,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  Link,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { setStorage } from '@/lib/getStorage';
+
 import { getSaveBooks } from '@/lib/db';
+import Image from 'next/image';
 
 const SaveBooksLinks = () => {
-  const [saveBooks, setSaveBooks] = useState<BooksSave[]>([]);
+  const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
 
   useEffect(() => {
-    const savedBooksString = localStorage.getItem('savedBooks');
-
-    if (savedBooksString) {
-      const savedBooksData = JSON.parse(savedBooksString);
-      setSaveBooks(savedBooksData);
-    }
-
     getSaveBooks().then(prev => {
+      if (prev) {
+        setSaveBooks(prev);
+      }
       console.log(prev);
     });
   }, []);
 
-  const handleDeleteBook = (bookLink: string) => {
-    const updatedBooks = saveBooks.filter(book => book.link !== bookLink);
-    setSaveBooks(updatedBooks);
-    setStorage(JSON.stringify(updatedBooks), 'savedBooks');
-  };
+  const handleDeleteBook = (bookLink: string) => {};
   return (
     <Box sx={{ padding: 5 }}>
       <Typography variant={'h4'}>Збережені</Typography>
@@ -59,6 +62,64 @@ const SaveBooksLinks = () => {
             </Card>
           );
         })}
+      </Box>
+
+      <Box padding={4}>
+        {saveBooks.length > 0 ? (
+          <ImageList
+            sx={{
+              gridAutoFlow: 'column',
+              gridTemplateColumns:
+                'repeat(auto-fill, minmax(200px)) !important',
+              gridAutoColumns: 'minmax(200px)',
+              overflow: 'auto',
+            }}
+          >
+            {saveBooks.map(book => (
+              <Box
+                key={book.id}
+                sx={{
+                  display: 'inline-block',
+                  p: 2,
+                }}
+              >
+                <Link href={book.link}>
+                  <ImageListItem>
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        width: '200px',
+                        height: '250px',
+                      }}
+                    >
+                      {book.image ? (
+                        <Image
+                          src={book.image}
+                          fill
+                          sizes="300px"
+                          alt={book.title}
+                        />
+                      ) : (
+                        <Skeleton
+                          sx={{ position: 'absolute' }}
+                          width="100%"
+                          height="100%"
+                        />
+                      )}
+
+                      <ImageListItemBar
+                        title={book.title}
+                        subtitle={book.title}
+                      />
+                    </Box>
+                  </ImageListItem>
+                </Link>
+              </Box>
+            ))}
+          </ImageList>
+        ) : (
+          <>немає</>
+        )}
       </Box>
     </Box>
   );

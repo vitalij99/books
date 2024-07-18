@@ -35,4 +35,16 @@ export interface BooksSave {
   link: string;
   chapter?: string;
 }
+export interface BooksSaveDB {
+  id: string;
+  title: string;
+  link: string;
+  chapter: number;
+  image: string | null;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+[];
+
 export const THEME = 'theme';
