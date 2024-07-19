@@ -1,7 +1,7 @@
 'use client';
-import { setSaveBook } from '@/lib/db';
-import { getStorage } from '@/lib/getStorage';
-import { BooksSave } from '@/types/book';
+import { getSaveBooks, setSaveBook } from '@/lib/db';
+
+import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -9,20 +9,18 @@ import { useEffect, useState } from 'react';
 
 // TODO rework take from db
 const SaveBook = () => {
-  const [saveBooks, setSaveBooks] = useState<BooksSave[]>([]);
+  const [saveBooks, setSaveBooks] = useState<BooksSaveDB>();
   const [isBooksPath, setIsBooksPath] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const pathname = usePathname();
   const search = useSearchParams();
 
   useEffect(() => {
-    setIsBooksPath(pathname.startsWith('/books/'));
-
-    const savedBooks = getStorage('savedBooks');
-
-    if (savedBooks) {
-      setSaveBooks(JSON.parse(savedBooks));
-    }
+    getSaveBooks().then(data => {
+      if (data) {
+        setSaveBooks(data);
+      }
+    });
   }, [pathname]);
   useEffect(() => {
     const nameBook = pathname.split('/');
@@ -47,13 +45,14 @@ const SaveBook = () => {
         link: `${pathname}?web=${web}`,
         chapter: nameBook[3] ? nameBook[3] : undefined,
       };
-      setSaveBooks(prevBooks => [...prevBooks, book]);
-      await setSaveBook({
+      const newBook = await setSaveBook({
         title: book.title,
         link: book.link,
         chapter: Number(book.chapter),
         web,
       });
+
+      setSaveBooks(prevBooks => [...prevBooks, newBook]);
     }
   };
   if (!isBooksPath) {
