@@ -7,22 +7,19 @@ import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// TODO rework take from db
+// TODO rework remove
 const SaveBook = () => {
-  const [saveBooks, setSaveBooks] = useState<BooksSaveDB>();
-  const [isBooksPath, setIsBooksPath] = useState(false);
+  const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>();
+
   const [isAdded, setIsAdded] = useState(false);
   const pathname = usePathname();
   const search = useSearchParams();
 
   useEffect(() => {
-    getSaveBooks().then(data => {
-      if (data) {
-        setSaveBooks(data);
-      }
-    });
+    getSaveBooks().then(data => setSaveBooks(data));
   }, [pathname]);
   useEffect(() => {
+    if (!saveBooks) return;
     const nameBook = pathname.split('/');
 
     const res = findSaveBook(saveBooks, nameBook);
@@ -33,31 +30,35 @@ const SaveBook = () => {
   const handleSaveBook = async () => {
     const nameBook = pathname.split('/');
 
-    if (isAdded) {
-      // TODO
-      // setIsAdded(false);
-    } else if (pathname.startsWith('/books/')) {
-      const web = search.get('web');
-      if (!web) return;
+    try {
+      if (isAdded) {
+        // TODO
+        // setIsAdded(false);
+      } else if (pathname.startsWith('/books/')) {
+        const web = search.get('web');
+        if (!web) return;
 
-      const book = {
-        title: nameBook[2],
-        link: `${pathname}?web=${web}`,
-        chapter: nameBook[3] ? nameBook[3] : undefined,
-      };
-      const newBook = await setSaveBook({
-        title: book.title,
-        link: book.link,
-        chapter: Number(book.chapter),
-        web,
-      });
+        const book = {
+          title: nameBook[2],
+          link: `${pathname}?web=${web}`,
+          chapter: nameBook[3] ? nameBook[3] : undefined,
+        };
+        const newBook = await setSaveBook({
+          title: book.title,
+          link: book.link,
+          chapter: Number(book.chapter),
+          web,
+        });
 
-      setSaveBooks(prevBooks => [...prevBooks, newBook]);
-    }
+        if (newBook) {
+          setSaveBooks(prevBooks =>
+            prevBooks ? [...prevBooks, newBook] : [newBook]
+          );
+        }
+      }
+    } catch (error) {}
   };
-  if (!isBooksPath) {
-    return <></>;
-  }
+
   return (
     <Button onClick={handleSaveBook}>
       <Image
@@ -72,10 +73,13 @@ const SaveBook = () => {
 
 export default SaveBook;
 
-const findSaveBook = (saveBooks: BooksSave[], pathnameBook: string[]) => {
+const findSaveBook = (saveBooks: BooksSaveDB[], pathnameBook: string[]) => {
   return saveBooks.find(book => {
     if (pathnameBook.length >= 3) {
-      if (book.chapter === pathnameBook[3] && book.title === pathnameBook[2])
+      if (
+        book.chapter === Number(pathnameBook[3]) &&
+        book.title === pathnameBook[2]
+      )
         return book;
     } else if (book.title === pathnameBook[2]) {
       return book;
@@ -83,10 +87,16 @@ const findSaveBook = (saveBooks: BooksSave[], pathnameBook: string[]) => {
     return undefined;
   });
 };
-const findAndRemoveBook = (saveBooks: BooksSave[], pathnameBook: string[]) => {
+const findAndRemoveBook = (
+  saveBooks: BooksSaveDB[],
+  pathnameBook: string[]
+) => {
   const indexToRemove = saveBooks.findIndex(book => {
     if (pathnameBook.length >= 3) {
-      return book.chapter === pathnameBook[3] && book.title === pathnameBook[2];
+      return (
+        book.chapter === Number(pathnameBook[3]) &&
+        book.title === pathnameBook[2]
+      );
     } else {
       return book.title === pathnameBook[2];
     }
