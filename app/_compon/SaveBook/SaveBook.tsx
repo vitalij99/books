@@ -1,5 +1,5 @@
 'use client';
-import { getSaveBooks, setSaveBook } from '@/lib/db';
+import { deleteSaveBooks, getSaveBooks, setSaveBook } from '@/lib/db';
 
 import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
@@ -28,12 +28,18 @@ const SaveBook = () => {
   }, [pathname, saveBooks]);
 
   const handleSaveBook = async () => {
+    if (!saveBooks) return;
     const nameBook = pathname.split('/');
 
     try {
       if (isAdded) {
         // TODO
-        // setIsAdded(false);
+        const res = findSaveBook(saveBooks, nameBook);
+        if (res && res.id) {
+          const result = await deleteSaveBooks(res.id);
+          setSaveBooks(result);
+          setIsAdded(false);
+        }
       } else if (pathname.startsWith('/books/')) {
         const web = search.get('web');
         if (!web) return;

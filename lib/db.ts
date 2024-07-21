@@ -43,3 +43,15 @@ export const getSaveBooks = async () => {
     return res
   }
 }
+
+export const deleteSaveBooks = async (id:string) => {
+  const session = await auth()
+  if (!session?.user || !session?.user?.id) return
+  
+  if (session?.user || session?.user?.id) {
+    await prisma.books.delete({ where: { id } })    
+    const res = await prisma.books.findMany({where:{userId:session.user.id}})
+    return res
+  
+  }
+}
