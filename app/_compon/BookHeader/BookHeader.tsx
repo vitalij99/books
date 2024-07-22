@@ -1,7 +1,8 @@
 'use client';
+import { useEffect, useState } from 'react';
 
 import BookMenu from '@/app/_compon/BookMenu/BookMenu';
-import { useEffect, useState } from 'react';
+import SaveBook from '@/app/_compon/SaveBook/SaveBook';
 
 const BookHeader = () => {
   const [isBooksPath, setIsBooksPath] = useState(false);
@@ -16,6 +17,7 @@ const BookHeader = () => {
   }
   return (
     <>
+      <SaveBook />
       <BookMenu />
     </>
   );

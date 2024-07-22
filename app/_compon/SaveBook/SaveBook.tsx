@@ -7,9 +7,10 @@ import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// TODO rework remove
 const SaveBook = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>();
+
+  const [stringPathname, setStringPathname] = useState<string[]>([]);
 
   const [isAdded, setIsAdded] = useState(false);
   const pathname = usePathname();
@@ -21,6 +22,7 @@ const SaveBook = () => {
   useEffect(() => {
     if (!saveBooks) return;
     const nameBook = pathname.split('/');
+    setStringPathname(nameBook);
 
     const res = findSaveBook(saveBooks, nameBook);
 
@@ -28,13 +30,12 @@ const SaveBook = () => {
   }, [pathname, saveBooks]);
 
   const handleSaveBook = async () => {
-    if (!saveBooks) return;
-    const nameBook = pathname.split('/');
+    if (!saveBooks || !stringPathname) return;
 
     try {
       if (isAdded) {
-        // TODO
-        const res = findSaveBook(saveBooks, nameBook);
+        const res = findSaveBook(saveBooks, stringPathname);
+
         if (res && res.id) {
           const result = await deleteSaveBooks(res.id);
           setSaveBooks(result);
@@ -45,9 +46,9 @@ const SaveBook = () => {
         if (!web) return;
 
         const book = {
-          title: nameBook[2],
+          title: stringPathname[2],
           link: `${pathname}?web=${web}`,
-          chapter: nameBook[3] ? nameBook[3] : undefined,
+          chapter: stringPathname[3] ? stringPathname[3] : undefined,
         };
         const newBook = await setSaveBook({
           title: book.title,
@@ -64,6 +65,10 @@ const SaveBook = () => {
       }
     } catch (error) {}
   };
+
+  if (stringPathname.length < 3) {
+    return <></>;
+  }
 
   return (
     <Button onClick={handleSaveBook}>
@@ -92,24 +97,4 @@ const findSaveBook = (saveBooks: BooksSaveDB[], pathnameBook: string[]) => {
     }
     return undefined;
   });
-};
-const findAndRemoveBook = (
-  saveBooks: BooksSaveDB[],
-  pathnameBook: string[]
-) => {
-  const indexToRemove = saveBooks.findIndex(book => {
-    if (pathnameBook.length >= 3) {
-      return (
-        book.chapter === Number(pathnameBook[3]) &&
-        book.title === pathnameBook[2]
-      );
-    } else {
-      return book.title === pathnameBook[2];
-    }
-  });
-
-  if (indexToRemove !== -1) {
-    saveBooks.splice(indexToRemove, 1);
-  }
-  return saveBooks;
 };

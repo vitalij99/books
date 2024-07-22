@@ -1,11 +1,10 @@
 'use client';
+import { AppBar, Box, Slide, Toolbar, useScrollTrigger } from '@mui/material';
 
 import Auth from '@/app/_compon/Auth/Auth';
 import BookHeader from '@/app/_compon/BookHeader/BookHeader';
 import NavLinks from '@/app/_compon/NavLinks/NavLinks';
-import SaveBook from '@/app/_compon/SaveBook/SaveBook';
 import Search from '@/app/_compon/Search/Search';
-import { AppBar, Box, Slide, Toolbar, useScrollTrigger } from '@mui/material';
 
 const Header = () => {
   const trigger = useScrollTrigger();
@@ -17,11 +16,11 @@ const Header = () => {
             <NavLinks />
             <Search />
             <Box sx={{ flexGrow: 1 }} />
-            <SaveBook />
+
+            <BookHeader />
             <div>
               <Auth />
             </div>
-            <BookHeader />
           </Toolbar>
         </AppBar>
       </Slide>
