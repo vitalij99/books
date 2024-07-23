@@ -85,7 +85,7 @@ model Books {
   id      String  @id @default(cuid())
   title   String
   link    String
-  chapter Int     @default(0)
+  chapter String?
   image   String?
 
   user   User?  @relation(fields: [userId], references: [id])

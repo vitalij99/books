@@ -48,12 +48,12 @@ const SaveBook = () => {
         const book = {
           title: stringPathname[2],
           link: `${pathname}?web=${web}`,
-          chapter: stringPathname[3] ? stringPathname[3] : undefined,
+          chapter: stringPathname[3] ? Number(stringPathname[3]) : 0,
         };
         const newBook = await setSaveBook({
           title: book.title,
           link: book.link,
-          chapter: Number(book.chapter),
+          chapter: [Number(book.chapter)],
           web,
         });
 
@@ -87,14 +87,11 @@ export default SaveBook;
 const findSaveBook = (saveBooks: BooksSaveDB[], pathnameBook: string[]) => {
   return saveBooks.find(book => {
     if (pathnameBook.length >= 3) {
-      if (
-        book.chapter === Number(pathnameBook[3]) &&
-        book.title === pathnameBook[2]
-      )
-        return book;
-    } else if (book.title === pathnameBook[2]) {
-      return book;
-    }
-    return undefined;
+      if (book.title === pathnameBook[2]) {
+        return book.chapter?.find(
+          chapter => chapter === Number(pathnameBook[3])
+        );
+      }
+    } else return undefined;
   });
 };

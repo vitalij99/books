@@ -11,27 +11,33 @@ export const getUsers = async () => {
 interface SetSaveBook {
   title: string;
   link: string;
-  chapter?: number; 
+  chapter?: number[]; 
   web: string;
 }
 
-export const setSaveBook = async ({title,link,chapter=0,web}:SetSaveBook) => {
+export const setSaveBook = async ({title,link,chapter,web}:SetSaveBook) => {
   const session = await auth()
 
   if (!session?.user || !session?.user?.id) return
 
   const image = await getBookImageLinkAll({book:title,web})
   
+  const transformToJsonChapter = chapter?.toString()
+  console.log(transformToJsonChapter);
+
   const data = {
     title,
     link,
-    chapter,
+    chapter:transformToJsonChapter,
     image,
     userId: session.user.id
   }
   const res = await prisma.books.create({data   
   })
-  return res
+  const allChapter = res.chapter?.split(",")
+  const chapterArr = allChapter?.map(chapter=>Number(chapter))
+  return { ...res, chapter:chapterArr }
+  
 }
 
 export const getSaveBooks = async () => {
@@ -39,8 +45,10 @@ export const getSaveBooks = async () => {
    if (!session?.user || !session?.user?.id)  return
 
   if (session?.user || session?.user?.id) {
-    const res = await prisma.books.findMany({where:{userId:session.user.id}})
-    return res
+    const res = await prisma.books.findMany({ where: { userId: session.user.id } })
+    
+   const newRes = transStringToArrChapter(res)
+    return newRes
   }
 }
 
@@ -50,8 +58,27 @@ export const deleteSaveBooks = async (id:string) => {
   
   if (session?.user || session?.user?.id) {
     await prisma.books.delete({ where: { id } })    
-    const res = await prisma.books.findMany({where:{userId:session.user.id}})
-    return res
+    const res = await prisma.books.findMany({ where: { userId: session.user.id } })
+    
+    return transStringToArrChapter(res)
   
   }
 }
+
+const transStringToArrChapter = (books: {
+    id: string;
+    title: string;
+    link: string;
+    chapter: string | null;
+    image: string | null;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}[]) => { 
+
+return books.map((book)=>{
+  const allChapter = book.chapter?.split(",")
+  const chapter = allChapter?.map(chapter=>Number(chapter))
+  return { ...book, chapter } } )
+  
+ }  
