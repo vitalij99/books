@@ -1,6 +1,7 @@
 "use server"
 import { auth, prisma } from "@/auth";
 import { getBookImageLinkAll } from "@/back";
+import { BooksSaveDB } from "@/types/book";
 
 
 
@@ -13,6 +14,18 @@ interface SetSaveBook {
   link: string;
   chapter?: number[]; 
   web: string;
+}
+
+interface DbBooks {
+    id: string;
+    title: string;
+    link: string;
+    chapter: string | null;
+    image: string | null;
+    lastReadeChapter: number;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export const setSaveBook = async ({title,link,chapter,web}:SetSaveBook) => {
@@ -81,20 +94,10 @@ export const updateChapter = async (id:string,chapter:number[]) => {
   }
 }
 
-const transStringToArrChapter = (books: {
-    id: string;
-    title: string;
-    link: string;
-    chapter: string | null;
-    image: string | null;
-    userId: string;
-    createdAt: Date;
-    updatedAt: Date;
-}[]) => { 
-
-return books.map((book)=>{
-  const allChapter = book.chapter?.split(",")
-  const chapter = allChapter?.map(chapter=>Number(chapter))
-  return { ...book, chapter } } )
-  
+const transStringToArrChapter = (books: DbBooks[]) => { 
+  return books.map((book) => {
+    const allChapter = book.chapter?.split(",")
+    const chapter = allChapter?.map(chapter=>Number(chapter))
+    return { ...book, chapter } } 
+  )
  }  

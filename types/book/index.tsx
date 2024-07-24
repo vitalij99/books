@@ -42,6 +42,7 @@ export interface BooksSaveDB {
   chapter: number[] | undefined;
   image: string | null;
   userId: string;
+  lastReadeChapter: number | undefined;
   createdAt: Date;
   updatedAt: Date;
 }

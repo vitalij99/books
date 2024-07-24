@@ -15,112 +15,89 @@ import {
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getSaveBooks } from '@/lib/db';
 import Image from 'next/image';
+import { deleteSaveBooks, getSaveBooks } from '@/lib/db';
 
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
 
   useEffect(() => {
-    getSaveBooks().then(prev => {
-      if (prev) {
-        setSaveBooks(prev);
-      }
-      console.log(prev);
-    });
+    getSaveBooks().then(prev => (prev ? setSaveBooks(prev) : []));
   }, []);
 
-  const handleDeleteBook = (bookLink: string) => {};
+  const handleDeleteBook = async (bookId: string) => {
+    const res = await deleteSaveBooks(bookId);
+    if (res) {
+      setSaveBooks(res);
+    }
+  };
   return (
-    <Box sx={{ padding: 5 }}>
-      <Typography variant={'h4'}>Збережені</Typography>
-      <Box sx={{ margin: '0 auto' }} width={600}>
-        {saveBooks.map((book, index) => {
-          const titleBook = book.chapter
-            ? `${book.title} Параграф: ${book.chapter}`
-            : book.title;
-
-          return (
-            <Card
-              key={book.link + index}
+    <Box padding={4}>
+      {saveBooks.length > 0 ? (
+        <ImageList
+          sx={{
+            gridAutoFlow: 'column',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
+            gridAutoColumns: 'minmax(200px)',
+            overflow: 'auto',
+          }}
+        >
+          {saveBooks.map(book => (
+            <Box
+              key={book.id}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: 2,
+                display: 'inline-block',
+                p: 2,
               }}
             >
-              <Link href={book.link} underline={'none'}>
-                <Typography padding={'10px 15px'}>{titleBook}</Typography>
-              </Link>
-              <Box sx={{ flex: '1' }} />
-              <IconButton
-                onClick={() => handleDeleteBook(book.link)}
-                aria-label="delete"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Card>
-          );
-        })}
-      </Box>
-
-      <Box padding={4}>
-        {saveBooks.length > 0 ? (
-          <ImageList
-            sx={{
-              gridAutoFlow: 'column',
-              gridTemplateColumns:
-                'repeat(auto-fill, minmax(200px)) !important',
-              gridAutoColumns: 'minmax(200px)',
-              overflow: 'auto',
-            }}
-          >
-            {saveBooks.map(book => (
-              <Box
-                key={book.id}
-                sx={{
-                  display: 'inline-block',
-                  p: 2,
-                }}
-              >
-                <Link href={book.link}>
-                  <ImageListItem>
-                    <Box
-                      sx={{
-                        position: 'relative',
-                        width: '200px',
-                        height: '250px',
-                      }}
-                    >
-                      {book.image ? (
-                        <Image
-                          src={book.image}
-                          fill
-                          sizes="300px"
-                          alt={book.title}
-                        />
-                      ) : (
-                        <Skeleton
-                          sx={{ position: 'absolute' }}
-                          width="100%"
-                          height="100%"
-                        />
-                      )}
-
-                      <ImageListItemBar
-                        title={book.title}
-                        subtitle={book.title}
+              <ImageListItem>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: '200px',
+                    height: '250px',
+                  }}
+                >
+                  <IconButton
+                    sx={{
+                      position: 'absolute',
+                      right: 0,
+                      zIndex: 3,
+                    }}
+                    onClick={() => handleDeleteBook(book.id)}
+                    aria-label="delete"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  <Link href={book.link}>
+                    {book.image ? (
+                      <Image
+                        src={book.image}
+                        fill
+                        sizes="300px"
+                        alt={book.title}
                       />
-                    </Box>
-                  </ImageListItem>
-                </Link>
-              </Box>
-            ))}
-          </ImageList>
-        ) : (
-          <>немає</>
-        )}
-      </Box>
+                    ) : (
+                      <Skeleton
+                        variant="rectangular"
+                        width={200}
+                        height={250}
+                      />
+                    )}
+                  </Link>
+
+                  <ImageListItemBar
+                    title={book.title ? book.title : 'Ой щось трапилось'}
+                    subtitle={book.title ? book.title : 'Ой щось трапилось'}
+                  />
+                </Box>
+              </ImageListItem>
+            </Box>
+          ))}
+        </ImageList>
+      ) : (
+        <>немає</>
+      )}
     </Box>
   );
 };
