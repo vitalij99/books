@@ -90,9 +90,12 @@ export const updateChapter = async (id:string,chapter:number[]) => {
         chapter: chapter.toString()
       }
     })       
-    return transStringToArrChapter([deleteChapter])  
-  }
+     const allChapter = deleteChapter.chapter?.split(",")
+    const chapters = allChapter?.map(chapter=>Number(chapter))
+    return { ...deleteChapter, chapter:chapters }
+  }   
 }
+
 
 const transStringToArrChapter = (books: DbBooks[]) => { 
   return books.map((book) => {
