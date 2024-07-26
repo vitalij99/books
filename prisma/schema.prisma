@@ -85,6 +85,7 @@ model Books {
   id               String  @id @default(cuid())
   title            String
   link             String
+  web              String
   chapter          String?
   image            String?
   lastReadeChapter Int     @default(1)

@@ -1,106 +1,109 @@
-"use server"
-import { auth, prisma } from "@/auth";
-import { getBookImageLinkAll } from "@/back";
-import { BooksSaveDB } from "@/types/book";
-
-
-
-export const getUsers = async () => {
-  return await prisma.user.findMany()
-}
+'use server';
+import { auth, prisma } from '@/auth';
+import { getBookImageLinkAll } from '@/back';
+import { BooksSaveDB } from '@/types/book';
 
 interface SetSaveBook {
   title: string;
   link: string;
-  chapter?: number[]; 
+  chapter?: number[];
   web: string;
 }
-
-interface DbBooks {
-    id: string;
-    title: string;
-    link: string;
-    chapter: string | null;
-    image: string | null;
-    lastReadeChapter: number;
-    userId: string;
-    createdAt: Date;
-    updatedAt: Date;
+type DbBooksBase = Omit<BooksSaveDB, 'chapter'>;
+interface DbBooks extends DbBooksBase {
+  chapter: string | null;
 }
 
-export const setSaveBook = async ({title,link,chapter,web}:SetSaveBook) => {
-  const session = await auth()
+export const getUsers = async () => {
+  return await prisma.user.findMany();
+};
 
-  if (!session?.user || !session?.user?.id) return
+export const setSaveBook = async ({
+  title,
+  link,
+  chapter,
+  web,
+}: SetSaveBook) => {
+  try {
+    const session = await auth();
 
-  const image = await getBookImageLinkAll({book:title,web})
-  
-  const transformToJsonChapter = chapter?.toString()
-  console.log(transformToJsonChapter);
+    if (!session?.user || !session?.user?.id) return;
 
-  const data = {
-    title,
-    link,
-    chapter:transformToJsonChapter,
-    image,
-    userId: session.user.id
+    const image = await getBookImageLinkAll({ book: title, web });
+
+    const transformToJsonChapter = chapter?.toString();
+
+    const data = {
+      title,
+      link,
+      chapter: transformToJsonChapter,
+      image,
+      web,
+      userId: session.user.id,
+    };
+
+    const res = await prisma.books.create({ data });
+    const allChapter = res.chapter?.split(',');
+    const chapterArr = allChapter?.map(chapter => Number(chapter));
+    return { ...res, chapter: chapterArr };
+  } catch (error) {
+    return undefined;
   }
-  const res = await prisma.books.create({data   
-  })
-  const allChapter = res.chapter?.split(",")
-  const chapterArr = allChapter?.map(chapter=>Number(chapter))
-  return { ...res, chapter:chapterArr }
-  
-}
+};
 
 export const getSaveBooks = async () => {
-  const session = await auth()
-   if (!session?.user || !session?.user?.id)  return
+  try {
+    const session = await auth();
+    if (!session?.user || !session?.user?.id) return;
 
-  if (session?.user || session?.user?.id) {
-    const res = await prisma.books.findMany({ where: { userId: session.user.id } })
-    
-   const newRes = transStringToArrChapter(res)
-    return newRes
+    if (session?.user || session?.user?.id) {
+      const res = await prisma.books.findMany({
+        where: { userId: session.user.id },
+      });
+
+      const newRes = transStringToArrChapter(res);
+      return newRes;
+    }
+  } catch (error) {
+    return undefined;
   }
-}
+};
 
-export const deleteSaveBooks = async (id:string) => {
-  const session = await auth()
-  if (!session?.user || !session?.user?.id) return
-  
+export const deleteSaveBooks = async (id: string) => {
+  const session = await auth();
+  if (!session?.user || !session?.user?.id) return;
+
   if (session?.user || session?.user?.id) {
-    await prisma.books.delete({ where: { id } })    
-    const res = await prisma.books.findMany({ where: { userId: session.user.id } })
-    
-    return transStringToArrChapter(res)
-  
+    await prisma.books.delete({ where: { id } });
+    const res = await prisma.books.findMany({
+      where: { userId: session.user.id },
+    });
+
+    return transStringToArrChapter(res);
   }
-}
+};
 
-export const updateChapter = async (id:string,chapter:number[]) => {
-   const session = await auth()
-  if (!session?.user || !session?.user?.id) return
-  
+export const updateChapter = async (id: string, chapter: number[]) => {
+  const session = await auth();
+  if (!session?.user || !session?.user?.id) return;
+
   if (session?.user || session?.user?.id) {
-    
     const deleteChapter = await prisma.books.update({
       where: { id },
       data: {
-        chapter: chapter.toString()
-      }
-    })       
-     const allChapter = deleteChapter.chapter?.split(",")
-    const chapters = allChapter?.map(chapter=>Number(chapter))
-    return { ...deleteChapter, chapter:chapters }
-  }   
-}
+        chapter: chapter.toString(),
+      },
+    });
+    const allChapter = deleteChapter.chapter?.split(',');
+    const chapters = allChapter?.map(chapter => Number(chapter));
+    return { ...deleteChapter, chapter: chapters };
+  }
+};
 
-
-const transStringToArrChapter = (books: DbBooks[]) => { 
-  return books.map((book) => {
-    const allChapter = book.chapter?.split(",")
-    const chapter = allChapter?.map(chapter=>Number(chapter))
-    return { ...book, chapter } } 
-  )
- }  
+const transStringToArrChapter = (books: DbBooks[]) => {
+  return books.map(book => {
+    const allChapter = book.chapter?.split(',');
+    const chapter = allChapter?.map(chapter => Number(chapter));
+    return { ...book, chapter };
+  });
+};

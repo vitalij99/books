@@ -28,7 +28,7 @@ const SaveBook = () => {
   const search = useSearchParams();
 
   useEffect(() => {
-    getSaveBooks().then(data => setSaveBooks(data));
+    getSaveBooks().then(data => setSaveBooks(data ? data : []));
   }, [pathname]);
 
   useEffect(() => {
@@ -70,11 +70,21 @@ const SaveBook = () => {
 
       const book = {
         title: stringPathname[2],
-        link: `${pathname}?web=${web}`,
+        link: `books/${stringPathname[2]}?web=${web}`,
+        web,
         chapter: stringPathname[3] ? Number(stringPathname[3]) : 0,
       };
 
-      if (!bookSaveDB) {
+      if (bookSaveDB) {
+        const newCharpters = bookSaveDB.chapter
+          ? [...bookSaveDB.chapter, book.chapter]
+          : [book.chapter];
+        const result = await updateChapter(bookSaveDB.id, newCharpters);
+
+        if (result) {
+          setIsAdded(true);
+        }
+      } else {
         const newBook = await setSaveBook({
           title: book.title,
           link: book.link,
@@ -86,15 +96,6 @@ const SaveBook = () => {
           setSaveBooks(prevBooks =>
             prevBooks ? [...prevBooks, newBook] : [newBook]
           );
-        }
-      } else {
-        const newCharpters = bookSaveDB.chapter
-          ? [...bookSaveDB.chapter, book.chapter]
-          : [book.chapter];
-        const result = await updateChapter(bookSaveDB.id, newCharpters);
-
-        if (result) {
-          setIsAdded(true);
         }
       }
     }

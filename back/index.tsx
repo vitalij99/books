@@ -76,7 +76,11 @@ export const getBookImageLinkAll = async ({
   book: string;
   web: string;
 }) => {
-  if (web === WEBSITE.novelfire) {
-    return await getBookImageLinkFromNovelFire({ book });
+  try {
+    if (web === WEBSITE.novelfire) {
+      return await getBookImageLinkFromNovelFire({ book });
+    }
+  } catch (error) {
+    return undefined;
   }
 };

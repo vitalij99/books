@@ -9,6 +9,7 @@ import {
   ImageListItemBar,
   Link,
   Skeleton,
+  Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -90,6 +91,27 @@ const SaveBooksLinks = () => {
                   />
                 </Box>
               </ImageListItem>
+              <Box sx={{ p: 1, width: '200px' }}>
+                <Link
+                  href={`books/${book.title}/${book.lastReadeChapter}?web=${book.web}`}
+                >
+                  <Typography>
+                    Остання прочитана глава {book.lastReadeChapter}
+                  </Typography>
+                </Link>
+
+                {book.chapter &&
+                  book.chapter.map(chapter => {
+                    return (
+                      <Link
+                        key={chapter}
+                        href={`books/${book.title}/${book.chapter}?web=${book.web}`}
+                      >
+                        <Typography>глава {book.chapter}</Typography>
+                      </Link>
+                    );
+                  })}
+              </Box>
             </Box>
           ))}
         </ImageList>

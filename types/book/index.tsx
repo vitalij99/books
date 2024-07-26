@@ -39,6 +39,7 @@ export interface BooksSaveDB {
   id: string;
   title: string;
   link: string;
+  web: string;
   chapter: number[] | undefined;
   image: string | null;
   userId: string;
