@@ -74,7 +74,7 @@ export const deleteSaveBooks = async (id: string) => {
   if (!session?.user || !session?.user?.id) return;
 
   if (session?.user || session?.user?.id) {
-    await prisma.books.delete({ where: { id } });
+    await prisma.books.delete({ where: { id, userId:session.user.id } });
     const res = await prisma.books.findMany({
       where: { userId: session.user.id },
     });
@@ -89,7 +89,7 @@ export const updateChapter = async (id: string, chapter: number[]) => {
 
   if (session?.user || session?.user?.id) {
     const deleteChapter = await prisma.books.update({
-      where: { id },
+      where: { id, userId:session.user.id  },
       data: {
         chapter: chapter.toString(),
       },
