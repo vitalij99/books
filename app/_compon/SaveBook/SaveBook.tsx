@@ -72,10 +72,10 @@ const SaveBook = () => {
         title: stringPathname[2],
         link: `books/${stringPathname[2]}?web=${web}`,
         web,
-        chapter: stringPathname[3] ? Number(stringPathname[3]) : 0,
+        chapter: stringPathname[3] ? Number(stringPathname[3]) : undefined,
       };
 
-      if (bookSaveDB) {
+      if (bookSaveDB && book.chapter) {
         const newCharpters = bookSaveDB.chapter
           ? [...bookSaveDB.chapter, book.chapter]
           : [book.chapter];
@@ -88,7 +88,7 @@ const SaveBook = () => {
         const newBook = await setSaveBook({
           title: book.title,
           link: book.link,
-          chapter: [Number(book.chapter)],
+          chapter: book.chapter ? [Number(book.chapter)] : undefined,
           web,
         });
 

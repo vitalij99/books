@@ -35,10 +35,9 @@ const SaveBooksLinks = () => {
       {saveBooks.length > 0 ? (
         <ImageList
           sx={{
-            gridAutoFlow: 'column',
             gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
             gridAutoColumns: 'minmax(200px)',
-            overflow: 'auto',
+            justifyItems: 'center',
           }}
         >
           {saveBooks.map(book => (
