@@ -1,4 +1,5 @@
 'use client';
+import ItemList from '@/app/_compon/ItemList/ItemList';
 import { ListbooksProps } from '@/types/book';
 import {
   Box,
@@ -9,23 +10,27 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { ReactNode } from 'react';
 
 const ListBooksCard = ({ books, web }: ListbooksProps) => {
+  if (books.length === 0) {
+    return <Typography>немає</Typography>;
+  }
   return (
     <Box padding={4}>
       <Typography>{web}</Typography>
-      {books.length > 0 ? (
-        <ImageList
-          sx={{
-            gridAutoFlow: 'column',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
-            gridAutoColumns: 'minmax(200px)',
-            overflow: 'auto',
-          }}
-        >
-          {books.map((book, index) => (
+      <ImageList
+        sx={{
+          gridAutoFlow: 'column',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
+          gridAutoColumns: 'minmax(200px)',
+          overflow: 'auto',
+        }}
+      >
+        <ItemList
+          items={books}
+          renderItem={(book, index) => (
             <Box
-              key={index}
               sx={{
                 display: 'inline-block',
                 p: 2,
@@ -52,11 +57,9 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                 </ImageListItem>
               </Link>
             </Box>
-          ))}
-        </ImageList>
-      ) : (
-        <>немає</>
-      )}
+          )}
+        />
+      </ImageList>
     </Box>
   );
 };

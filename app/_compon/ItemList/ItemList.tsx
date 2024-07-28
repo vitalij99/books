@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ItemListProps<T> {
   items: T[] | undefined;
-  renderItem: (item: T) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
   keyExtractor?: (item: T) => string | number;
 }
 
@@ -18,7 +18,7 @@ const ItemList = <T,>({
     <>
       {items.map((item, index) => (
         <React.Fragment key={keyExtractor ? keyExtractor(item) : index}>
-          {renderItem(item)}
+          {renderItem(item, index)}
         </React.Fragment>
       ))}
     </>

@@ -1,10 +1,11 @@
 'use client';
 import { Box, Link, Pagination, Typography } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { ListbooksLink } from '@/types/book';
 import Loading from '@/app/_compon/Loading/Loading';
+import ItemList from '@/app/_compon/ItemList/ItemList';
 
 const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListbooksLink) => {
@@ -37,18 +38,20 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
           />
         </Box>
         <Box>
-          {corectBooks.map((book, index) => (
-            <Link
-              key={index}
-              href={
-                link
-                  ? `/books/${link}/${book.book}?web=${web}`
-                  : `/books/${book.book}?web=${web}`
-              }
-            >
-              <Typography paddingTop={1}>{book.name}</Typography>
-            </Link>
-          ))}
+          <ItemList
+            items={corectBooks}
+            renderItem={book => (
+              <Link
+                href={
+                  link
+                    ? `/books/${link}/${book.book}?web=${web}`
+                    : `/books/${book.book}?web=${web}`
+                }
+              >
+                <Typography paddingTop={1}>{book.name}</Typography>
+              </Link>
+            )}
+          />
         </Box>
       </Box>
     </Box>
