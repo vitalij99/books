@@ -11,11 +11,12 @@ import {
   Skeleton,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Image from 'next/image';
 import { deleteSaveBooks, getSaveBooks } from '@/lib/db';
+import ItemList from '@/app/_compon/ItemList/ItemList';
 
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
@@ -30,19 +31,24 @@ const SaveBooksLinks = () => {
       setSaveBooks(res);
     }
   };
+
+  if (saveBooks.length === 0) {
+    return <Typography>немає</Typography>;
+  }
   return (
     <Box padding={4}>
-      {saveBooks.length > 0 ? (
-        <ImageList
-          sx={{
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
-            gridAutoColumns: 'minmax(200px)',
-            justifyItems: 'center',
-          }}
-        >
-          {saveBooks.map(book => (
+      <ImageList
+        sx={{
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
+          gridAutoColumns: 'minmax(200px)',
+          justifyItems: 'center',
+        }}
+      >
+        <ItemList
+          items={saveBooks}
+          keyExtractor={book => book.id}
+          renderItem={book => (
             <Box
-              key={book.id}
               sx={{
                 display: 'inline-block',
                 p: 2,
@@ -99,24 +105,21 @@ const SaveBooksLinks = () => {
                   </Typography>
                 </Link>
 
-                {book.chapter &&
-                  book.chapter.map(chapter => {
-                    return (
-                      <Link
-                        key={chapter}
-                        href={`books/${book.title}/${book.chapter}?web=${book.web}`}
-                      >
-                        <Typography>глава {book.chapter}</Typography>
-                      </Link>
-                    );
-                  })}
+                <ItemList
+                  items={book.chapter}
+                  renderItem={chapter => (
+                    <Link
+                      href={`books/${book.title}/${chapter}?web=${book.web}`}
+                    >
+                      <Typography>глава {chapter}</Typography>
+                    </Link>
+                  )}
+                />
               </Box>
             </Box>
-          ))}
-        </ImageList>
-      ) : (
-        <>немає</>
-      )}
+          )}
+        />
+      </ImageList>
     </Box>
   );
 };
