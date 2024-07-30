@@ -1,18 +1,42 @@
-import { Box, Link } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
-interface Navigate {
-  nextPage?: string;
-  nextText?: string;
-  prevPage?: string;
-  prevText?: string;
+interface NavigationPagesProps {
+  title: string;
+  charpter: string;
+  navigate: {
+    nextPage?: string;
+    nextText?: string;
+    prevPage?: string;
+    prevText?: string;
+  };
 }
 
-const NavigationPages = ({ navigate }: { navigate: Navigate }) => {
-  const { nextPage, nextText, prevPage, prevText } = navigate;
+const NavigationPages = ({
+  navigate,
+  title,
+  charpter,
+}: NavigationPagesProps) => {
+  const {
+    nextPage,
+    nextText = 'Наступна',
+    prevPage,
+    prevText = 'Попередня',
+  } = navigate;
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
-      {prevPage && <Link href={prevPage}>{prevText}</Link>}
-      {nextPage && <Link href={nextPage}>{nextText}</Link>}
+      {prevPage && (
+        <Link href={prevPage}>
+          {prevText.length === 0 ? 'Наступна' : prevText}
+        </Link>
+      )}
+      <Typography>
+        {title} параграф {charpter}
+      </Typography>
+      {nextPage && (
+        <Link href={nextPage}>
+          {nextText.length === 0 ? 'Попередня' : nextText}
+        </Link>
+      )}
     </Box>
   );
 };

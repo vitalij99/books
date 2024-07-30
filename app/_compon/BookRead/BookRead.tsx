@@ -22,15 +22,7 @@ interface BookProps {
     prevText?: string;
   };
 }
-const initBook = {
-  book: ['loading'],
-  nav: {
-    nextPage: '',
-    prevPage: '',
-    nextText: '',
-    prevText: '',
-  },
-};
+
 const IS_AUTO_SCROLL = 'isAutoScroll';
 
 const BookRead = ({
@@ -40,7 +32,7 @@ const BookRead = ({
   params: { chapter: string; book: string };
   searchParams: { [key: string]: string | '' };
 }) => {
-  const [data, setData] = useState<BookProps>(initBook);
+  const [data, setData] = useState<BookProps>();
   const [textBook, setTextBook] = useState(['loading']);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
@@ -94,13 +86,13 @@ const BookRead = ({
       setTextBook(allTextBook);
     }
 
-    if (!data.book) {
+    if (!data || !data.book) {
       return;
     }
     if (translate.translate) {
       getTranslate(data.book);
     } else setTextBook(data.book);
-  }, [data.book, translate.translate]);
+  }, [data, translate.translate]);
 
   // autoScroll
   useEffect(() => {
@@ -142,10 +134,13 @@ const BookRead = ({
           book={textBook}
           changeText={changeTextRead}
           autoScroll={{ handleAutoScroll, isAutoScroll }}
-          srcNextPage={data.nav.nextPage}
         />
       </Box>
-      <NavigationPages navigate={data.nav} />
+      <NavigationPages
+        navigate={data.nav}
+        title={params.book}
+        charpter={params.chapter}
+      />
       {textBook.map((text, index) => {
         const sxStyled = textIsRead === index;
         return (
@@ -163,7 +158,11 @@ const BookRead = ({
         );
       })}
 
-      <NavigationPages navigate={data.nav} />
+      <NavigationPages
+        navigate={data.nav}
+        title={params.book}
+        charpter={params.chapter}
+      />
     </Box>
   );
 };

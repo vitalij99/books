@@ -177,7 +177,6 @@ export const useStartReader = ({
 
   return {
     synth,
-
     speak,
     voices,
     paragraf,

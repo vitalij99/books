@@ -22,12 +22,7 @@ import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import Timer from '@/app/_compon/Timer/Timer';
 
-const Reader = ({
-  book,
-  changeText,
-  srcNextPage,
-  autoScroll,
-}: StartReaderProps) => {
+const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
   const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
@@ -35,7 +30,6 @@ const Reader = ({
   const reader = useStartReader({
     book,
     changeText,
-    srcNextPage,
     isreade,
   });
 

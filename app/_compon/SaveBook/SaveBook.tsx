@@ -1,10 +1,5 @@
 'use client';
-import {
-  deleteSaveBooks,
-  getSaveBooks,
-  setSaveBook,
-  updateChapter,
-} from '@/lib/db';
+import { getSaveBooks, setSaveBook, updateChapter } from '@/lib/db';
 
 import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
@@ -107,21 +102,12 @@ const SaveBook = () => {
 
   return (
     <Button onClick={handleSaveBook}>
-      {isAdded ? (
-        <Image
-          src={'/save-book.svg'}
-          alt="зберегти книжку"
-          width={24}
-          height={24}
-        />
-      ) : (
-        <Image
-          src={'/save-book-add.svg'}
-          alt="зберегти книжку"
-          width={24}
-          height={24}
-        />
-      )}
+      <Image
+        src={isAdded ? '/save-book.svg' : '/save-book-add.svg'}
+        alt="зберегти книжку"
+        width={24}
+        height={24}
+      />
     </Button>
   );
 };
