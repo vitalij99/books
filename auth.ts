@@ -15,6 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   adapter: PrismaAdapter(prisma),
   providers: [Google],
 })
