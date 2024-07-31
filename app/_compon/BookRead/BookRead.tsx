@@ -6,12 +6,13 @@ import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import { Box, Typography } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 
 import { getBookFromLinkAll } from '@/back';
 import { TranslateContext } from '@/app/_compon/DarkTranslateProvider/TranslateProvider';
 import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
+import ItemList from '@/app/_compon/ItemList/ItemList';
 
 interface BookProps {
   book: string[];
@@ -141,23 +142,22 @@ const BookRead = ({
         title={params.book}
         charpter={params.chapter}
       />
-      {textBook.map((text, index) => {
-        const sxStyled = textIsRead === index;
-        return (
+      <ItemList
+        items={textBook}
+        renderItem={(text, index) => (
           <Typography
             sx={{
               color: 'var(--text-book)',
               fontSize: 'var(--font-size)',
-              bgcolor: sxStyled ? '#FFFF00' : undefined,
+              bgcolor: textIsRead === index ? '#FFFF00' : undefined,
             }}
-            className={sxStyled ? IS_AUTO_SCROLL : ' '}
+            className={textIsRead === index ? IS_AUTO_SCROLL : ' '}
             key={index}
           >
             {text}
           </Typography>
-        );
-      })}
-
+        )}
+      />
       <NavigationPages
         navigate={data.nav}
         title={params.book}

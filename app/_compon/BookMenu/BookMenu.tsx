@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import MenuStyledText from '@/app/_compon/MenuStyledText/MenuStyledText';
 
+// TODO color
 const BookMenu = () => {
   const [anchor, setAnchor] = useState(false);
 

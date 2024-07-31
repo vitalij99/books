@@ -29,7 +29,7 @@ const NavigationPages = ({
           {prevText.length === 0 ? 'Наступна' : prevText}
         </Link>
       )}
-      <Typography>
+      <Typography color="var(--text-book)">
         {title} параграф {charpter}
       </Typography>
       {nextPage && (
