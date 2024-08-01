@@ -1,14 +1,8 @@
 import { Box, Button, Card, Slider, Typography } from '@mui/material';
 import React from 'react';
 
-import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-
 interface ReaderCardProps {
-  toggleDrawer: (
-    open: boolean
-  ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
   reader: any;
-
   isreade: {
     read: boolean;
     pause: boolean;
@@ -20,7 +14,6 @@ interface ReaderCardProps {
 }
 
 const ReaderCard = ({
-  toggleDrawer,
   reader,
   isreade,
   maxParagraf,
@@ -36,11 +29,7 @@ const ReaderCard = ({
           borderRadius: '10px',
           justifyContent: 'flex-end',
         }}
-      >
-        <Button sx={{ p: 1 }} onClick={toggleDrawer(true)}>
-          <PlayCircleFilledWhiteOutlinedIcon sx={{ width: 45, height: 45 }} />
-        </Button>
-      </Box>
+      ></Box>
 
       {reader && isreade.read && (
         <Box>

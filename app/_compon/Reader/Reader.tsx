@@ -14,18 +14,19 @@ import {
 
 import debounce from 'lodash.debounce';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
 import { READER_KEY, StartReaderProps, initParamsReader } from '@/types/reader';
 import ReaderCard from '@/app/_compon/ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice';
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import Timer from '@/app/_compon/Timer/Timer';
+import { ReaderContext } from '@/app/Providers/ReaderProvider';
 
 const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
-  const [onOpen, setOnOpen] = useState(false);
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
+  const { isOpern, handleOpen } = useContext(ReaderContext);
 
   const reader = useStartReader({
     book,
@@ -81,7 +82,7 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
         return;
       }
 
-      setOnOpen(open);
+      handleOpen(open);
     };
 
   const handleReade = () => {
@@ -158,7 +159,6 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
   return (
     <>
       <ReaderCard
-        toggleDrawer={toggleDrawer}
         reader={reader}
         isreade={isreade}
         handleReadeCancel={handleReadeCancel}
@@ -166,7 +166,7 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
         handleReade={handleReade}
         maxParagraf={book.length}
       />
-      <Drawer anchor="right" open={onOpen} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={isOpern} onClose={toggleDrawer(false)}>
         <Box
           sx={{
             p: '20px',

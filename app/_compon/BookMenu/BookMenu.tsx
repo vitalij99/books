@@ -1,11 +1,10 @@
 'use client';
-import { Box, Button, Drawer } from '@mui/material';
 import { useState } from 'react';
-
 import Image from 'next/image';
+import { Box, Button, Drawer } from '@mui/material';
+
 import MenuStyledText from '@/app/_compon/MenuStyledText/MenuStyledText';
 
-// TODO color
 const BookMenu = () => {
   const [anchor, setAnchor] = useState(false);
 
@@ -33,7 +32,6 @@ const BookMenu = () => {
           <Box
             sx={{
               p: '10px',
-
               flex: 1,
             }}
           >

@@ -6,10 +6,10 @@ import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, STORAGE_KEY } from '@/types/book';
 import { Box, Typography } from '@mui/material';
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { getBookFromLinkAll } from '@/back';
-import { TranslateContext } from '@/app/_compon/DarkTranslateProvider/TranslateProvider';
+import { TranslateContext } from '@/app/Providers/TranslateProvider';
 import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
