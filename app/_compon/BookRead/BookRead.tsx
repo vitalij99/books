@@ -79,7 +79,7 @@ const BookRead = ({
         const element = bookTranslate[index];
         const result = await translateGoogle(element);
         allTextBook.push(...result);
-        if (index % 20 === 0) {
+        if (index === 20) {
           setTextBook(allTextBook);
         }
       }
@@ -152,7 +152,6 @@ const BookRead = ({
               bgcolor: textIsRead === index ? '#FFFF00' : undefined,
             }}
             className={textIsRead === index ? IS_AUTO_SCROLL : ' '}
-            key={index}
           >
             {text}
           </Typography>

@@ -21,38 +21,32 @@ const ReaderCard = ({
   handleChangeParagraf,
   handleReade,
 }: ReaderCardProps) => {
-  return (
-    <Card sx={{ padding: 1 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          borderRadius: '10px',
-          justifyContent: 'flex-end',
-        }}
-      ></Box>
+  if (!reader || !isreade.read) {
+    return <></>;
+  }
 
-      {reader && isreade.read && (
-        <Box>
-          <Button onClick={handleReade}>
-            <Typography>
-              {!isreade.read ? 'Старт' : isreade.pause ? 'Продовжити' : 'Пауза'}
-            </Typography>
-          </Button>
-          <Button onClick={handleReadeCancel}>
-            <Typography>Стоп</Typography>
-          </Button>
-          <Typography>Параграф</Typography>
-          <Slider
-            name="paragraf"
-            onChange={handleChangeParagraf}
-            min={0}
-            step={1}
-            max={maxParagraf}
-            value={reader?.paragraf}
-            valueLabelDisplay="auto"
-          />
-        </Box>
-      )}
+  return (
+    <Card sx={{ p: 1 }}>
+      <Box>
+        <Button onClick={handleReade}>
+          <Typography>
+            {!isreade.read ? 'Старт' : isreade.pause ? 'Продовжити' : 'Пауза'}
+          </Typography>
+        </Button>
+        <Button onClick={handleReadeCancel}>
+          <Typography>Стоп</Typography>
+        </Button>
+        <Typography>Параграф</Typography>
+        <Slider
+          name="paragraf"
+          onChange={handleChangeParagraf}
+          min={0}
+          step={1}
+          max={maxParagraf}
+          value={reader?.paragraf}
+          valueLabelDisplay="auto"
+        />
+      </Box>
     </Card>
   );
 };
