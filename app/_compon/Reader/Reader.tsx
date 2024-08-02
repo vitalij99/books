@@ -21,7 +21,7 @@ import ReaderCard from '@/app/_compon/ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice';
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import Timer from '@/app/_compon/Timer/Timer';
-import { ReaderContext } from '@/app/Providers/ReaderProvider';
+import { ReaderContext } from '@/Providers/ReaderProvider';
 
 const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
   const [isreade, setIsreade] = useState({ read: false, pause: false });

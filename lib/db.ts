@@ -100,6 +100,22 @@ export const updateChapter = async (id: string, chapter: number[]) => {
   }
 };
 
+export const updateChapterLastReader = async (id: string, chapter: number) => {
+    const session = await auth();
+  if (!session?.user || !session?.user?.id) return;
+
+  if (session?.user || session?.user?.id) {
+    const res = await prisma.books.update({
+      where: { id, userId:session.user.id  },
+      data: {
+        lastReadeChapter: chapter,
+      },
+    });
+   
+    return res;
+  }
+}
+
 const transStringToArrChapter = (books: DbBooks[]) => {
   return books.map(book => {
     const allChapter = book.chapter?.split(',');

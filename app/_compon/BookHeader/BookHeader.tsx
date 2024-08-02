@@ -6,7 +6,7 @@ import SaveBook from '@/app/_compon/SaveBook/SaveBook';
 import { Button } from '@mui/material';
 
 import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
-import { ReaderContext } from '@/app/Providers/ReaderProvider';
+import { ReaderContext } from '@/Providers/ReaderProvider';
 
 const BookHeader = () => {
   const [isBooksPath, setIsBooksPath] = useState(false);

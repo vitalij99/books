@@ -1,5 +1,10 @@
 'use client';
-import { getSaveBooks, setSaveBook, updateChapter } from '@/lib/db';
+import {
+  getSaveBooks,
+  setSaveBook,
+  updateChapter,
+  updateChapterLastReader,
+} from '@/lib/db';
 
 import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
@@ -43,6 +48,16 @@ const SaveBook = () => {
       setIsAdded(res ? true : false);
     }
   }, [pathname, saveBooks]);
+
+  useEffect(() => {
+    if (!bookSaveDB || !stringPathname[2]) return;
+
+    const lastReadeChapter = Number(stringPathname[2]);
+
+    if (lastReadeChapter) {
+      updateChapterLastReader(bookSaveDB.id, lastReadeChapter);
+    }
+  }, [bookSaveDB]);
 
   const handleSaveBook = async () => {
     if (!saveBooks || !stringPathname) return;

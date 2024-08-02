@@ -2,13 +2,13 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 import Header from './_compon/Header/Header';
-import DarkProvider from './Providers/DarkProvider';
+import DarkProvider from '../Providers/DarkProvider';
 import { getCookies } from '@/lib/cookis';
 import { THEME } from '@/types/book';
 import { Box } from '@mui/material';
-import TranslateProvider from './Providers/TranslateProvider';
+import TranslateProvider from '../Providers/TranslateProvider';
 import SessionWrapper from '@/app/_compon/SessionWrapper/SessionWrapper';
-import ReaderProvider from '@/app/Providers/ReaderProvider';
+import ReaderProvider from '@/Providers/ReaderProvider';
 
 export const metadata: Metadata = {
   title: 'Books uk',
