@@ -50,14 +50,14 @@ const SaveBook = () => {
   }, [pathname, saveBooks]);
 
   useEffect(() => {
-    if (!bookSaveDB || !stringPathname[2]) return;
+    if (!bookSaveDB || !stringPathname[3]) return;
 
-    const lastReadeChapter = Number(stringPathname[2]);
+    const lastReadeChapter = Number(stringPathname[3]);
 
     if (lastReadeChapter) {
       updateChapterLastReader(bookSaveDB.id, lastReadeChapter);
     }
-  }, [bookSaveDB]);
+  }, [bookSaveDB, stringPathname]);
 
   const handleSaveBook = async () => {
     if (!saveBooks || !stringPathname) return;
