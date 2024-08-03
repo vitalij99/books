@@ -1,32 +1,36 @@
 'use client';
 
 import { login } from '@/lib/auth';
+import { Avatar, Box, Button, SpeedDial, SpeedDialAction } from '@mui/material';
 
 import { useSession, signOut } from 'next-auth/react';
-import Image from 'next/image';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export default function Auth() {
   const { data: session } = useSession();
 
   if (session) {
     return (
-      <>
-        <Image
-          src={session.user?.image as string}
-          width={50}
-          height={50}
-          alt=""
-          className="object-cover rounded-full"
-        />
-
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
+      <Box sx={{ position: 'relative', width: 56, height: 56 }}>
+        <SpeedDial
+          sx={{ position: 'absolute' }}
+          ariaLabel="SpeedDial tooltip example"
+          direction="down"
+          icon={<Avatar src={session.user?.image as string} />}
+        >
+          <SpeedDialAction
+            tooltipTitle="Sign out"
+            onClick={() => signOut()}
+            icon={<HighlightOffIcon />}
+          />
+        </SpeedDial>
+      </Box>
     );
   }
 
   return (
     <>
-      <button onClick={() => login()}>Sign in</button>
+      <Button onClick={() => login()}>Sign in</Button>
     </>
   );
 }
