@@ -1,5 +1,3 @@
-'use client';
-
 import { login } from '@/lib/auth';
 import { Avatar, Box, Button, SpeedDial, SpeedDialAction } from '@mui/material';
 
