@@ -1,33 +1,34 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
 
-import BookMenu from '@/app/_compon/BookMenu/BookMenu';
 import SaveBook from '@/app/_compon/SaveBook/SaveBook';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 
-import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import { ReaderContext } from '@/Providers/ReaderProvider';
+import { ColorModeContext } from '@/Providers/DarkProvider';
 
 const BookHeader = () => {
   const [isBooksPath, setIsBooksPath] = useState(false);
 
   const { handleOpen } = useContext(ReaderContext);
+  const { mode } = useContext(ColorModeContext);
 
   useEffect(() => {
     const pathname = document.location.pathname;
-    setIsBooksPath(pathname.startsWith('/books'));
+    setIsBooksPath(pathname.startsWith('/books/'));
   }, []);
 
   if (!isBooksPath) {
     return <></>;
   }
+
   return (
     <>
-      <Button sx={{ p: 1 }} onClick={() => handleOpen(true)}>
-        <PlayCircleFilledWhiteOutlinedIcon sx={{ width: 45, height: 45 }} />
-      </Button>
+      <IconButton sx={{ p: 1 }} onClick={() => handleOpen(true)}>
+        <PlayCircleOutlineIcon sx={{ width: 45, height: 45, color: '#fff' }} />
+      </IconButton>
       <SaveBook />
-      <BookMenu />
     </>
   );
 };

@@ -5,6 +5,7 @@ import Auth from '@/app/_compon/Auth/Auth';
 import BookHeader from '@/app/_compon/BookHeader/BookHeader';
 import NavLinks from '@/app/_compon/NavLinks/NavLinks';
 import Search from '@/app/_compon/Search/Search';
+import BookMenu from '@/app/_compon/BookMenu/BookMenu';
 
 const Header = () => {
   const trigger = useScrollTrigger();
@@ -18,6 +19,7 @@ const Header = () => {
             <Box sx={{ flexGrow: 1 }} />
 
             <BookHeader />
+            <BookMenu />
             <div>
               <Auth />
             </div>
