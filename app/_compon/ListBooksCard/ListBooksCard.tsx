@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { ReactNode } from 'react';
 
 const ListBooksCard = ({ books, web }: ListbooksProps) => {
   if (books.length === 0) {

@@ -1,7 +1,7 @@
 'use client';
 import { Box, Link, Pagination, Typography } from '@mui/material';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ListbooksLink } from '@/types/book';
 import Loading from '@/app/_compon/Loading/Loading';
