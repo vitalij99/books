@@ -48,7 +48,9 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
                     : `/books/${book.book}?web=${web}`
                 }
               >
-                <Typography paddingTop={1}>{book.name}</Typography>
+                <Typography sx={{ textAlign: 'center', marginTop: 1 }}>
+                  {book.name}
+                </Typography>
               </Link>
             )}
           />
