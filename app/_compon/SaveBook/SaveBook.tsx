@@ -8,6 +8,8 @@ import {
 
 import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
+import { useSession } from 'next-auth/react';
+
 import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,10 @@ interface ExtendedBooksSaveDB extends BooksSaveDB {
 }
 
 const SaveBook = () => {
+  const { data: session } = useSession();
+
+  if (!session) return <></>;
+
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>();
 
   const [stringPathname, setStringPathname] = useState<string[]>([]);
