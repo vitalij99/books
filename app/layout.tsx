@@ -30,7 +30,7 @@ export default async function RootLayout({
             <DarkProvider theme={theme}>
               <ReaderProvider>
                 <Header />
-                <Box sx={{ paddingTop: '90px' }}>{children}</Box>
+                <Box sx={{ paddingTop: '88px' }}>{children}</Box>
               </ReaderProvider>
             </DarkProvider>
           </TranslateProvider>
