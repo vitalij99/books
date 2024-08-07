@@ -1,11 +1,6 @@
 'use server';
-import {
-  getBookFromLink as getBookFromLinkFromNovelFire,
-  getBookLinks as getBookLinksFromNovelFire,
-  getBookSearchByName as getBookSearchByNameFromNovelFire,
-  getBookPopular as getBookPopularFromNovelFire,
-  getBookImageLink as getBookImageLinkFromNovelFire,
-} from './novelfire';
+
+import { novelfire } from '@/back/novelfire';
 import { ListbooksProps } from '@/types/book';
 
 const WEBSITE = {
@@ -20,9 +15,9 @@ export const getBookSearchByNameAll = async ({
   try {
     const result: ListbooksProps[] = [];
 
-    const novelfire = await getBookSearchByNameFromNovelFire({ name });
+    const resNovelfire = await novelfire.getBookSearchByName({ name });
 
-    result.push(novelfire);
+    result.push(resNovelfire);
 
     return result;
   } catch (error) {
@@ -34,9 +29,9 @@ export const getBooksPopularAll = async () => {
   try {
     const result: ListbooksProps[] = [];
 
-    const novelfire = await getBookPopularFromNovelFire();
+    const resNovelfire = await novelfire.getBookPopular();
 
-    result.push(novelfire);
+    result.push(resNovelfire);
 
     return result;
   } catch (error) {
@@ -52,7 +47,7 @@ export const getBookLinksAll = async ({
   web: string;
 }) => {
   if (web === WEBSITE.novelfire) {
-    return await getBookLinksFromNovelFire({ book });
+    return await novelfire.getBookLinks({ book });
   }
 };
 export const getBookFromLinkAll = async ({
@@ -65,7 +60,7 @@ export const getBookFromLinkAll = async ({
   web: string;
 }) => {
   if (web === WEBSITE.novelfire) {
-    return await getBookFromLinkFromNovelFire({ book, chapter });
+    return await novelfire.getBookFromLink({ book, chapter });
   }
 };
 
@@ -78,7 +73,7 @@ export const getBookImageLinkAll = async ({
 }) => {
   try {
     if (web === WEBSITE.novelfire) {
-      return await getBookImageLinkFromNovelFire({ book });
+      return await novelfire.getBookImageLink({ book });
     }
   } catch (error) {
     return undefined;

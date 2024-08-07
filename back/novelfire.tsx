@@ -3,7 +3,7 @@ import { transformInHtml } from '../lib/htmlTransform';
 
 const link = 'https://novelfire.net/';
 
-export const getBookSearchByName = async ({ name }: { name: string }) => {
+const getBookSearchByName = async ({ name }: { name: string }) => {
   // https://novelfire.net/ajax/searchLive?inputContent=Barbarian
   try {
     const linkSearch = `${link}ajax/searchLive?inputContent=${name}`;
@@ -45,7 +45,7 @@ export const getBookSearchByName = async ({ name }: { name: string }) => {
   }
 };
 
-export const getBookPopular = async () => {
+const getBookPopular = async () => {
   // https://novelfire.net/monthly-rank
   try {
     const linkSearch = `${link}monthly-rank`;
@@ -88,7 +88,7 @@ export const getBookPopular = async () => {
   }
 };
 
-export const getBookLinks = async ({ book }: { book: string }) => {
+const getBookLinks = async ({ book }: { book: string }) => {
   const linkBook = `${link}book/${book}/chapters`;
 
   const { data } = await axios.get(linkBook);
@@ -120,7 +120,7 @@ export const getBookLinks = async ({ book }: { book: string }) => {
   return { linksBook, web: 'novelfire', bookHref: book };
 };
 
-export const getBookFromLink = async ({
+const getBookFromLink = async ({
   book,
   chapter,
 }: {
@@ -165,7 +165,7 @@ export const getBookFromLink = async ({
   return { book: allText, nav };
 };
 
-export const getBookImageLink = async ({ book }: { book: string }) => {
+const getBookImageLink = async ({ book }: { book: string }) => {
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
   const linkBook = `${link}book/${book}/`;
 
@@ -190,4 +190,12 @@ export const getBookImageLink = async ({ book }: { book: string }) => {
 const transformLink = (url: string) => {
   const indexOfChapter = url.lastIndexOf('chapter-');
   return url.slice(indexOfChapter + 8);
+};
+
+export const novelfire = {
+  getBookFromLink,
+  getBookLinks,
+  getBookSearchByName,
+  getBookPopular,
+  getBookImageLink,
 };
