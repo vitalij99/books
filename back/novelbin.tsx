@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { transformInHtml } from '../lib/htmlTransform';
 
-const link = 'https://novelmin.com/';
+// TODO novelbin
+const link = 'https://novelbin.com/';
 
 export const getBookSearchByName = async ({ name }: { name: string }) => {
   try {
