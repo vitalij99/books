@@ -1,87 +1,90 @@
-import axios from 'axios';
 import { transformInHtml } from '../lib/htmlTransform';
 
-// TODO novelbin
 const link = 'https://novelbin.com/';
+const web = 'novelbin';
 
-export const getBookSearchByName = async ({ name }: { name: string }) => {
+const getBookSearchByName = async ({ name }: { name: string }) => {
+  // https://novelbin.com/search?keyword=Barbarian
+  const linkSearch = `${link}search?keyword=${name}`;
+
+  const data = await fetch(linkSearch);
+  const textData = await data.text();
+
   try {
-    const linkSearch = `${link}/?s=${name}`;
-
-    const { data } = await axios.get(linkSearch);
-
     const result = transformInHtml({
-      html: data,
-      elem: 'article',
+      html: textData,
+      elem: '.row',
     });
     if (!result) throw new Error();
-
-    const links = result.map(item => item.querySelector('a'));
-
     const linkInfoArray: {
       name: string;
       book: string;
       img: string;
     }[] = [];
 
-    links.forEach(link => {
+    result.forEach(link => {
       if (link !== null) {
-        const name = link.getAttribute('title') || '';
-        const image = link.querySelector('img');
-        const img = image?.getAttribute('src') || '';
-        const href = link.getAttribute('href') || '';
-        const book = href.replace(`https://novelmin.com/series/`, '');
+        const name =
+          link.querySelector('.novel-title a')?.getAttribute('title') || '';
+        const image = link.querySelector('.cover');
+        const modifiedImg = image?.getAttribute('src') || '';
+        const img = modifiedImg.replace(/novel_\d+_\d+/, 'novel');
+        const href =
+          link.querySelector('.novel-title a')?.getAttribute('href') || '';
+        const book = href.replace(`https://novelbin.com/b/`, '');
 
-        linkInfoArray.push({ name, book, img });
+        if (book) {
+          linkInfoArray.push({ name, book, img });
+        }
       }
     });
 
-    return { books: linkInfoArray, web: 'novelmin' };
+    return { books: linkInfoArray, web };
   } catch (error) {
-    console.log(error);
-    return { books: [], web: 'novelmin' };
+    return { books: [], web };
   }
 };
 
-export const getBookLinks = async ({ book }: { book: string }) => {
-  const linkBook = `${link}/series/${book}/`;
+const getBookLinks = async ({ book }: { book: string }) => {
+  // https://novelbin.com/ajax/chapter-archive?novelId=barbarian-quest
+  const linkBook = `${link}ajax/chapter-archive?novelId=${book}`;
+  console.log(linkBook);
+  const res = await fetch(linkBook);
 
-  const { data } = await axios.get(linkBook);
+  const data = await res.text();
 
   const result = transformInHtml({
     html: data,
-    elem: '.eplister.eplisterfull',
+    elem: '.panel-body',
   });
   if (!result) return undefined;
 
-  const element = result[0];
-
-  const textHtmlAll = element.querySelectorAll('ul > li');
+  const textHtmlAll = result[0].querySelectorAll('a');
 
   const linksBook = [];
 
   for (let i = 0; i < textHtmlAll.length; i++) {
     const parag = textHtmlAll[i];
-    const url = parag.querySelector('a')?.getAttribute('href');
+    const url = parag.getAttribute('href');
     if (url) {
       linksBook.push({
         book: transformLink(url),
-        name: url.replace(link, ''),
+        name: parag.getAttribute('title'),
       });
     }
   }
 
-  return { linksBook, web: 'novelmin', bookHref: book };
+  return { linksBook, web, bookHref: book };
 };
 
-export const getBookFromLink = async ({
+const getBookFromLink = async ({
   book,
   chapter,
 }: {
   book: string;
   chapter: string;
 }) => {
-  // https://novelmin.com/surviving-the-game-as-a-barbarian-chapter-607/
+  // https://novelbin.com/surviving-the-game-as-a-barbarian-chapter-607/
   const linkBook = `${link}/${book}-chapter-${chapter}`;
 
   const { data } = await axios.get(linkBook);
@@ -109,15 +112,44 @@ export const getBookFromLink = async ({
   const nextText = nextPage && 'Наступна';
 
   const nav = {
-    nextPage: nextPage && transformLink(nextPage) + '?web=novelmin',
-    prevPage: prevPage && transformLink(prevPage) + '?web=novelmin',
+    nextPage: nextPage && transformLink(nextPage) + '?web=novelbin',
+    prevPage: prevPage && transformLink(prevPage) + '?web=novelbin',
     nextText,
     prevText,
   };
 
   return { book: allText, nav };
 };
+const getBookImageLink = async ({ book }: { book: string }) => {
+  // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
+  const linkBook = `${link}book/${book}/`;
+
+  const { data } = await axios.get(linkBook);
+
+  const result = transformInHtml({
+    html: data,
+    elem: '.fixed-img',
+  });
+
+  if (!result) return undefined;
+
+  const element = result[0];
+
+  const imgWrapp = element.querySelector('img');
+
+  const res = imgWrapp?.getAttribute('data-src');
+
+  return res;
+};
+
 const transformLink = (url: string) => {
-  const indexOfChapter = url.lastIndexOf('-chapter-');
+  const indexOfChapter = url.lastIndexOf('/chapter-');
   return url.slice(indexOfChapter + 9);
+};
+
+export default {
+  getBookSearchByName,
+  getBookLinks,
+  getBookFromLink,
+  getBookImageLink,
 };

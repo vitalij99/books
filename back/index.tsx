@@ -1,10 +1,12 @@
 'use server';
 
+import novelbin from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
 import { ListbooksProps } from '@/types/book';
 
 const WEBSITE = {
   novelfire: 'novelfire',
+  novelbin: 'novelbin',
 };
 
 export const getBookSearchByNameAll = async ({
@@ -12,12 +14,13 @@ export const getBookSearchByNameAll = async ({
 }: {
   name: string;
 }) => {
+  const result: ListbooksProps[] = [];
   try {
-    const result: ListbooksProps[] = [];
-
     const resNovelfire = await novelfire.getBookSearchByName({ name });
 
     result.push(resNovelfire);
+    const resNovelbin = await novelbin.getBookSearchByName({ name });
+    result.push(resNovelbin);
 
     return result;
   } catch (error) {
@@ -49,6 +52,9 @@ export const getBookLinksAll = async ({
   if (web === WEBSITE.novelfire) {
     return await novelfire.getBookLinks({ book });
   }
+  if (web === WEBSITE.novelbin) {
+    return await novelbin.getBookLinks({ book });
+  }
 };
 export const getBookFromLinkAll = async ({
   chapter,
@@ -59,6 +65,9 @@ export const getBookFromLinkAll = async ({
   chapter: string;
   web: string;
 }) => {
+  if (web === WEBSITE.novelfire) {
+    return await novelfire.getBookFromLink({ book, chapter });
+  }
   if (web === WEBSITE.novelfire) {
     return await novelfire.getBookFromLink({ book, chapter });
   }
