@@ -77,6 +77,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
   return { linksBook, web, bookHref: book };
 };
 
+// TODO getBookFromLink
 const getBookFromLink = async ({
   book,
   chapter,
@@ -124,7 +125,8 @@ const getBookImageLink = async ({ book }: { book: string }) => {
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
   const linkBook = `${link}book/${book}/`;
 
-  const { data } = await axios.get(linkBook);
+  const ress = await fetch(linkBook);
+  const data = await ress.text();
 
   const result = transformInHtml({
     html: data,
