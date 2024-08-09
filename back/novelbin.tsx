@@ -48,7 +48,7 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
 const getBookLinks = async ({ book }: { book: string }) => {
   // https://novelbin.com/ajax/chapter-archive?novelId=barbarian-quest
   const linkBook = `${link}ajax/chapter-archive?novelId=${book}`;
-  console.log(linkBook);
+
   const res = await fetch(linkBook);
 
   const data = await res.text();
@@ -88,7 +88,9 @@ const getBookFromLink = async ({
   // https://novelbin.com/surviving-the-game-as-a-barbarian-chapter-607/
   const linkBook = `${link}/${book}-chapter-${chapter}`;
 
-  const { data } = await axios.get(linkBook);
+  const res = await fetch(linkBook);
+
+  const data = await res.text();
 
   const result = transformInHtml({
     html: data,
