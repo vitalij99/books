@@ -89,7 +89,7 @@ export const getBookImageLinkAll = async ({
       return await novelfire.getBookImageLink({ book });
     }
     if (web === WEBSITE.novelbin) {
-      return await novelbin.getBookLinks({ book });
+      return await novelbin.getBookImageLink({ book });
     }
   } catch (error) {
     return undefined;

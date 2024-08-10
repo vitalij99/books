@@ -40,10 +40,10 @@ export interface BooksSaveDB {
   title: string;
   link: string;
   web: string;
-  chapter: number[] | undefined;
+  chapter: string[] | undefined;
   image: string | null;
   userId: string;
-  lastReadeChapter: number | undefined;
+  lastReadeChapter: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

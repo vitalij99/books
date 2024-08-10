@@ -15,7 +15,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface ExtendedBooksSaveDB extends BooksSaveDB {
-  thisChapter?: number;
+  thisChapter?: string;
 }
 
 const SaveBook = () => {
@@ -58,7 +58,7 @@ const SaveBook = () => {
   useEffect(() => {
     if (!bookSaveDB || !stringPathname[3]) return;
 
-    const lastReadeChapter = Number(stringPathname[3]);
+    const lastReadeChapter = stringPathname[3];
 
     if (lastReadeChapter) {
       updateChapterLastReader(bookSaveDB.id, lastReadeChapter);
@@ -88,9 +88,9 @@ const SaveBook = () => {
         title: stringPathname[2],
         link: `books/${stringPathname[2]}?web=${web}`,
         web,
-        chapter: stringPathname[3] ? Number(stringPathname[3]) : undefined,
+        chapter: stringPathname[3] ? stringPathname[3] : undefined,
       };
-
+      console.log(stringPathname);
       if (bookSaveDB && book.chapter) {
         const newCharpters = bookSaveDB.chapter
           ? [...bookSaveDB.chapter, book.chapter]
@@ -104,7 +104,7 @@ const SaveBook = () => {
         const newBook = await setSaveBook({
           title: book.title,
           link: book.link,
-          chapter: book.chapter ? [Number(book.chapter)] : undefined,
+          chapter: book.chapter ? [book.chapter] : undefined,
           web,
         });
 
@@ -142,6 +142,6 @@ const findSaveBook = (saveBooks: BooksSaveDB[], pathnameBook: string[]) => {
 };
 const findSaveChapter = (book: BooksSaveDB, pathnameBook: string[]) => {
   if (book.title === pathnameBook[2]) {
-    return book.chapter?.find(chapter => chapter === Number(pathnameBook[3]));
+    return book.chapter?.find(chapter => chapter === pathnameBook[3]);
   }
 };

@@ -6,7 +6,7 @@ import { BooksSaveDB } from '@/types/book';
 interface SetSaveBook {
   title: string;
   link: string;
-  chapter?: number[];
+  chapter?: string[];
   web: string;
 }
 type DbBooksBase = Omit<BooksSaveDB, 'chapter'>;
@@ -44,8 +44,8 @@ export const setSaveBook = async ({
 
     const res = await prisma.books.create({ data });
     const allChapter = res.chapter?.split(',');
-    const chapterArr = allChapter?.map(chapter => Number(chapter));
-    return { ...res, chapter: chapterArr };
+ 
+    return { ...res, chapter: allChapter };
   } catch (error) {
     return undefined;
   }
@@ -83,7 +83,7 @@ export const deleteSaveBooks = async (id: string) => {
   }
 };
 
-export const updateChapter = async (id: string, chapter: number[]) => {
+export const updateChapter = async (id: string, chapter: string[]) => {
   const session = await auth();
   if (!session?.user || !session?.user?.id) return;
 
@@ -94,13 +94,12 @@ export const updateChapter = async (id: string, chapter: number[]) => {
         chapter: chapter.toString(),
       },
     });
-    const allChapter = deleteChapter.chapter?.split(',');
-    const chapters = allChapter?.map(chapter => Number(chapter));
-    return { ...deleteChapter, chapter: chapters };
+    const allChapter = deleteChapter.chapter?.split(','); 
+    return { ...deleteChapter, chapter: allChapter };
   }
 };
 
-export const updateChapterLastReader = async (id: string, chapter: number) => {
+export const updateChapterLastReader = async (id: string, chapter: string) => {
     const session = await auth();
   if (!session?.user || !session?.user?.id) return;
 
@@ -118,8 +117,7 @@ export const updateChapterLastReader = async (id: string, chapter: number) => {
 
 const transStringToArrChapter = (books: DbBooks[]) => {
   return books.map(book => {
-    const allChapter = book.chapter?.split(',');
-    const chapter = allChapter?.map(chapter => Number(chapter));
+    const chapter = book.chapter?.split(',');  
     return { ...book, chapter };
   });
 };
