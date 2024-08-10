@@ -77,7 +77,6 @@ const getBookLinks = async ({ book }: { book: string }) => {
   return { linksBook, web, bookHref: book };
 };
 
-// TODO getBookFromLink
 const getBookFromLink = async ({
   book,
   chapter,
@@ -85,38 +84,44 @@ const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
-  // https://novelbin.com/surviving-the-game-as-a-barbarian-chapter-607/
-  const linkBook = `${link}/${book}-chapter-${chapter}`;
-
+  // https://novelbjn.novelupdates.net/book/card-apprentice-daily-log/chapter-3
+  const linkBook = `https://novelbjn.novelupdates.net/book/${book}/chapter-${chapter}`;
   const res = await fetch(linkBook);
 
   const data = await res.text();
 
   const result = transformInHtml({
     html: data,
-    elem: '.epwrapper',
+    elem: 'body',
   });
+
   if (!result) return undefined;
 
-  const element = result[0];
-
-  const textHtmlAll = element.querySelectorAll('.entry-content > p');
+  const textHtmlAll = result[0].querySelectorAll('#chr-content > p');
 
   const allText = textHtmlAll.map(parag => parag.textContent);
 
   // next page
-  const pages = element.querySelectorAll('.left a');
-  const prevPageInit = pages[0]?.getAttribute('href');
-  const nextPageInit = pages[2]?.getAttribute('href');
-  const prevPage = prevPageInit?.startsWith('https') ? prevPageInit : undefined;
-  const nextPage = nextPageInit?.startsWith('https') ? nextPageInit : undefined;
+  const getPageData = (selector: string) => {
+    const page = result[0].querySelector(selector);
+    const href = page?.getAttribute('href');
+    return href?.startsWith('https')
+      ? { href, title: page?.getAttribute('title') }
+      : {};
+  };
 
-  const prevText = prevPage && 'Попередння';
-  const nextText = nextPage && 'Наступна';
+  const prevData = getPageData('#prev_chap');
+  const nextData = getPageData('#next_chap');
+
+  const prevPage = prevData.href;
+  const nextPage = nextData.href;
+
+  const prevText = prevPage ? prevData.title : 'Попередння';
+  const nextText = nextPage ? nextData.title : 'Наступна';
 
   const nav = {
-    nextPage: nextPage && transformLink(nextPage) + '?web=novelbin',
-    prevPage: prevPage && transformLink(prevPage) + '?web=novelbin',
+    nextPage: nextPage && transformLink(nextPage) + `?web=${web}`,
+    prevPage: prevPage && transformLink(prevPage) + `?web=${web}`,
     nextText,
     prevText,
   };
@@ -124,26 +129,8 @@ const getBookFromLink = async ({
   return { book: allText, nav };
 };
 const getBookImageLink = async ({ book }: { book: string }) => {
-  // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
-  const linkBook = `${link}book/${book}/`;
-
-  const ress = await fetch(linkBook);
-  const data = await ress.text();
-
-  const result = transformInHtml({
-    html: data,
-    elem: '.fixed-img',
-  });
-
-  if (!result) return undefined;
-
-  const element = result[0];
-
-  const imgWrapp = element.querySelector('img');
-
-  const res = imgWrapp?.getAttribute('data-src');
-
-  return res;
+  // https://novelbin.com/media/novel/card-apprentice-daily-log.jpg
+  return `${link}media/novel/${book}.jpg`;
 };
 
 const transformLink = (url: string) => {

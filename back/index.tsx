@@ -65,11 +65,15 @@ export const getBookFromLinkAll = async ({
   chapter: string;
   web: string;
 }) => {
-  if (web === WEBSITE.novelfire) {
-    return await novelfire.getBookFromLink({ book, chapter });
-  }
-  if (web === WEBSITE.novelfire) {
-    return await novelfire.getBookFromLink({ book, chapter });
+  try {
+    if (web === WEBSITE.novelfire) {
+      return await novelfire.getBookFromLink({ book, chapter });
+    }
+    if (web === WEBSITE.novelbin) {
+      return await novelbin.getBookFromLink({ book, chapter });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -83,6 +87,9 @@ export const getBookImageLinkAll = async ({
   try {
     if (web === WEBSITE.novelfire) {
       return await novelfire.getBookImageLink({ book });
+    }
+    if (web === WEBSITE.novelbin) {
+      return await novelbin.getBookLinks({ book });
     }
   } catch (error) {
     return undefined;
