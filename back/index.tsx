@@ -36,6 +36,10 @@ export const getBooksPopularAll = async () => {
 
     result.push(resNovelfire);
 
+    const resNovelbin = await novelbin.getBookPopular();
+
+    result.push(resNovelbin);
+
     return result;
   } catch (error) {
     return [{ books: [], web: 'novelfire' }];

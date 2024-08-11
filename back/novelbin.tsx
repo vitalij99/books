@@ -138,9 +138,52 @@ const transformLink = (url: string) => {
   return url.slice(indexOfChapter + 9);
 };
 
+const getBookPopular = async () => {
+  // https://novelbin.com/sort/top-hot-novel
+  const linkSearch = `${link}sort/top-hot-novel`;
+
+  const data = await fetch(linkSearch);
+  const textData = await data.text();
+
+  try {
+    const result = transformInHtml({
+      html: textData,
+      elem: '.row',
+    });
+    if (!result) throw new Error();
+    const linkInfoArray: {
+      name: string;
+      book: string;
+      img: string;
+    }[] = [];
+
+    result.forEach(link => {
+      if (link !== null) {
+        const name =
+          link.querySelector('.novel-title a')?.getAttribute('title') || '';
+        const image = link.querySelector('.cover');
+        const modifiedImg = image?.getAttribute('src') || '';
+        const img = modifiedImg.replace(/novel_\d+_\d+/, 'novel');
+        const href =
+          link.querySelector('.novel-title a')?.getAttribute('href') || '';
+        const book = href.replace(`https://novelbin.com/b/`, '');
+
+        if (book) {
+          linkInfoArray.push({ name, book, img });
+        }
+      }
+    });
+
+    return { books: linkInfoArray, web };
+  } catch (error) {
+    return { books: [], web };
+  }
+};
+
 export default {
   getBookSearchByName,
   getBookLinks,
   getBookFromLink,
   getBookImageLink,
+  getBookPopular,
 };
