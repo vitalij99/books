@@ -34,7 +34,7 @@ const SaveBooksLinks = () => {
   };
   const handleDeleteCharpter = async (
     bookId: string,
-    deleteChapter: number
+    deleteChapter: string
   ) => {
     let bookIndex = 0;
     const book = saveBooks.find((item, index) => {

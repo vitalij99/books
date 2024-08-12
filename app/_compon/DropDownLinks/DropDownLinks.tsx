@@ -17,7 +17,7 @@ interface DropDownLinksProps {
   book: BooksSaveDB;
   handleDeleteCharpter: (
     bookId: string,
-    deleteChapter: number
+    deleteChapter: string
   ) => Promise<void>;
 }
 
@@ -30,6 +30,7 @@ const DropDownLinks = ({ book, handleDeleteCharpter }: DropDownLinksProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <Box sx={{ p: 1, width: '200px' }}>
       <Link
@@ -37,46 +38,50 @@ const DropDownLinks = ({ book, handleDeleteCharpter }: DropDownLinksProps) => {
       >
         <Typography>Остання прочитана {book.lastReadeChapter}</Typography>
       </Link>
-      {book.chapter && book.chapter.length !== 0 && (
-        <>
-          <Button
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-          >
-            Закладки
-          </Button>
-          <Menu
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-            anchorEl={anchorEl}
-          >
-            <ItemList
-              items={book.chapter}
-              renderItem={chapter => (
-                <MenuItem
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <Link href={`books/${book.title}/${chapter}?web=${book.web}`}>
-                    <Typography>глава {chapter}</Typography>
-                  </Link>
-
-                  <IconButton
-                    onClick={() => handleDeleteCharpter(book.id, chapter)}
-                    aria-label="delete"
+      {book.chapter &&
+        book.chapter.length !== 0 &&
+        book.chapter[0].length !== 0 && (
+          <>
+            <Button
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              Закладки
+            </Button>
+            <Menu
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              anchorEl={anchorEl}
+            >
+              <ItemList
+                items={book.chapter}
+                renderItem={chapter => (
+                  <MenuItem
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
                   >
-                    <DeleteIcon />
-                  </IconButton>
-                </MenuItem>
-              )}
-            />
-          </Menu>
-        </>
-      )}
+                    <Link
+                      href={`books/${book.title}/${chapter}?web=${book.web}`}
+                    >
+                      <Typography>глава {chapter}</Typography>
+                    </Link>
+
+                    <IconButton
+                      onClick={() => handleDeleteCharpter(book.id, chapter)}
+                      aria-label="delete"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </MenuItem>
+                )}
+              />
+            </Menu>
+          </>
+        )}
     </Box>
   );
 };
