@@ -162,7 +162,7 @@ const getBookPopular = async () => {
         const name =
           link.querySelector('.novel-title a')?.getAttribute('title') || '';
         const image = link.querySelector('.cover');
-        const modifiedImg = image?.getAttribute('src') || '';
+        const modifiedImg = image?.getAttribute('data-src') || '';
         const img = modifiedImg.replace(/novel_\d+_\d+/, 'novel');
         const href =
           link.querySelector('.novel-title a')?.getAttribute('href') || '';
