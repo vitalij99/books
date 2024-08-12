@@ -1,15 +1,7 @@
 
 { 
-  "extends": [
-    "extends: next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "paths": ["."]
-      }
-    }
-  }
+  "extends": [    
+    "next/core-web-vitals",
+     "prettier"
+  ]
 }

@@ -21,8 +21,6 @@ interface ExtendedBooksSaveDB extends BooksSaveDB {
 const SaveBook = () => {
   const { data: session } = useSession();
 
-  if (!session) return <></>;
-
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>();
 
   const [stringPathname, setStringPathname] = useState<string[]>([]);
@@ -34,8 +32,9 @@ const SaveBook = () => {
   const search = useSearchParams();
 
   useEffect(() => {
+    if (!session) return;
     getSaveBooks().then(data => setSaveBooks(data ? data : []));
-  }, [pathname]);
+  }, [pathname, session]);
 
   useEffect(() => {
     if (!saveBooks) return;
@@ -117,7 +116,7 @@ const SaveBook = () => {
     }
   };
 
-  if (stringPathname.length < 3) {
+  if (!session || stringPathname.length < 3) {
     return <></>;
   }
 
