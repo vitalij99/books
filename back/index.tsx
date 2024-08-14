@@ -2,11 +2,13 @@
 
 import novelbin from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
+import { webnovel } from '@/back/webnovel';
 import { ListbooksProps } from '@/types/book';
 
 const WEBSITE = {
   novelfire: 'novelfire',
   novelbin: 'novelbin',
+  webnovel: 'webnovel',
 };
 
 export const getBookSearchByNameAll = async ({
@@ -21,6 +23,8 @@ export const getBookSearchByNameAll = async ({
     result.push(resNovelfire);
     const resNovelbin = await novelbin.getBookSearchByName({ name });
     result.push(resNovelbin);
+    const resWebnovel = await webnovel.getBookSearchByName({ name });
+    result.push(resWebnovel);
 
     return result;
   } catch (error) {

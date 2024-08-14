@@ -28,11 +28,12 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
         if (!link) return;
         const name = link.getAttribute('title') || '';
         const img = link.querySelector('img')?.getAttribute('src') || '';
+        const updatedImgSrc = img.startsWith('https:') ? img : `https:${img}`;
         const href = link.getAttribute('href') || '';
         const book = href.replace(`/book/`, '');
 
         if (book) {
-          linkInfoArray.push({ name, book, img });
+          linkInfoArray.push({ name, book, img: updatedImgSrc });
         }
       }
     });
@@ -44,8 +45,8 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
 };
 // TODO getBookLinks
 const getBookLinks = async ({ book }: { book: string }) => {
-  // https://novelbin.com/ajax/chapter-archive?novelId=barbarian-quest
-  const linkBook = `${link}ajax/chapter-archive?novelId=${book}`;
+  // https://www.webnovel.com/book/endless-path-infinite-cosmos_11766562205519505
+  const linkBook = `${link}book/${book}`;
 
   const res = await fetch(linkBook);
 
@@ -178,7 +179,7 @@ const getBookPopular = async () => {
   }
 };
 
-export default {
+export const webnovel = {
   getBookSearchByName,
   getBookLinks,
   getBookFromLink,
