@@ -59,11 +59,15 @@ export const getBookLinksAll = async ({
   book: string;
   web: string;
 }) => {
+  console.log(book);
   if (web === WEBSITE.novelfire) {
     return await novelfire.getBookLinks({ book });
   }
   if (web === WEBSITE.novelbin) {
     return await novelbin.getBookLinks({ book });
+  }
+  if (web === WEBSITE.scribblehub) {
+    return await scribblehub.getBookLinks({ book });
   }
 };
 export const getBookFromLinkAll = async ({
@@ -75,12 +79,20 @@ export const getBookFromLinkAll = async ({
   chapter: string;
   web: string;
 }) => {
+  console.log({
+    chapter,
+    book,
+    web,
+  });
   try {
     if (web === WEBSITE.novelfire) {
       return await novelfire.getBookFromLink({ book, chapter });
     }
     if (web === WEBSITE.novelbin) {
       return await novelbin.getBookFromLink({ book, chapter });
+    }
+    if (web === WEBSITE.scribblehub) {
+      return await scribblehub.getBookFromLink({ book, chapter });
     }
   } catch (error) {
     console.log(error);

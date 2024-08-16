@@ -69,7 +69,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
     if (url) {
       linksBook.push({
         book: transformLink(url),
-        name: parag.getAttribute('title'),
+        name: parag.getAttribute('title') || parag.textContent,
       });
     }
   }

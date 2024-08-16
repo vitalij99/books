@@ -31,7 +31,11 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
         if (!link) return;
         const name = link.textContent || '';
         const href = link.getAttribute('href') || '';
-        const book = href.replace(`https://www.scribblehub.com/series/`, '');
+        const bookTransform = href.replace(
+          `https://www.scribblehub.com/series/`,
+          ''
+        );
+        const book = bookTransform.replace(`/`, '_');
 
         if (book) {
           linkInfoArray.push({ name, book, img });
@@ -44,18 +48,28 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
     return { books: [], web };
   }
 };
-// TODO getBookLinks
+
 const getBookLinks = async ({ book }: { book: string }) => {
-  // https://www.webnovel.com/book/endless-path-infinite-cosmos_11766562205519505
-  const linkBook = `${link}book/${book}`;
+  //  https://www.scribblehub.com/wp-admin/admin-ajax.php
 
-  const res = await fetch(linkBook);
+  const linkBook = `${link}wp-admin/admin-ajax.php`;
 
-  const data = await res.text();
+  const formData = new FormData();
+  formData.append('action', 'wi_getreleases_pagination');
+  formData.append('pagenum', '1');
+  formData.append('mypostid', book);
+
+  const data = await fetch(linkBook, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Cookie: 'toc_show=3000',
+    },
+  }).then(response => response.text());
 
   const result = transformInHtml({
     html: data,
-    elem: '.panel-body',
+    elem: '.main',
   });
   if (!result) return undefined;
 
@@ -69,14 +83,14 @@ const getBookLinks = async ({ book }: { book: string }) => {
     if (url) {
       linksBook.push({
         book: transformLink(url),
-        name: parag.getAttribute('title'),
+        name: parag.textContent,
       });
     }
   }
 
   return { linksBook, web, bookHref: book };
 };
-
+// TODO getBookFromLink
 const getBookFromLink = async ({
   book,
   chapter,
@@ -134,7 +148,8 @@ const getBookImageLink = async ({ book }: { book: string }) => {
 };
 
 const transformLink = (url: string) => {
-  const indexOfChapter = url.lastIndexOf('/chapter-');
+  // https://www.scribblehub.com/read/154400-stray-cat-strut/chapter/1048974/
+  const indexOfChapter = url.lastIndexOf('/chapter/');
   return url.slice(indexOfChapter + 9);
 };
 
