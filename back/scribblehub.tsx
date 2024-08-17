@@ -90,7 +90,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
 
   return { linksBook, web, bookHref: book };
 };
-// TODO getBookFromLink
+
 const getBookFromLink = async ({
   book,
   chapter,
@@ -98,40 +98,36 @@ const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
-  // https://novelbjn.novelupdates.net/book/card-apprentice-daily-log/chapter-3
-  const linkBook = `https://novelbjn.novelupdates.net/book/${book}/chapter-${chapter}`;
+  // https://www.scribblehub.com/read/1015814-i-sting-pokemon-poison-type-specialist/chapter/1187559/
+
+  const linkBook = `${link}read/${book.replace(`_`, '-')}/chapter/${chapter}`;
+
   const res = await fetch(linkBook);
 
   const data = await res.text();
 
   const result = transformInHtml({
     html: data,
-    elem: 'body',
+    elem: '#chp_contents',
   });
 
   if (!result) return undefined;
 
-  const textHtmlAll = result[0].querySelectorAll('#chr-content > p');
+  const textHtmlAll = result[0].querySelectorAll('  p');
 
   const allText = textHtmlAll.map(parag => parag.textContent);
 
   // next page
   const getPageData = (selector: string) => {
     const page = result[0].querySelector(selector);
-    const href = page?.getAttribute('href');
-    return href?.startsWith('https')
-      ? { href, title: page?.getAttribute('title') }
-      : {};
+    return page?.getAttribute('href');
   };
 
-  const prevData = getPageData('#prev_chap');
-  const nextData = getPageData('#next_chap');
+  const prevPage = getPageData('.btn-prev');
+  const nextPage = getPageData('.btn-next');
 
-  const prevPage = prevData.href;
-  const nextPage = nextData.href;
-
-  const prevText = prevPage ? prevData.title : 'Попередння';
-  const nextText = nextPage ? nextData.title : 'Наступна';
+  const prevText = 'Попередння';
+  const nextText = 'Наступна';
 
   const nav = {
     nextPage: nextPage && transformLink(nextPage) + `?web=${web}`,
@@ -143,14 +139,23 @@ const getBookFromLink = async ({
   return { book: allText, nav };
 };
 const getBookImageLink = async ({ book }: { book: string }) => {
-  // https://novelbin.com/media/novel/card-apprentice-daily-log.jpg
-  return `${link}media/novel/${book}.jpg`;
-};
+  // https://www.scribblehub.com/series/1015814/i-sting-pokemon-poison-type-specialist/
 
-const transformLink = (url: string) => {
-  // https://www.scribblehub.com/read/154400-stray-cat-strut/chapter/1048974/
-  const indexOfChapter = url.lastIndexOf('/chapter/');
-  return url.slice(indexOfChapter + 9);
+  const linkBook = `${link}series/${book.replace(`_`, '/')}`;
+
+  const res = await fetch(linkBook);
+
+  const data = await res.text();
+
+  const result = transformInHtml({
+    html: data,
+    elem: '.novel-cover',
+  });
+
+  if (!result) return undefined;
+
+  const image = result[0].querySelector('img')?.getAttribute('src');
+  return image;
 };
 
 const getBookPopular = async () => {
@@ -193,6 +198,13 @@ const getBookPopular = async () => {
   } catch (error) {
     return { books: [], web };
   }
+};
+
+const transformLink = (url: string) => {
+  // https://www.scribblehub.com/read/154400-stray-cat-strut/chapter/1048974/
+  const indexOfChapter = url.lastIndexOf('/chapter/');
+
+  return url.slice(indexOfChapter + 9);
 };
 
 export const scribblehub = {
