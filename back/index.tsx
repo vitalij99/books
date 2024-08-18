@@ -6,7 +6,7 @@ import { scribblehub } from '@/back/scribblehub';
 
 import { ListbooksProps } from '@/types/book';
 
-const WEBSITE = {
+export const WEBSITE = {
   novelfire: 'novelfire',
   novelbin: 'novelbin',
   scribblehub: scribblehub.web,

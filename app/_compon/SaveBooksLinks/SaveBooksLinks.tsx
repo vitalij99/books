@@ -18,6 +18,7 @@ import Image from 'next/image';
 import { deleteSaveBooks, getSaveBooks, updateChapter } from '@/lib/db';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 import DropDownLinks from '@/app/_compon/DropDownLinks/DropDownLinks';
+import SaveOptionsBooks from '@/app/_compon/SaveOptionsBooks/SaveOptionsBooks';
 
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
@@ -63,6 +64,7 @@ const SaveBooksLinks = () => {
   }
   return (
     <Box padding={4}>
+      <SaveOptionsBooks />
       <ImageList
         sx={{
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
