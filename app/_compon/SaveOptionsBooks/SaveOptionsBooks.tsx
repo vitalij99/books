@@ -1,4 +1,4 @@
-import { WEBSITE } from '@/back';
+import { WEBSITE_KEY } from '@/types/back';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 
@@ -20,9 +20,15 @@ const SaveOptionsBooks = () => {
           onChange={handleChange}
         >
           <MenuItem value={'All'}>Всі</MenuItem>
-          <MenuItem value={WEBSITE.novelbin}>{WEBSITE.novelbin}</MenuItem>
-          <MenuItem value={WEBSITE.novelfire}>{WEBSITE.novelfire}</MenuItem>
-          <MenuItem value={WEBSITE.scribblehub}>{WEBSITE.scribblehub}</MenuItem>
+          <MenuItem value={WEBSITE_KEY.novelbin}>
+            {WEBSITE_KEY.novelbin}
+          </MenuItem>
+          <MenuItem value={WEBSITE_KEY.novelfire}>
+            {WEBSITE_KEY.novelfire}
+          </MenuItem>
+          <MenuItem value={WEBSITE_KEY.scribblehub}>
+            {WEBSITE_KEY.scribblehub}
+          </MenuItem>
         </Select>
       </FormControl>
     </>
