@@ -1,10 +1,7 @@
-
-export enum WEBSITE {
- 
+export enum WEBSITE { 
   novelfire= 'novelfire',
   novelbin= 'novelbin',
   scribblehub= "scribblehub"
-
 }
 
 export const WEBSITE_KEY = {

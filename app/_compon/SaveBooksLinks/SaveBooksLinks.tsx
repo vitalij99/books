@@ -20,12 +20,19 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 import DropDownLinks from '@/app/_compon/DropDownLinks/DropDownLinks';
 import SaveOptionsBooks from '@/app/_compon/SaveOptionsBooks/SaveOptionsBooks';
 
+// TODO showBooks
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
+  const [showBooks, setShowBooks] = useState<BooksSaveDB[]>([]);
 
   useEffect(() => {
-    getSaveBooks().then(prev => (prev ? setSaveBooks(prev) : []));
+    getSaveBooks().then(prev => {
+      prev ? setSaveBooks(prev) : [];
+      prev ? setShowBooks(prev) : [];
+    });
   }, []);
+
+  const selectShowBooks = () => {};
 
   const handleDeleteBook = async (bookId: string) => {
     const res = await deleteSaveBooks(bookId);
