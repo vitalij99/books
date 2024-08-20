@@ -80,7 +80,7 @@ const SaveBooksLinks = () => {
         }}
       >
         <ItemList
-          items={saveBooks}
+          items={showBooks}
           keyExtractor={book => book.id}
           renderItem={book => (
             <Box

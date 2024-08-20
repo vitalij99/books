@@ -51,14 +51,14 @@ export const setSaveBook = async ({
   }
 };
 
-export const getSaveBooks = async () => {
+export const getSaveBooks = async (web?:string) => {
   try {
     const session = await auth();
     if (!session?.user || !session?.user?.id) return;
 
     if (session?.user || session?.user?.id) {
       const res = await prisma.books.findMany({
-        where: { userId: session.user.id },
+        where: { userId: session.user.id,web },
       });
 
       const newRes = transStringToArrChapter(res);
