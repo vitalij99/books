@@ -32,7 +32,9 @@ const SaveBooksLinks = () => {
     });
   }, []);
 
-  const selectShowBooks = () => {};
+  const selectShowBooks = (web: string) => {
+    setShowBooks(prev => prev.filter(book => book.web === web));
+  };
 
   const handleDeleteBook = async (bookId: string) => {
     const res = await deleteSaveBooks(bookId);
@@ -71,7 +73,7 @@ const SaveBooksLinks = () => {
   }
   return (
     <Box padding={4}>
-      <SaveOptionsBooks />
+      <SaveOptionsBooks selectShowBooks={selectShowBooks} />
       <ImageList
         sx={{
           gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',

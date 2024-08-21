@@ -2,11 +2,16 @@ import { WEBSITE_KEY } from '@/types/back';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 
-const SaveOptionsBooks = () => {
+interface SaveOptionsBooksProps {
+  selectShowBooks: (web: string) => void;
+}
+
+const SaveOptionsBooks = ({ selectShowBooks }: SaveOptionsBooksProps) => {
   const [web, setWeb] = useState('Всі');
 
   const handleChange = (value: any) => {
     setWeb(value);
+    selectShowBooks(value);
   };
   return (
     <>
