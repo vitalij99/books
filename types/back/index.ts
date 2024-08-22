@@ -4,8 +4,3 @@ export enum WEBSITE {
   scribblehub= "scribblehub"
 }
 
-export const WEBSITE_KEY = {
-  novelbin:  WEBSITE.novelbin,
-  novelfire:  WEBSITE.novelfire,
-  scribblehub:  WEBSITE.scribblehub,
-}
