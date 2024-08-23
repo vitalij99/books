@@ -7,24 +7,23 @@ interface SaveOptionsBooksProps {
 }
 
 const SaveOptionsBooks = ({ selectShowBooks }: SaveOptionsBooksProps) => {
-  const [web, setWeb] = useState('Всі');
+  const [web, setWeb] = useState('all');
 
-  const handleChange = (value: any) => {
-    setWeb(value);
-    selectShowBooks(value);
+  const handleChange = ({ target }: any) => {
+    setWeb(target.value);
+    selectShowBooks(target.value);
   };
   return (
     <>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Сайт</InputLabel>
+        <InputLabel id="select-save-options-books">Сайт</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          labelId="select-save-options-books"
           value={web}
           label="Сайт"
           onChange={handleChange}
         >
-          <MenuItem value={'All'}>Всі</MenuItem>
+          <MenuItem value={'all'}>Всі</MenuItem>
           <MenuItem value={WEBSITE.novelbin}>{WEBSITE.novelbin}</MenuItem>
           <MenuItem value={WEBSITE.novelfire}>{WEBSITE.novelfire}</MenuItem>
           <MenuItem value={WEBSITE.scribblehub}>{WEBSITE.scribblehub}</MenuItem>

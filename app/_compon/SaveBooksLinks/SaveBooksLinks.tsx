@@ -20,10 +20,9 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 import DropDownLinks from '@/app/_compon/DropDownLinks/DropDownLinks';
 import SaveOptionsBooks from '@/app/_compon/SaveOptionsBooks/SaveOptionsBooks';
 
-// TODO showBooks
 const SaveBooksLinks = () => {
   const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
-  const [showBooks, setShowBooks] = useState<BooksSaveDB[]>([]);
+  const [showBooks, setShowBooks] = useState<BooksSaveDB[]>(saveBooks);
 
   useEffect(() => {
     getSaveBooks().then(prev => {
@@ -33,7 +32,9 @@ const SaveBooksLinks = () => {
   }, []);
 
   const selectShowBooks = (web: string) => {
-    setShowBooks(prev => prev.filter(book => book.web === web));
+    if (web === 'all') {
+      setShowBooks(saveBooks);
+    } else setShowBooks(saveBooks.filter(book => book.web === web));
   };
 
   const handleDeleteBook = async (bookId: string) => {
