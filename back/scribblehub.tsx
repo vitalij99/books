@@ -22,12 +22,12 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
       img: string;
     }[] = [];
 
-    result.forEach(element => {
+    const wrapper = result[0].querySelectorAll('.search_main_box');
+    if (!wrapper) throw new Error();
+    wrapper.forEach(element => {
       if (element !== null) {
-        const wrapper = element.querySelector('.search_main_box');
-        if (!wrapper) return;
-        const img = wrapper.querySelector('img')?.getAttribute('src') || '';
-        const link = wrapper.querySelector('a');
+        const img = element.querySelector('img')?.getAttribute('src') || '';
+        const link = element.querySelector('a');
         if (!link) return;
         const name = link.textContent || '';
         const href = link.getAttribute('href') || '';
@@ -160,29 +160,28 @@ const getBookImageLink = async ({ book }: { book: string }) => {
 
 const getBookPopular = async () => {
   // https://www.scribblehub.com/series-ranking/?sort=5&order=1
-  const linkSearch = `${link}/series-ranking/?sort=5&order=1`;
+  const linkSearch = `${link}/series-ranking/?sort=1&order=1`;
 
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
+  const linkInfoArray: {
+    name: string;
+    book: string;
+    img: string;
+  }[] = [];
+
   try {
     const result = transformInHtml({
       html: textData,
-      elem: '.wi_fic_wrap',
+      elem: '.wi_fic_wrap > .search_main_box',
     });
     if (!result) throw new Error();
-    const linkInfoArray: {
-      name: string;
-      book: string;
-      img: string;
-    }[] = [];
 
     result.forEach(element => {
       if (element !== null) {
-        const wrapper = element.querySelector('.search_main_box');
-        if (!wrapper) return;
-        const img = wrapper.querySelector('img')?.getAttribute('src') || '';
-        const link = wrapper.querySelector('a');
+        const img = element.querySelector('img')?.getAttribute('src') || '';
+        const link = element.querySelector('a');
         if (!link) return;
         const name = link.textContent || '';
         const href = link.getAttribute('href') || '';
@@ -200,7 +199,7 @@ const getBookPopular = async () => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
-    return { books: [], web };
+    return { books: linkInfoArray, web };
   }
 };
 
