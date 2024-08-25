@@ -159,8 +159,8 @@ const getBookImageLink = async ({ book }: { book: string }) => {
 };
 
 const getBookPopular = async () => {
-  // https://novelbin.com/sort/top-hot-novel
-  const linkSearch = `${link}sort/top-hot-novel`;
+  // https://www.scribblehub.com/series-ranking/?sort=5&order=1
+  const linkSearch = `${link}/series-ranking/?sort=5&order=1`;
 
   const data = await fetch(linkSearch);
   const textData = await data.text();
@@ -168,7 +168,7 @@ const getBookPopular = async () => {
   try {
     const result = transformInHtml({
       html: textData,
-      elem: '.row',
+      elem: '.wi_fic_wrap',
     });
     if (!result) throw new Error();
     const linkInfoArray: {
@@ -177,16 +177,20 @@ const getBookPopular = async () => {
       img: string;
     }[] = [];
 
-    result.forEach(link => {
-      if (link !== null) {
-        const name =
-          link.querySelector('.novel-title a')?.getAttribute('title') || '';
-        const image = link.querySelector('.cover');
-        const modifiedImg = image?.getAttribute('data-src') || '';
-        const img = modifiedImg.replace(/novel_\d+_\d+/, 'novel');
-        const href =
-          link.querySelector('.novel-title a')?.getAttribute('href') || '';
-        const book = href.replace(`https://novelbin.com/b/`, '');
+    result.forEach(element => {
+      if (element !== null) {
+        const wrapper = element.querySelector('.search_main_box');
+        if (!wrapper) return;
+        const img = wrapper.querySelector('img')?.getAttribute('src') || '';
+        const link = wrapper.querySelector('a');
+        if (!link) return;
+        const name = link.textContent || '';
+        const href = link.getAttribute('href') || '';
+        const bookTransform = href.replace(
+          `https://www.scribblehub.com/series/`,
+          ''
+        );
+        const book = bookTransform.replace(`/`, '_');
 
         if (book) {
           linkInfoArray.push({ name, book, img });

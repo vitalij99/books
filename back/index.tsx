@@ -39,12 +39,13 @@ export const getBooksPopularAll = async () => {
     const result: ListbooksProps[] = [];
 
     const resNovelfire = await novelfire.getBookPopular();
-
     result.push(resNovelfire);
 
     const resNovelbin = await novelbin.getBookPopular();
-
     result.push(resNovelbin);
+
+    const resScribblehub = await scribblehub.getBookPopular();
+    result.push(resScribblehub);
 
     return result;
   } catch (error) {
