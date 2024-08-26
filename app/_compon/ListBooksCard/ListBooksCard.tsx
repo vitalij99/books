@@ -45,7 +45,7 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                       }}
                     >
                       <Image
-                        priority={index < 4 ? true : false}
+                        priority={index < 6 ? true : false}
                         src={book.img}
                         fill
                         sizes="300px"
