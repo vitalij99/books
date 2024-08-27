@@ -51,10 +51,7 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                         sizes="300px"
                         alt={book.name}
                       />
-                      <ImageListItemBar
-                        title={book.name}
-                        subtitle={book.name}
-                      />
+                      <ImageListItemBar title={book.name} />
                     </Box>
                   </ImageListItem>
                 </Link>
