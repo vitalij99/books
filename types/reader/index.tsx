@@ -19,7 +19,6 @@ export const initParamsReader: InitParamsReader = {
   rate: 2,
   language: '',
   volume: 1,
-  voice: '',
   timer: {
     timeSave: new Date(),
     timer: 60,
@@ -32,7 +31,6 @@ export interface InitParamsReader {
   language: string;
   volume: number;
   timer: TimerParams;
-  voice: string;
 }
 
 export interface TimerParams {
@@ -51,14 +49,4 @@ export interface ReaderProps {
   paragraf: number;
   handleCancel: () => void;
   handleChangeParagraf: (number?: number) => void;
-  handleChangeVoice: (name: string) => void;
-  handleChangeParams: ({
-    rate,
-    pitch,
-    volume,
-  }: {
-    rate?: number;
-    pitch?: number;
-    volume?: number;
-  }) => void;
 }

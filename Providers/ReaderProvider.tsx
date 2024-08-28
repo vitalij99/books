@@ -4,21 +4,21 @@ import React from 'react';
 
 export const ReaderContext = React.createContext({
   handleOpen: (toggle?: boolean) => {},
-  isOpern: false,
+  isOpen: false,
 });
 
 const ReaderProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isOpern, setIsOpern] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleOpen = (toggle = true) => {
-    setIsOpern(toggle);
+    setIsOpen(toggle);
   };
 
   return (
     <ReaderContext.Provider
       value={{
         handleOpen,
-        isOpern,
+        isOpen,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 'use client';
 import { getStorage, setStorage } from '@/lib/getStorage';
-import { useStartReader } from '@/lib/reader';
+import { useStartReader } from '@/lib/useStartReader';
 
 import {
   Box,
@@ -23,15 +23,22 @@ import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import Timer from '@/app/_compon/Timer/Timer';
 import { ReaderContext } from '@/Providers/ReaderProvider';
 
-const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
+const Reader = ({
+  book,
+  changeText,
+  autoScroll,
+  srcNextPage,
+}: StartReaderProps) => {
   const [isreade, setIsreade] = useState({ read: false, pause: false });
   const [paramsReader, setParamsReader] = useState(initParamsReader);
-  const { isOpern, handleOpen } = useContext(ReaderContext);
+  const { isOpen, handleOpen } = useContext(ReaderContext);
 
   const reader = useStartReader({
     book,
     changeText,
     isreade,
+    paramsReader,
+    srcNextPage,
   });
 
   useEffect(() => {
@@ -41,11 +48,6 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
       language: getStorage(READER_KEY.voice) || '',
       volume: Number(getStorage(READER_KEY.volume)) || 1,
     };
-
-    setParamsReader(prev => ({ ...prev, ...storage }));
-  }, []);
-
-  useEffect(() => {
     const storageTimer = getStorage(READER_KEY.timer);
     const timer: {
       timeSave: Date;
@@ -59,7 +61,7 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
     const dateSave = new Date(timer.timeSave);
     const dateNow = new Date();
 
-    setParamsReader(prev => ({ ...prev, timer }));
+    setParamsReader(prev => ({ ...prev, ...storage, timer }));
     if (dateSave >= dateNow && timer.checked) {
       setIsreade(prev => ({ ...prev, read: true }));
     }
@@ -68,8 +70,8 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
 
-    reader?.handleChangeVoice(value);
     setParamsReader(prev => ({ ...prev, language: value }));
+    setStorage(value, READER_KEY.voice);
   };
 
   const toggleDrawer =
@@ -129,7 +131,7 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
     }
 
     debounce(() => {
-      reader?.handleChangeParams({ [key]: value });
+      setStorage(value + '', [key] + '');
     }, 1000)();
   };
   const handleParamsTimer = (event: any, value: number | number[]) => {
@@ -166,7 +168,7 @@ const Reader = ({ book, changeText, autoScroll }: StartReaderProps) => {
         handleReade={handleReade}
         maxParagraf={book.length}
       />
-      <Drawer anchor="right" open={isOpern} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
         <Box
           sx={{
             p: '20px',

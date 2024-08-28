@@ -135,6 +135,7 @@ const BookRead = ({
           book={textBook}
           changeText={changeTextRead}
           autoScroll={{ handleAutoScroll, isAutoScroll }}
+          srcNextPage={data.nav.nextPage}
         />
       </Box>
       <NavigationPages

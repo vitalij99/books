@@ -1,15 +1,16 @@
 'use client';
 
-import { getStorage, setStorage } from './getStorage';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { READER_KEY, initParamsReader } from '@/types/reader';
+import { InitParamsReader, READER_KEY } from '@/types/reader';
+import { getStorage } from '@/lib/getStorage';
 
 interface StartReaderProps {
   book: string[];
   changeText: (number: number) => void;
   isreade: { read: boolean; pause: boolean };
   srcNextPage?: string;
+  paramsReader: InitParamsReader;
 }
 
 export const useStartReader = ({
@@ -17,6 +18,7 @@ export const useStartReader = ({
   changeText,
   srcNextPage,
   isreade,
+  paramsReader,
 }: StartReaderProps) => {
   const [synth, setSynth] = useState<SpeechSynthesis>();
 
@@ -24,7 +26,6 @@ export const useStartReader = ({
     undefined
   );
   const [paragraf, setParagraf] = useState(-1);
-  const [paramsReader, setParamsReader] = useState(initParamsReader);
 
   const router = useRouter();
 
@@ -41,24 +42,16 @@ export const useStartReader = ({
     };
 
     setSynth(firstSynth);
-
-    const storage = {
-      pitch: Number(getStorage(READER_KEY.pitch)) || 2,
-      rate: Number(getStorage(READER_KEY.rate)) || 2,
-      voice: getStorage(READER_KEY.voice) || '',
-      volume: Number(getStorage(READER_KEY.volume)) || 1,
-    };
-
-    setParamsReader(prev => ({ ...prev, ...storage }));
   }, []);
 
   useEffect(() => {
-    if (paragraf === -1 || !isreade.read) return;
+    if (paragraf === -1 || !isreade.read || isreade.pause) return;
+
     const text = book[paragraf];
     const firstUtterThis = new SpeechSynthesisUtterance(text);
 
     if (!voices) return;
-    const voice = voices.find(voice => voice.name === paramsReader.voice);
+    const voice = voices.find(voice => voice.name === paramsReader.language);
 
     if (voice) {
       firstUtterThis.voice = voice;
@@ -70,15 +63,12 @@ export const useStartReader = ({
       setParagraf(prev => prev + 1);
       changeText(paragraf + 1);
     };
-    firstUtterThis.onerror = event => {
-      changeText(-1);
-    };
 
     const speakParagrap = () => {
       if (!synth) {
         return;
       }
-
+      synth.cancel();
       synth.speak(firstUtterThis);
     };
 
@@ -90,6 +80,7 @@ export const useStartReader = ({
   }, [
     book,
     changeText,
+    isreade.pause,
     isreade.read,
     paragraf,
     paramsReader,
@@ -134,41 +125,6 @@ export const useStartReader = ({
     }
   };
 
-  const handleChangeParams = ({
-    rate,
-    pitch,
-    volume,
-  }: {
-    rate?: number;
-    pitch?: number;
-    volume?: number;
-  }) => {
-    if (rate) {
-      setParamsReader(prev => ({ ...prev, rate }));
-      setStorage(rate + '', READER_KEY.rate);
-    } else if (pitch) {
-      setParamsReader(prev => ({ ...prev, pitch }));
-      setStorage(pitch + '', READER_KEY.pitch);
-    } else if (volume) {
-      setParamsReader(prev => ({ ...prev, volume }));
-      setStorage(volume + '', READER_KEY.volume);
-    }
-
-    if (synth.speaking) {
-      handleChangeParagraf(paragraf);
-    }
-  };
-  const handleChangeVoice = (name: string) => {
-    const voice = voices.find(voice => voice.name === name);
-    if (voice) {
-      setParamsReader(prev => ({ ...prev, voice: name }));
-      setStorage(voice.name, READER_KEY.voice);
-    }
-    if (synth.speaking) {
-      handleChangeParagraf(paragraf);
-    }
-  };
-
   const handleCancel = () => {
     if (!synth) return;
     synth.cancel();
@@ -182,7 +138,5 @@ export const useStartReader = ({
     paragraf,
     handleCancel,
     handleChangeParagraf,
-    handleChangeVoice,
-    handleChangeParams,
   };
 };
