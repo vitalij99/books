@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { transformInHtml } from '../lib/htmlTransform';
 
 const link = 'https://novelfire.net/';
@@ -6,12 +5,13 @@ const link = 'https://novelfire.net/';
 const getBookSearchByName = async ({ name }: { name: string }) => {
   // https://novelfire.net/ajax/searchLive?inputContent=Barbarian
   try {
-    const linkSearch = `${link}ajax/searchLive?inputContent=${name}`;
+    const linkBook = `${link}ajax/searchLive?inputContent=${name}`;
 
-    const { data } = await axios.get(linkSearch);
+    const data = await fetch(linkBook);
+    const textData = await data.text();
 
     const result = transformInHtml({
-      html: data.html,
+      html: textData,
       elem: 'li',
     });
 
@@ -50,10 +50,11 @@ const getBookPopular = async () => {
   try {
     const linkSearch = `${link}monthly-rank`;
 
-    const { data } = await axios.get(linkSearch);
+    const data = await fetch(linkSearch);
+    const textData = await data.text();
 
     const result = transformInHtml({
-      html: data,
+      html: textData,
       elem: '.novel-item',
     });
 
@@ -91,10 +92,11 @@ const getBookPopular = async () => {
 const getBookLinks = async ({ book }: { book: string }) => {
   const linkBook = `${link}book/${book}/chapters`;
 
-  const { data } = await axios.get(linkBook);
+  const data = await fetch(linkBook);
+  const textData = await data.text();
 
   const result = transformInHtml({
-    html: data,
+    html: textData,
     elem: '.chapter-list',
   });
   if (!result) return undefined;
@@ -130,10 +132,11 @@ const getBookFromLink = async ({
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1/chapter-26
   const linkBook = `${link}book/${book}/chapter-${chapter}`;
 
-  const { data } = await axios.get(linkBook);
+  const data = await fetch(linkBook);
+  const textData = await data.text();
 
   const result = transformInHtml({
-    html: data,
+    html: textData,
     elem: '#chapter-container',
   });
 
@@ -169,10 +172,11 @@ const getBookImageLink = async ({ book }: { book: string }) => {
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
   const linkBook = `${link}book/${book}/`;
 
-  const { data } = await axios.get(linkBook);
+  const data = await fetch(linkBook);
+  const textData = await data.text();
 
   const result = transformInHtml({
-    html: data,
+    html: textData,
     elem: '.fixed-img',
   });
 
