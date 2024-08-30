@@ -8,10 +8,10 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
     const linkBook = `${link}ajax/searchLive?inputContent=${name}`;
 
     const data = await fetch(linkBook);
-    const textData = await data.text();
+    const textData = await data.json();
 
     const result = transformInHtml({
-      html: textData,
+      html: textData.html,
       elem: 'li',
     });
 
