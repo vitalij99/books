@@ -35,15 +35,15 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                   p: 2,
                 }}
               >
-                <Link href={`/books/${book.book}?web=${web}`}>
-                  <ImageListItem>
-                    <Box
-                      sx={{
-                        position: 'relative',
-                        width: '200px',
-                        height: '250px',
-                      }}
-                    >
+                <ImageListItem>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '200px',
+                      height: '250px',
+                    }}
+                  >
+                    <Link href={`/books/${book.book}?web=${web}`}>
                       <Image
                         priority={index < 6 ? true : false}
                         src={book.img}
@@ -52,9 +52,9 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                         alt={book.name}
                       />
                       <ImageListItemBar title={book.name} />
-                    </Box>
-                  </ImageListItem>
-                </Link>
+                    </Link>
+                  </Box>
+                </ImageListItem>
               </Box>
             )}
           />
