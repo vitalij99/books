@@ -66,7 +66,7 @@ const SaveBook = () => {
 
   const handleSaveBook = async () => {
     if (!saveBooks || !stringPathname) return;
-
+    // TODO add tags
     if (isAdded) {
       if (!bookSaveDB) return;
 
@@ -89,7 +89,7 @@ const SaveBook = () => {
         web,
         chapter: stringPathname[3] ? stringPathname[3] : undefined,
       };
-      console.log(stringPathname);
+
       if (bookSaveDB && book.chapter) {
         const newCharpters = bookSaveDB.chapter
           ? [...bookSaveDB.chapter, book.chapter]

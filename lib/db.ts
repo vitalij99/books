@@ -8,6 +8,7 @@ interface SetSaveBook {
   link: string;
   chapter?: string[];
   web: string;
+  tags?: string[]
 }
 type DbBooksBase = Omit<BooksSaveDB, 'chapter'>;
 interface DbBooks extends DbBooksBase {
@@ -23,6 +24,7 @@ export const setSaveBook = async ({
   link,
   chapter,
   web,
+  tags=[]
 }: SetSaveBook) => {
   try {
     const session = await auth();
@@ -39,6 +41,7 @@ export const setSaveBook = async ({
       chapter: transformToJsonChapter,
       image,
       web,
+      tags,
       userId: session.user.id,
     };
 

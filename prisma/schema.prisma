@@ -83,13 +83,14 @@ model Authenticator {
 }
 
 model Books {
-  id               String  @id @default(cuid())
+  id               String   @id @default(cuid())
   title            String
   link             String
   web              String
   chapter          String?
   image            String?
   lastReadeChapter String?
+  tags             String[]
 
   user   User?  @relation(fields: [userId], references: [id])
   userId String
