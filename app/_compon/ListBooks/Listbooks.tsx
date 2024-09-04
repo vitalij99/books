@@ -34,7 +34,11 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
         <Box>
           <Pagination
             onChange={handlePagination}
-            count={Math.floor(books.length / amountBook)}
+            count={
+              Math.floor(books.length / amountBook) > 0
+                ? Math.floor(books.length / amountBook)
+                : 1
+            }
           />
         </Box>
         <Box>
