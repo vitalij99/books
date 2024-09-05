@@ -1,14 +1,14 @@
-'use client';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 import { ListbooksProps } from '@/types/book';
 import {
   Box,
-  ImageList,
   ImageListItem,
   ImageListItemBar,
   Link,
+  List,
   Typography,
 } from '@mui/material';
+
 import Image from 'next/image';
 
 const ListBooksCard = ({ books, web }: ListbooksProps) => {
@@ -18,12 +18,13 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
       {books.length === 0 ? (
         <Typography>немає</Typography>
       ) : (
-        <ImageList
+        <List
+          className="scrollbar"
           sx={{
+            display: 'grid',
             gridAutoFlow: 'column',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
-            gridAutoColumns: 'minmax(200px)',
             overflow: 'auto',
+            gap: 3,
           }}
         >
           <ItemList
@@ -53,7 +54,7 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
               </ImageListItem>
             )}
           />
-        </ImageList>
+        </List>
       )}
     </Box>
   );
