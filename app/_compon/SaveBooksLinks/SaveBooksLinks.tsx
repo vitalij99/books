@@ -25,9 +25,9 @@ const SaveBooksLinks = () => {
   const [showBooks, setShowBooks] = useState<BooksSaveDB[]>(saveBooks);
 
   useEffect(() => {
-    getSaveBooks().then(prev => {
-      prev ? setSaveBooks(prev) : [];
-      prev ? setShowBooks(prev) : [];
+    getSaveBooks().then(result => {
+      setSaveBooks(result ? result : []);
+      setShowBooks(result ? result : []);
     });
   }, []);
 
