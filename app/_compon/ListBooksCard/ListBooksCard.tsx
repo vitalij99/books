@@ -31,16 +31,16 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
             items={books}
             renderItem={(book, index) => (
               <ImageListItem>
-                <Box
-                  sx={{
-                    position: 'relative',
-                    width: '200px',
-                    height: '250px',
-                    display: 'inline-block',
-                    p: 2,
-                  }}
-                >
-                  <Link href={`/books/${book.book}?web=${web}`}>
+                <Link href={`/books/${book.book}?web=${web}`}>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '200px',
+                      height: '250px',
+                      display: 'inline-block',
+                      p: 2,
+                    }}
+                  >
                     <Image
                       priority={index < 6 ? true : false}
                       src={book.img}
@@ -49,8 +49,8 @@ const ListBooksCard = ({ books, web }: ListbooksProps) => {
                       alt={book.name}
                     />
                     <ImageListItemBar title={book.name} />
-                  </Link>
-                </Box>
+                  </Box>
+                </Link>
               </ImageListItem>
             )}
           />
