@@ -2,6 +2,7 @@ const linkGoogle =
   'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=uk&hl=uk&dt=t&dt=bd&dj=1&source=input';
 
 export const translateGoogle = async (text: string) => {
+  if (text.length === 0) return text;
   const encodeText = encodeURI(text);
 
   if (!encodeText) {
