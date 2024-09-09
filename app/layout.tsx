@@ -9,6 +9,7 @@ import { Box } from '@mui/material';
 import TranslateProvider from '../Providers/TranslateProvider';
 import SessionWrapper from '@/app/_compon/SessionWrapper/SessionWrapper';
 import ReaderProvider from '@/Providers/ReaderProvider';
+import BreadcrumbsCustl from '@/app/_compon/Breadcrumbs/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'Books uk',
@@ -31,7 +32,10 @@ export default async function RootLayout({
               <ReaderProvider>
                 <Header />
 
-                <Box sx={{ paddingTop: '88px' }}>{children}</Box>
+                <Box sx={{ paddingTop: '88px' }}>
+                  <BreadcrumbsCustl />
+                  {children}
+                </Box>
               </ReaderProvider>
             </DarkProvider>
           </TranslateProvider>
