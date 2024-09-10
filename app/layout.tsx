@@ -1,15 +1,15 @@
 import './globals.css';
 import type { Metadata } from 'next';
 
-import Header from './_compon/Header/Header';
-import DarkProvider from '../Providers/DarkProvider';
 import { getCookies } from '@/lib/cookis';
 import { THEME } from '@/types/book';
-import { Box } from '@mui/material';
-import TranslateProvider from '../Providers/TranslateProvider';
+
 import SessionWrapper from '@/app/_compon/SessionWrapper/SessionWrapper';
 import ReaderProvider from '@/Providers/ReaderProvider';
 import BreadcrumbsCustl from '@/app/_compon/Breadcrumbs/Breadcrumbs';
+import Header from '@/app/_compon/Header/Header';
+import DarkProvider from '@/Providers/DarkProvider';
+import TranslateProvider from '@/Providers/TranslateProvider';
 
 export const metadata: Metadata = {
   title: 'Books uk',
@@ -31,11 +31,8 @@ export default async function RootLayout({
             <DarkProvider theme={theme}>
               <ReaderProvider>
                 <Header />
-
-                <Box sx={{ paddingTop: '88px' }}>
-                  <BreadcrumbsCustl />
-                  {children}
-                </Box>
+                <BreadcrumbsCustl />
+                {children}
               </ReaderProvider>
             </DarkProvider>
           </TranslateProvider>

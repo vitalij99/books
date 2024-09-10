@@ -10,7 +10,7 @@ import BookMenu from '@/app/_compon/BookMenu/BookMenu';
 const Header = () => {
   const trigger = useScrollTrigger();
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, height: '88px' }}>
       <Slide appear={false} direction="down" in={!trigger}>
         <AppBar>
           <Toolbar>
