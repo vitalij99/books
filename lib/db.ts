@@ -15,8 +15,17 @@ interface DbBooks extends DbBooksBase {
   chapter: string | null;
 }
 
-export const getUsers = async () => {
-  return await prisma.user.findMany();
+export async function createUser({ email, password }: { email: string; password: string }) {
+  return prisma.user.create({
+    data: {
+      email,
+      password,
+    },
+  });
+}
+
+export const getUserEmail = async (email: string ) => {
+  return await prisma.user.findFirst({where:{email}});
 };
 
 export const setSaveBook = async ({

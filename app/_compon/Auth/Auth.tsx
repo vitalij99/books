@@ -1,8 +1,16 @@
 import { login } from '@/lib/auth';
-import { Avatar, Box, Button, SpeedDial, SpeedDialAction } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  SpeedDial,
+  SpeedDialAction,
+  Typography,
+} from '@mui/material';
 
 import { useSession, signOut } from 'next-auth/react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import SignIn from '@/app/_compon/Auth/SignIn';
 
 export default function Auth() {
   const { data: session } = useSession();
@@ -24,11 +32,5 @@ export default function Auth() {
         </SpeedDial>
       </Box>
     );
-  }
-
-  return (
-    <>
-      <Button onClick={() => login()}>Sign in</Button>
-    </>
-  );
+  } else return <SignIn />;
 }

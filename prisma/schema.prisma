@@ -16,6 +16,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  password      String?
 
   Authenticator Authenticator[]
 
