@@ -1,15 +1,13 @@
-import NextAuth from 'next-auth';
+import NextAuth, { CredentialsSignin, User } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { getUserEmail } from '@/lib/db';
-import {
-  comparePassword,
-  saltAndHashPassword,
-} from '@/utils/saltAndHashPassword';
+import { comparePassword } from '@/utils/saltAndHashPassword';
 import { signInSchema } from '@/lib/zod';
-import { use } from 'react';
+import { Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 
 const global = {
   prisma: new PrismaClient(),
@@ -20,12 +18,13 @@ export const prisma = global.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
-
+class InvalidLoginError extends CredentialsSignin {
+  code = 'Invalid identifier or password';
+}
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   adapter: PrismaAdapter(prisma),
   providers: [
-    Google,
     Credentials({
       name: 'Email',
       credentials: {
@@ -41,20 +40,47 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
       },
       authorize: async credentials => {
-        const { email, password } = await signInSchema.parseAsync(credentials);
+        try {
+          const { email, password } = await signInSchema.parseAsync(
+            credentials
+          );
 
-        const user = await getUserEmail(email);
-        if (user && user.password) {
-          const isValid = await comparePassword(password, user.password);
+          const user = await getUserEmail(email);
 
-          if (!isValid) {
-            throw new Error('Неправильний email або пароль');
+          if (user && user.password) {
+            const isValid = await comparePassword(password, user.password);
+
+            if (!isValid) {
+              throw new Error('Неправильний email або пароль');
+            } else return user;
+          } else {
+            throw new Error('Користувач не знайдений.');
           }
-          return user;
-        } else {
-          throw new Error('User not found.');
+        } catch (error: any) {
+          throw new InvalidLoginError();
         }
       },
     }),
+    Google,
   ],
+  session: {
+    strategy: 'jwt',
+  },
+  callbacks: {
+    async jwt({ token, user }: { token: JWT; user?: User }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token?.id && session.user) {
+        session.user.id = token.id as string; // Переконуємося, що це рядок
+      }
+      return session;
+    },
+  },
+  pages: {
+    error: '/api/auth/signin',
+  },
 });

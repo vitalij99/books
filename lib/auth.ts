@@ -1,6 +1,6 @@
-"use server"
-import { signIn } from "@/auth"
+'use server';
+import { signIn } from '@/auth';
 
-export async function login() {
- return  await signIn('google')
+export async function login(provider?: string) {
+  return await signIn(provider);
 }
