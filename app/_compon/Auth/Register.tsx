@@ -1,5 +1,12 @@
 'use client';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 
 export default function Register() {
@@ -69,6 +76,9 @@ export default function Register() {
             {error}
           </Typography>
         )}
+      </Box>
+      <Box sx={{ p: 2 }}>
+        <Link href="/auth">Увійти</Link>
       </Box>
     </Container>
   );

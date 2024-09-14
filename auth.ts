@@ -1,4 +1,4 @@
-import NextAuth, { CredentialsSignin, User } from 'next-auth';
+import NextAuth, { User } from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import Google from 'next-auth/providers/google';
@@ -6,7 +6,6 @@ import Credentials from 'next-auth/providers/credentials';
 import { getUserEmail } from '@/lib/db';
 import { comparePassword } from '@/utils/saltAndHashPassword';
 import { signInSchema } from '@/lib/zod';
-import { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 
 const global = {
@@ -18,15 +17,11 @@ export const prisma = global.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
-class InvalidLoginError extends CredentialsSignin {
-  code = 'Invalid identifier or password';
-}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  trustHost: true,
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
-      name: 'Email',
       credentials: {
         email: {
           label: 'Email',
@@ -44,20 +39,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const { email, password } = await signInSchema.parseAsync(
             credentials
           );
-
           const user = await getUserEmail(email);
+
+          if (!user) {
+            return null;
+          }
 
           if (user && user.password) {
             const isValid = await comparePassword(password, user.password);
 
             if (!isValid) {
-              throw new Error('Неправильний email або пароль');
+              return null;
             } else return user;
           } else {
-            throw new Error('Користувач не знайдений.');
+            return null;
           }
         } catch (error: any) {
-          throw new InvalidLoginError();
+          throw new Error('Неправильний email або пароль.');
         }
       },
     }),
@@ -73,14 +71,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return token;
     },
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session({ session, token }) {
       if (token?.id && session.user) {
-        session.user.id = token.id as string; // Переконуємося, що це рядок
+        session.user.id = token.id as string;
       }
       return session;
     },
   },
   pages: {
-    error: '/api/auth/signin',
+    error: '/auth',
   },
 });

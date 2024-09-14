@@ -1,13 +1,12 @@
-import { Avatar, Box, SpeedDial, SpeedDialAction } from '@mui/material';
+import { Avatar, Box, Link, SpeedDial, SpeedDialAction } from '@mui/material';
 
 import { useSession, signOut } from 'next-auth/react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { SignIn } from '@/app/_compon/Auth/SignIn';
 
 export default function Auth() {
   const { data: session } = useSession();
 
-  if (!session?.user) return <SignIn />;
+  if (!session?.user) return <Link href="/auth">Увійти</Link>;
   else {
     return (
       <Box sx={{ position: 'relative', width: 56, height: 56 }}>
