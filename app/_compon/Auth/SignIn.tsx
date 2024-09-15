@@ -21,21 +21,18 @@ export function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
 
-    try {
-      const res = await signIn('credentials', {
-        redirect: false,
-        email,
-        password,
-      });
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
 
-      if (res?.error) {
-        setError('Неправильний email або пароль.');
-      } else {
-        router.back();
-      }
-    } catch (error) {
-      setError((error as Error).message);
+    if (res?.error) {
+      setError('Неправильний email або пароль.');
+    } else {
+      router.back();
     }
   };
 
