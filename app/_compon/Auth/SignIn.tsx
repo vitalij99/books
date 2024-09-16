@@ -3,6 +3,7 @@
 import {
   Box,
   Button,
+  Card,
   Container,
   Link,
   TextField,
@@ -12,6 +13,8 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 import { useState } from 'react';
+
+import GoogleIcon from '@mui/icons-material/Google';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -38,7 +41,10 @@ export function SignIn() {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ mt: 4 }}>
+      <Card
+        variant="outlined"
+        sx={{ p: 4, boxShadow: '4px 4px 4px currentColor' }}
+      >
         <Typography variant="h4" component="h1" gutterBottom>
           Увійти
         </Typography>
@@ -78,10 +84,19 @@ export function SignIn() {
             Увійти
           </Button>
         </form>
-      </Box>
-      <Box sx={{ p: 2 }}>
-        <Link href="/auth/register">Реєстрація</Link>
-      </Box>
+        <Box sx={{ paddingTop: 4, textAlign: 'center' }}>
+          <Button
+            variant="contained"
+            startIcon={<GoogleIcon />}
+            onClick={() => signIn('google')}
+          >
+            Google
+          </Button>
+        </Box>
+        <Box sx={{ p: 2 }}>
+          <Link href="/auth/register">Реєстрація</Link>
+        </Box>
+      </Card>
     </Container>
   );
 }
