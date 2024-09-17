@@ -1,7 +1,7 @@
 'use client';
 import { AppBar, Box, Slide, Toolbar, useScrollTrigger } from '@mui/material';
 
-import Auth from '@/app/_compon/Auth/Auth';
+import AuthBtn from '@/app/_compon/Auth/AuthBtn';
 import BookHeader from '@/app/_compon/BookHeader/BookHeader';
 import NavLinks from '@/app/_compon/NavLinks/NavLinks';
 import Search from '@/app/_compon/Search/Search';
@@ -21,7 +21,7 @@ const Header = () => {
             <BookHeader />
             <BookMenu />
             <div>
-              <Auth />
+              <AuthBtn />
             </div>
           </Toolbar>
         </AppBar>

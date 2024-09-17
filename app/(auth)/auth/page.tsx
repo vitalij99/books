@@ -1,10 +1,9 @@
-import { SignIn } from '@/app/_compon/Auth/SignIn';
-import React from 'react';
+import AuthForm from '@/app/_compon/Auth/AuthForm';
 
 const page = () => {
   return (
     <>
-      <SignIn />
+      <AuthForm />
     </>
   );
 };

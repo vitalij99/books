@@ -1,41 +1,59 @@
-'use client';
-
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Link,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-
 import { useState } from 'react';
-
+import { useRouter } from 'next/router';
+import {
+  Container,
+  Card,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Link,
+} from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
-// TODO remove
-export function SignIn() {
+import { signIn } from 'next-auth/react';
+
+export default function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSignIn, setIsSignIn] = useState(true);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const res = await signIn('credentials', {
-      redirect: false,
-      email,
-      password,
-    });
+    if (isSignIn) {
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
 
-    if (res?.error) {
-      setError('Неправильний email або пароль.');
+      if (res?.error) {
+        setError('Неправильний email або пароль.');
+      } else {
+        router.back();
+      }
     } else {
-      router.back();
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!res.ok) {
+          throw new Error('Registration failed');
+        } else {
+          await signIn('credentials', { redirect: false, email, password });
+          router.back();
+        }
+      } catch (error) {
+        setError((error as Error).message);
+      }
     }
   };
 
@@ -46,7 +64,7 @@ export function SignIn() {
         sx={{ p: 4, boxShadow: '4px 4px 4px currentColor' }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          Увійти
+          {isSignIn ? 'Увійти' : 'Реєстрація'}
         </Typography>
         {error && (
           <Typography color="error" sx={{ mt: 2 }}>
@@ -81,9 +99,10 @@ export function SignIn() {
             fullWidth
             sx={{ mt: 2 }}
           >
-            Увійти
+            {isSignIn ? 'Увійти' : 'Зареєструватися'}
           </Button>
         </form>
+
         <Box sx={{ paddingTop: 4, textAlign: 'center' }}>
           <Button
             variant="contained"
@@ -93,8 +112,11 @@ export function SignIn() {
             Google
           </Button>
         </Box>
-        <Box sx={{ p: 2 }}>
-          <Link href="/auth/register">Реєстрація</Link>
+
+        <Box sx={{ p: 2, textAlign: 'center' }}>
+          <Link href="#" onClick={() => setIsSignIn(!isSignIn)}>
+            {isSignIn ? 'Реєстрація' : 'Увійти'}
+          </Link>
         </Box>
       </Card>
     </Container>

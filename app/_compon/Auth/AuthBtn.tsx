@@ -3,7 +3,7 @@ import { Avatar, Box, Link, SpeedDial, SpeedDialAction } from '@mui/material';
 import { useSession, signOut } from 'next-auth/react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-export default function Auth() {
+export default function AuthBtn() {
   const { data: session } = useSession();
 
   if (!session?.user) return <Link href="/auth">Увійти</Link>;

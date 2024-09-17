@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-
+// TODO remove
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
