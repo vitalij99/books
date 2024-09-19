@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+
 import {
   Container,
   Card,
@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function AuthForm() {
   const [email, setEmail] = useState('');

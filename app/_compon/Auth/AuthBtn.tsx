@@ -6,7 +6,12 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 export default function AuthBtn() {
   const { data: session } = useSession();
 
-  if (!session?.user) return <Link href="/auth">Увійти</Link>;
+  if (!session?.user)
+    return (
+      <Link underline="none" color="#fff" href="/auth">
+        Увійти
+      </Link>
+    );
   else {
     return (
       <Box sx={{ position: 'relative', width: 56, height: 56 }}>
