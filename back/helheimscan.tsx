@@ -94,31 +94,33 @@ const getBookPopular = async () => {
 };
 
 const getBookLinks = async ({ book }: { book: string }) => {
-  const linkBook = `${link}book/${book}/chapters`;
+  //https://helheimscans.com/series/2d13a5cf30a/
+  const linkBook = `${link}series/${book}`;
 
   const data = await fetch(linkBook);
   const textData = await data.text();
 
   const result = transformInHtml({
     html: textData,
-    elem: '.chapter-list',
+    elem: '#chapters_panel',
   });
   if (!result) return undefined;
 
   const element = result[0];
 
-  const textHtmlAll = element.querySelectorAll('li');
+  const textHtmlAll = element.querySelectorAll('a');
 
   const linksBook = [];
 
   for (let i = 0; i < textHtmlAll.length; i++) {
     const parag = textHtmlAll[i];
-    const url = parag.querySelector('a')?.getAttribute('href');
+    const url = parag?.getAttribute('href');
+    const name = parag?.getAttribute('title');
 
     if (url) {
       linksBook.push({
         book: transformLink(url),
-        name: url.replace(`${link}book/`, ''),
+        name: name || '',
       });
     }
   }
@@ -237,8 +239,8 @@ const getBooksFromTags = async ({ name }: { name: string }) => {
 };
 
 const transformLink = (url: string) => {
-  const indexOfChapter = url.lastIndexOf('chapter-');
-  return url.slice(indexOfChapter + 8);
+  const indexOfChapter = url.lastIndexOf('chapter');
+  return url.slice(indexOfChapter + 7);
 };
 
 export const novelfire = {
