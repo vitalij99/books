@@ -28,14 +28,18 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
 
     links.forEach(link => {
       if (link !== null) {
-        const nameSelector = link.querySelector('.novel-title');
-        const name = nameSelector?.textContent || '';
-        const href = link.getAttribute('href') || '';
-        const book = href.replace(`https://novelfire.net/book/`, '');
-        const image = link.querySelector('img');
-        const img = image?.getAttribute('src') || '';
+        const name = link.getAttribute('title') || '';
+        const book = link.getAttribute('href') || '';
+        const backgroundImage = link
+          .querySelector('div')
+          ?.getAttribute('style');
 
-        linkInfoArray.push({ name, book, img });
+        if (backgroundImage) {
+          const img =
+            backgroundImage.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
+
+          linkInfoArray.push({ name, book, img });
+        }
       }
     });
 
@@ -135,22 +139,23 @@ const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
-  // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1/chapter-26
-  const linkBook = `${link}book/${book}/chapter-${chapter}`;
+  // TODO
+  // https://helheimscans.com/chapter/2d13a5cf30a-60ef95f5533/
+  const linkBook = `${link}chapter/${book}-${chapter}`;
 
   const data = await fetch(linkBook);
   const textData = await data.text();
 
   const result = transformInHtml({
     html: textData,
-    elem: '#chapter-container',
+    elem: '#pages',
   });
 
   if (!result) return undefined;
 
   const element = result[0];
 
-  const textHtmlAll = element.querySelectorAll('#content p');
+  const textHtmlAll = element.querySelectorAll('#pages p');
 
   const allText = textHtmlAll.map(parag => parag.textContent);
 
