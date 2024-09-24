@@ -1,5 +1,6 @@
 'use server';
 
+import { helheimscan } from '@/back/helheimscan';
 import novelbin from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
 import { scribblehub } from '@/back/scribblehub';
@@ -10,6 +11,7 @@ const WEBSITE = {
   novelfire: 'novelfire',
   novelbin: 'novelbin',
   scribblehub: scribblehub.web,
+  helheimscan: helheimscan.web,
 };
 
 export const getBookSearchByNameAll = async ({
@@ -47,6 +49,9 @@ export const getBooksPopularAll = async () => {
     const resScribblehub = await scribblehub.getBookPopular();
     result.push(resScribblehub);
 
+    const resHelheimscan = await helheimscan.getBookPopular();
+    result.push(resHelheimscan);
+
     return result;
   } catch (error) {
     return [{ books: [], web: 'novelfire' }];
@@ -69,6 +74,9 @@ export const getBookLinksAll = async ({
   if (web === WEBSITE.scribblehub) {
     return await scribblehub.getBookLinks({ book });
   }
+  if (web === WEBSITE.helheimscan) {
+    return await helheimscan.getBookLinks({ book });
+  }
 };
 export const getBookFromLinkAll = async ({
   chapter,
@@ -88,6 +96,9 @@ export const getBookFromLinkAll = async ({
     }
     if (web === WEBSITE.scribblehub) {
       return await scribblehub.getBookFromLink({ book, chapter });
+    }
+    if (web === WEBSITE.helheimscan) {
+      return await helheimscan.getBookFromLink({ book, chapter });
     }
   } catch (error) {
     console.log(error);
@@ -111,7 +122,10 @@ export const getBookImageLinkAll = async ({
     if (web === WEBSITE.scribblehub) {
       return await scribblehub.getBookImageLink({ book });
     }
+    if (web === WEBSITE.helheimscan) {
+      return await helheimscan.getBookImageLink({ book });
+    }
   } catch (error) {
-    return undefined;
+    console.log(error);
   }
 };

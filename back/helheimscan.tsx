@@ -65,7 +65,7 @@ const getBookPopular = async () => {
 
     if (!result) throw new Error();
 
-    const links = result.map(item => item.querySelector('a'));
+    const links = result[0].querySelectorAll('a');
 
     const linkInfoArray: {
       name: string;
@@ -76,7 +76,8 @@ const getBookPopular = async () => {
     links.forEach(link => {
       if (link !== null) {
         const name = link.getAttribute('title') || '';
-        const book = link.getAttribute('href') || '';
+        const hrefBook = link.getAttribute('href') || '';
+        const book = hrefBook.replace(`/series/`, '');
         const backgroundImage = link
           .querySelector('div')
           ?.getAttribute('style');
@@ -139,7 +140,6 @@ const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
-  // TODO
   // https://helheimscans.com/chapter/2d13a5cf30a-60ef95f5533/
   const linkBook = `${link}chapter/${book}-${chapter}`;
 
@@ -148,30 +148,36 @@ const getBookFromLink = async ({
 
   const result = transformInHtml({
     html: textData,
-    elem: '#pages',
+    elem: '#pages_panel',
   });
 
   if (!result) return undefined;
 
   const element = result[0];
 
-  const textHtmlAll = element.querySelectorAll('#pages p');
+  const textHtmlAll = element.querySelectorAll('p');
 
   const allText = textHtmlAll.map(parag => parag.textContent);
 
   // next page
-  const pages = element.querySelectorAll('.chapternav.skiptranslate a');
-  const prevPageInit = pages[0]?.getAttribute('href');
-  const nextPageInit = pages[1]?.getAttribute('href');
-  const prevPage = prevPageInit?.startsWith('https') ? prevPageInit : undefined;
-  const nextPage = nextPageInit?.startsWith('https') ? nextPageInit : undefined;
+  const navigate = transformInHtml({
+    html: textData,
+    elem: '#chapter_controls_header',
+  });
 
-  const prevText = prevPage && 'Попередння';
-  const nextText = nextPage && 'Наступна';
+  if (!navigate) return { book: allText, nav: {} };
+
+  const pages = navigate[0].querySelectorAll('a');
+
+  const prevPage = pages[0]?.getAttribute('href');
+  const nextPage = pages[1]?.getAttribute('href');
+
+  const prevText = 'Попередння';
+  const nextText = 'Наступна';
 
   const nav = {
-    nextPage: nextPage && transformLink(nextPage) + '?web=novelfire',
-    prevPage: prevPage && transformLink(prevPage) + '?web=novelfire',
+    nextPage: nextPage && transformLink(nextPage) + `?web=${web}`,
+    prevPage: prevPage && transformLink(prevPage) + `?web=${web}`,
     nextText,
     prevText,
   };
@@ -180,28 +186,30 @@ const getBookFromLink = async ({
 };
 
 const getBookImageLink = async ({ book }: { book: string }) => {
-  // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
-  const linkBook = `${link}book/${book}/`;
+  //https://helheimscans.com/series/2d13a5cf30a/
+  const linkBook = `${link}series/${book}`;
 
   const data = await fetch(linkBook);
   const textData = await data.text();
 
   const result = transformInHtml({
     html: textData,
-    elem: '.fixed-img',
+    elem: 'header + div',
   });
 
   if (!result) return undefined;
 
-  const element = result[0];
+  const element = result[0].querySelector('.bg-center');
+  if (!element) return undefined;
 
-  const imgWrapp = element.querySelector('img');
+  const res = element.getAttribute('style');
 
-  const res = imgWrapp?.getAttribute('data-src');
+  const img =
+    res?.match(/url\(["']?(.*?)["']?\)/)?.[1].replace(/w=\d+/, 'w=350') || '';
 
-  return res;
+  return img;
 };
-
+// TODO
 const getBooksFromTags = async ({ name }: { name: string }) => {
   // https://novelfire.net/tags/academy/order-popular
   try {
@@ -244,15 +252,16 @@ const getBooksFromTags = async ({ name }: { name: string }) => {
 };
 
 const transformLink = (url: string) => {
-  const indexOfChapter = url.lastIndexOf('chapter');
-  return url.slice(indexOfChapter + 7);
+  const indexOfChapter = url.lastIndexOf('-');
+  return url.slice(indexOfChapter + 1);
 };
 
-export const novelfire = {
+export const helheimscan = {
   getBookFromLink,
   getBookLinks,
   getBookSearchByName,
   getBookPopular,
   getBookImageLink,
   getBooksFromTags,
+  web,
 };
