@@ -213,6 +213,7 @@ const Reader = ({
               onChange={handleSliderParams}
               min={0}
               max={2}
+              step={0.1}
               value={paramsReader?.pitch}
               valueLabelDisplay="auto"
             />

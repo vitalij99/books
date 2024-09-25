@@ -1,3 +1,4 @@
+import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import { Box, Button, Card, Slider, Typography } from '@mui/material';
 import React from 'react';
 
@@ -37,14 +38,10 @@ const ReaderCard = ({
           <Typography>Стоп</Typography>
         </Button>
         <Typography>Параграф</Typography>
-        <Slider
-          name="paragraf"
-          onChange={handleChangeParagraf}
-          min={0}
-          step={1}
-          max={maxParagraf}
-          value={reader?.paragraf}
-          valueLabelDisplay="auto"
+        <SliderParagraf
+          reader={reader}
+          handleChangeParagraf={handleChangeParagraf}
+          maxParagraf={maxParagraf}
         />
       </Box>
     </Card>
