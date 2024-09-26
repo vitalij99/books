@@ -4,50 +4,13 @@ const link = 'https://helheimscans.com/';
 const web = 'helheimscan';
 
 const getBookSearchByName = async ({ name }: { name: string }) => {
-  // https://helheimscans.com/series/?q=bar
-  try {
-    const linkBook = `${link}series/?q=${name}`;
+  const data = await getBookPopular();
 
-    const data = await fetch(linkBook);
-    const textData = await data.json();
+  const res = data.books.find(book =>
+    book.name.trim().toLowerCase().includes(name.trim().toLowerCase())
+  );
 
-    const result = transformInHtml({
-      html: textData.html,
-      elem: 'li',
-    });
-
-    if (!result) throw new Error();
-
-    const links = result.map(item => item.querySelector('a'));
-
-    const linkInfoArray: {
-      name: string;
-      book: string;
-      img: string;
-    }[] = [];
-
-    links.forEach(link => {
-      if (link !== null) {
-        const name = link.getAttribute('title') || '';
-        const book = link.getAttribute('href') || '';
-        const backgroundImage = link
-          .querySelector('div')
-          ?.getAttribute('style');
-
-        if (backgroundImage) {
-          const img =
-            backgroundImage.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
-
-          linkInfoArray.push({ name, book, img });
-        }
-      }
-    });
-
-    return { books: linkInfoArray, web };
-  } catch (error) {
-    console.log(error);
-    return { books: [], web };
-  }
+  return res;
 };
 
 const getBookPopular = async () => {
