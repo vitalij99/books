@@ -1,5 +1,5 @@
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
-import { Box, Button, Card, Slider, Typography } from '@mui/material';
+import { Box, Button, Card, Typography } from '@mui/material';
 import React from 'react';
 
 interface ReaderCardProps {
@@ -37,7 +37,7 @@ const ReaderCard = ({
         <Button onClick={handleReadeCancel}>
           <Typography>Стоп</Typography>
         </Button>
-        <Typography>Параграф</Typography>
+
         <SliderParagraf
           reader={reader}
           handleChangeParagraf={handleChangeParagraf}
