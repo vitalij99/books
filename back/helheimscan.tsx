@@ -42,7 +42,7 @@ const getBookPopular = async () => {
         const hrefBook = link.getAttribute('href') || '';
         const book = hrefBook.replace(`/series/`, '');
         const backgroundImage = link
-          .querySelector('div')
+          .querySelector('div > div')
           ?.getAttribute('style');
 
         if (backgroundImage) {
@@ -50,6 +50,8 @@ const getBookPopular = async () => {
             backgroundImage.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
 
           linkInfoArray.push({ name, book, img });
+        } else {
+          linkInfoArray.push({ name, book, img: '' });
         }
       }
     });
