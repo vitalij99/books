@@ -51,7 +51,12 @@ const getBookPopular = async () => {
 
           linkInfoArray.push({ name, book, img });
         } else {
-          linkInfoArray.push({ name, book, img: '' });
+          const backgroundImage = link
+            .querySelector('div ')
+            ?.getAttribute('style');
+          const img =
+            backgroundImage?.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
+          linkInfoArray.push({ name, book, img });
         }
       }
     });
