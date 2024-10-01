@@ -28,7 +28,7 @@ const getBookPopular = async () => {
 
     if (!result) throw new Error();
 
-    const links = result[0].querySelectorAll('a');
+    const links = result[0].querySelectorAll('button > div > a');
 
     const linkInfoArray: {
       name: string;
