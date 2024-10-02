@@ -41,23 +41,13 @@ const getBookPopular = async () => {
         const name = link.getAttribute('title') || '';
         const hrefBook = link.getAttribute('href') || '';
         const book = hrefBook.replace(`/series/`, '');
-        const backgroundImage = link
-          .querySelector('div > div')
-          ?.getAttribute('style');
+        const backgroundImage =
+          link.querySelector('div > div')?.getAttribute('style') ||
+          link.querySelector('div')?.getAttribute('style');
 
-        if (backgroundImage) {
-          const img =
-            backgroundImage.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
+        const img = backgroundImage?.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
 
-          linkInfoArray.push({ name, book, img });
-        } else {
-          const backgroundImage = link
-            .querySelector('div ')
-            ?.getAttribute('style');
-          const img =
-            backgroundImage?.match(/url\(["']?(.*?)["']?\)/)?.[1] || '';
-          linkInfoArray.push({ name, book, img });
-        }
+        linkInfoArray.push({ name, book, img });
       }
     });
 
