@@ -3,6 +3,7 @@ import { Box, Checkbox, OutlinedInput, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { InitParamsReader } from '@/types/reader';
 import EndTimer from '@/app/_compon/EndTimer/EndTimer';
+import React from 'react';
 
 interface TimerProps {
   paramsReader: InitParamsReader;

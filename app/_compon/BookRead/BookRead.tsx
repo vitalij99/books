@@ -13,6 +13,7 @@ import { TranslateContext } from '@/Providers/TranslateProvider';
 import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
+import React from 'react';
 
 interface BookProps {
   book: string[];

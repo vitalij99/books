@@ -2,6 +2,7 @@
 
 import { EndTimerProps } from '@/types/endTimer';
 import { Box, Typography } from '@mui/material';
+import React from 'react';
 
 const EndTimer = ({ isreade, paramsReader }: EndTimerProps) => {
   if (!paramsReader.timer.checked) {

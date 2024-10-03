@@ -22,6 +22,7 @@ import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import Timer from '@/app/_compon/Timer/Timer';
 import { ReaderContext } from '@/Providers/ReaderProvider';
+import React from 'react';
 
 const Reader = ({
   book,

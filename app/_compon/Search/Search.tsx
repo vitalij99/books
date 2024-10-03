@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 import { useState } from 'react';
 
@@ -48,7 +49,7 @@ const Search = () => {
         >
           <Typography>Пошук</Typography>
         </Link>
-        <>
+        <Box>
           <form
             onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
               handleSubmit(event);
@@ -67,7 +68,7 @@ const Search = () => {
               />
             </FormControl>
           </form>
-        </>
+        </Box>
       </Box>
     </ThemeProvider>
   );

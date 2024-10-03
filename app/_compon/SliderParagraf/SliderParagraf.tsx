@@ -2,6 +2,7 @@ import { Box, IconButton, Slider, Typography } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { ReaderProps } from '@/types/reader';
+import React from 'react';
 
 interface SliderParagrafProps {
   maxParagraf: number;
