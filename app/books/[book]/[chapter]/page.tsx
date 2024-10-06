@@ -1,4 +1,5 @@
 import BookRead from '@/app/_compon/BookRead/BookRead';
+import React from 'react';
 
 const page = async ({
   params,
