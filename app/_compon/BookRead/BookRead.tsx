@@ -129,7 +129,8 @@ const BookRead = ({
       sx={{
         backgroundColor: 'var(--bg-color-book)',
         paddingInline: `var(${AllowedKeys.BkPadding})`,
-        height: '100vh',
+        minHeight: '100vh',
+        maxHeight: '100%',
       }}
     >
       <Box sx={{ position: 'fixed', right: '0' }}>
