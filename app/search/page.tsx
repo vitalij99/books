@@ -1,5 +1,5 @@
-import Loading from '../_compon/Loading/Loading';
-import ListBooksCard from '../_compon/ListBooksCard/ListBooksCard';
+import ListBooksCard from '@/app/_compon/ListBooksCard/ListBooksCard';
+import Loading from '@/app/_compon/Loading/Loading';
 import { getBookSearchByNameAll } from '@/back';
 
 const search = async ({
