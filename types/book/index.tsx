@@ -3,6 +3,7 @@ export enum AllowedKeys {
   TextBook = '--text-book',
   BgColor = '--bg-color-book',
   BkPadding = '--book-padding',
+  TextMargin = '--text-text-margin',
   Translate = 'translate',
 }
 
@@ -11,6 +12,7 @@ export const STORAGE_KEY = [
   AllowedKeys.TextBook,
   AllowedKeys.BgColor,
   AllowedKeys.BkPadding,
+  AllowedKeys.TextMargin,
 ];
 export interface Book {
   name: string;
