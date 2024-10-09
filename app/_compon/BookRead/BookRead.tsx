@@ -153,7 +153,8 @@ const BookRead = ({
             sx={{
               color: 'var(--text-book)',
               fontSize: 'var(--font-size)',
-              bgcolor: textIsRead === index ? '#FFFF00' : undefined,
+              backdropFilter: textIsRead === index ? 'blur(10px)' : undefined,
+              filter: textIsRead === index ? 'invert(1)' : undefined,
             }}
             className={textIsRead === index ? IS_AUTO_SCROLL : ' '}
           >
