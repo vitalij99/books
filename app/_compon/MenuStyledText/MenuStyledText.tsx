@@ -77,15 +77,26 @@ const MenuStyledText = () => {
           handleChange(event.target.value + 'px', AllowedKeys.FontSize);
         }}
       />
-      <InputLabel htmlFor="margin-text">Відступ тексту</InputLabel>
+      <InputLabel htmlFor="margin-text">Відступ між абзацами</InputLabel>
       <OutlinedInput
         name="margin-text"
         endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="margin text"
         type="number"
-        defaultValue={parseFloat(storageDef[AllowedKeys.TextMargin])}
+        defaultValue={parseFloat(storageDef[AllowedKeys.TextMargin]) || 0}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           handleChange(event.target.value + 'px', AllowedKeys.TextMargin);
+        }}
+      />
+      <InputLabel htmlFor="line-height-text">Відступ між тексту</InputLabel>
+      <OutlinedInput
+        name="line-height-text"
+        endAdornment={<InputAdornment position="start">px</InputAdornment>}
+        label="line-height-text"
+        type="number"
+        defaultValue={parseFloat(storageDef[AllowedKeys.TextLineHeight]) || 1.5}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          handleChange(event.target.value + 'px', AllowedKeys.TextLineHeight);
         }}
       />
       <InputLabel htmlFor="mui-color-input">Колір тексту</InputLabel>

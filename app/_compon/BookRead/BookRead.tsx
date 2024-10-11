@@ -156,6 +156,7 @@ const BookRead = ({
               backdropFilter: textIsRead === index ? 'blur(10px)' : undefined,
               filter: textIsRead === index ? 'invert(1)' : undefined,
               marginBottom: 'var(--text-text-margin)',
+              lineHeight: 'var(--text-line-height)',
             }}
             className={textIsRead === index ? IS_AUTO_SCROLL : ' '}
           >
