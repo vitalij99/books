@@ -6,6 +6,8 @@
   --bg-color-book: var(--sec-color);
   --bg-color-menu: #1976d2;
   --book-padding: 20px;
+  --text-text-margin: 0px;
+  --text-line-height: 1.5;
 }
 
 .MuiImageList-root::-webkit-scrollbar,

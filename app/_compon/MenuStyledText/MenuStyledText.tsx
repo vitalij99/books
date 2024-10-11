@@ -91,12 +91,11 @@ const MenuStyledText = () => {
       <InputLabel htmlFor="line-height-text">Відступ між тексту</InputLabel>
       <OutlinedInput
         name="line-height-text"
-        endAdornment={<InputAdornment position="start">px</InputAdornment>}
         label="line-height-text"
         type="number"
         defaultValue={parseFloat(storageDef[AllowedKeys.TextLineHeight]) || 1.5}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handleChange(event.target.value + 'px', AllowedKeys.TextLineHeight);
+          handleChange(event.target.value, AllowedKeys.TextLineHeight);
         }}
       />
       <InputLabel htmlFor="mui-color-input">Колір тексту</InputLabel>
