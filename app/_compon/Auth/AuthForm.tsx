@@ -12,14 +12,12 @@ import {
 } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 export default function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSignIn, setIsSignIn] = useState(true);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,15 +25,13 @@ export default function AuthForm() {
 
     if (isSignIn) {
       const res = await signIn('credentials', {
-        redirect: false,
+        redirect: true,
         email,
         password,
       });
 
       if (res?.error) {
         setError('Неправильний email або пароль.');
-      } else {
-        router.back();
       }
     } else {
       try {
@@ -50,8 +46,7 @@ export default function AuthForm() {
         if (!res.ok) {
           throw new Error('Registration failed');
         } else {
-          await signIn('credentials', { redirect: false, email, password });
-          router.back();
+          await signIn('credentials', { redirect: true, email, password });
         }
       } catch (error) {
         setError((error as Error).message);
