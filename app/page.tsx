@@ -1,7 +1,27 @@
-export default function Home() {
+import React from 'react';
+
+import { getBooksPopularAll } from '@/back';
+import Loading from '@/app/_compon/Loading/Loading';
+import ListBooksCard from '@/app/_compon/ListBooksCard/ListBooksCard';
+
+const popular = async () => {
+  const books = await getBooksPopularAll();
+
+  if (!books) {
+    return <Loading />;
+  }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Hello world</h1>
-    </main>
+    <>
+      <h3>Popular</h3>
+      {books.map(website => (
+        <ListBooksCard
+          key={website.web}
+          books={website.books}
+          web={website.web}
+        />
+      ))}
+    </>
   );
-}
+};
+
+export default popular;

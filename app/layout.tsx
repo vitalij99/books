@@ -32,7 +32,7 @@ export default async function RootLayout({
               <ReaderProvider>
                 <Header />
                 <BreadcrumbsCustl />
-                {children}
+                <main>{children}</main>
               </ReaderProvider>
             </DarkProvider>
           </TranslateProvider>
