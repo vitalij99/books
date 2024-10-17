@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const hasSessionToken = request.cookies.has('authjs.session-token');
 
   if (hasSessionToken) {
-    return NextResponse.redirect(new URL('/popular', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 }
 

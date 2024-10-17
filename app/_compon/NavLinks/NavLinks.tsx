@@ -4,7 +4,7 @@ import React from 'react';
 
 const NAVLINK = [
   {
-    href: '/popular',
+    href: '/',
     key: 'Популярне',
   },
   {
