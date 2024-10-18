@@ -1,4 +1,6 @@
+'use client';
 import { Box, Link, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface NavigationPagesProps {
   title: string;
@@ -16,25 +18,30 @@ const NavigationPages = ({
   title,
   charpter,
 }: NavigationPagesProps) => {
-  const {
-    nextPage,
-    nextText = 'Наступна',
-    prevPage,
-    prevText = 'Попередня',
-  } = navigate;
+  const [hrefBook, setHrefBook] = useState('/');
+
+  useEffect(() => {
+    const pathSegments = window.location.pathname
+      .split('/')
+      .filter((el, i) => i <= 2 && el);
+    const params = new URLSearchParams(window.location.search);
+    const webParam = params.get('web');
+    setHrefBook(`/${pathSegments[0]}/${pathSegments[1]}?web=${webParam}`);
+  }, []);
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
-      {prevPage && (
-        <Link href={prevPage}>
-          {prevText.length === 0 ? 'Наступна' : prevText}
+      {navigate.prevPage && (
+        <Link href={navigate.prevPage}>
+          {navigate.prevText?.length === 0 ? 'Попередня' : navigate.prevText}
         </Link>
       )}
-      <Typography color="var(--text-book)">
+      <Link href={hrefBook}>
         {title} параграф {charpter}
-      </Typography>
-      {nextPage && (
-        <Link href={nextPage}>
-          {nextText.length === 0 ? 'Попередня' : nextText}
+      </Link>
+      {navigate.nextPage && (
+        <Link href={navigate.nextPage}>
+          {navigate.nextText?.length === 0 ? 'Наступна' : navigate.nextText}
         </Link>
       )}
     </Box>

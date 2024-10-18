@@ -12,7 +12,6 @@ const popular = async () => {
   }
   return (
     <>
-      <h3>Popular</h3>
       {books.map(website => (
         <ListBooksCard
           key={website.web}
