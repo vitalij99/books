@@ -9,15 +9,15 @@ const BreadcrumbsCustl = () => {
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    setPathname(pathSegments);
 
     const params = new URLSearchParams(window.location.search);
     const webParam = params.get('web');
 
-    setPathname(pathSegments);
     setWeb(webParam || undefined);
   }, []);
 
-  if (pathname.length === 0) {
+  if (pathname.length <= 1) {
     return null;
   }
 
