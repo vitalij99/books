@@ -93,9 +93,14 @@ const MenuStyledText = () => {
         name="line-height-text"
         label="line-height-text"
         type="number"
-        defaultValue={parseFloat(storageDef[AllowedKeys.TextLineHeight]) || 1.5}
+        defaultValue={
+          parseFloat(storageDef[AllowedKeys.TextLineHeight]) * 10 || 15
+        }
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handleChange(event.target.value, AllowedKeys.TextLineHeight);
+          handleChange(
+            Number(event.target.value) / 10 + '',
+            AllowedKeys.TextLineHeight
+          );
         }}
       />
       <InputLabel htmlFor="mui-color-input">Колір тексту</InputLabel>
