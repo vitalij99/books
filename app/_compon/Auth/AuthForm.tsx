@@ -55,7 +55,7 @@ export default function AuthForm() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ paddingTop: 3 }}>
       <Card
         variant="outlined"
         sx={{ p: 4, boxShadow: '4px 4px 4px currentColor' }}
