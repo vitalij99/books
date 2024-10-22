@@ -9,7 +9,7 @@ const NAVLINK = [
   },
   {
     href: '/books',
-    key: 'Книги',
+    key: 'Збережені книги',
   },
 ];
 
