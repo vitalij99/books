@@ -73,12 +73,12 @@ const SaveBooksLinks = () => {
     return <Typography>немає</Typography>;
   }
   return (
-    <Box padding={4}>
+    <Box>
       <SaveOptionsBooks selectShowBooks={selectShowBooks} />
       <ImageList
         sx={{
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px)) !important',
-          gridAutoColumns: 'minmax(200px)',
+          gridTemplateColumns: '200px ',
+          gridAutoColumns: '200px',
           justifyItems: 'center',
         }}
       >
