@@ -1,35 +1,30 @@
 'use client';
-import ItemList from '@/app/_compon/ItemList/ItemList';
+import React, { useEffect, useState } from 'react';
 import { Box, Card, CardActions, CardContent, Link } from '@mui/material';
+import ItemList from '@/app/_compon/ItemList/ItemList';
+import { getStorageAr } from '@/lib/getStorage';
 
-import React from 'react';
-
-const pages = [
+const BOOKS = [
   {
-    link: 'asd',
-    title: 'sade',
-  },
-  {
-    link: 'asd',
-    title: 'sade',
-  },
-  {
-    link: 'asd',
-    title: 'sade',
-  },
-  {
-    link: 'asd',
-    title: 'sade',
+    link: '/',
+    title: 'Тут будуть відвіданні книги',
   },
 ];
 
 const History = () => {
+  const [books, setBooks] = useState(BOOKS);
+
+  useEffect(() => {
+    const storage = getStorageAr('historybooks');
+    setBooks(storage);
+  }, []);
+
   return (
     <Box>
       <Card variant="outlined">
-        <CardContent>Відвідані книжки</CardContent>
+        <CardContent>Відвіданні книжки</CardContent>
         <ItemList
-          items={pages}
+          items={books}
           renderItem={({ link, title }) => (
             <CardActions>
               <Link href={link}>{title}</Link>
