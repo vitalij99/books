@@ -1,10 +1,12 @@
 'use client';
+import { findSaveBook, findSaveChapter, setHistoryBooks } from '@/lib/books';
 import {
   getSaveBooks,
   setSaveBook,
   updateChapter,
   updateChapterLastReader,
 } from '@/lib/db';
+import { getStorageAr, setStorage } from '@/lib/getStorage';
 
 import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
@@ -52,6 +54,10 @@ const SaveBook = () => {
     } else {
       setBookSaveDB(res);
       setIsAdded(res ? true : false);
+    }
+
+    if (nameBook[1] === 'books') {
+      setHistoryBooks(window.location.href, nameBook[2]);
     }
   }, [pathname, saveBooks]);
 
@@ -134,14 +140,3 @@ const SaveBook = () => {
 };
 
 export default SaveBook;
-
-const findSaveBook = (saveBooks: BooksSaveDB[], pathnameBook: string[]) => {
-  return saveBooks.find(book => {
-    if (book.title === pathnameBook[2]) return book;
-  });
-};
-const findSaveChapter = (book: BooksSaveDB, pathnameBook: string[]) => {
-  if (book.title === pathnameBook[2]) {
-    return book.chapter?.find(chapter => chapter === pathnameBook[3]);
-  }
-};
