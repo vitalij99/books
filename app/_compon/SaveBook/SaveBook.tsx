@@ -1,4 +1,6 @@
 'use client';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { findSaveBook, findSaveChapter, setHistoryBooks } from '@/lib/books';
 import {
   getSaveBooks,
@@ -6,7 +8,6 @@ import {
   updateChapter,
   updateChapterLastReader,
 } from '@/lib/db';
-import { getStorageAr, setStorage } from '@/lib/getStorage';
 
 import { BooksSaveDB } from '@/types/book';
 import { Button } from '@mui/material';
@@ -14,8 +15,6 @@ import { useSession } from 'next-auth/react';
 
 import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
-import React from 'react';
-import { useEffect, useState } from 'react';
 
 interface ExtendedBooksSaveDB extends BooksSaveDB {
   thisChapter?: string;
