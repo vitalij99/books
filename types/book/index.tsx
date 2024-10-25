@@ -6,6 +6,7 @@ export enum AllowedKeys {
   TextMargin = '--text-text-margin',
   TextLineHeight = '--text-line-height',
   Translate = 'translate',
+  HistoryBooks = 'historybooks',
 }
 
 export const STORAGE_KEY = [

@@ -20,3 +20,7 @@ export const setPropertyStyle = debounce((value: string, key: AllowedKeys) => {
   localStorage.setItem(key, value);
   document.documentElement.style.setProperty(key, value);
 }, 500);
+export function getStorageAr(key: string) {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+}
