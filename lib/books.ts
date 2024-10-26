@@ -21,6 +21,7 @@ export const setHistoryBooks = (url: string, title: string) => {
   const book = {
     title,
     link,
+    time: new Date(),
   };
 
   const isDuplicate = storage.some(
@@ -33,5 +34,25 @@ export const setHistoryBooks = (url: string, title: string) => {
     }
 
     setStorage(updatedStorage, 'historybooks');
+  }
+};
+export const getTimeHistoryDifference = (date: Date): string => {
+  if (!(date instanceof Date) || isNaN(date.getTime())) return '';
+
+  const dateNow = new Date();
+  const diffInMs = Math.abs(dateNow.getTime() - date.getTime());
+
+  const hours = Math.floor(
+    (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  if (hours === 0) {
+    return `${String(minutes).padStart(2, '0')} хв`;
+  } else {
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+      2,
+      '0'
+    )}`;
   }
 };
