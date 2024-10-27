@@ -16,7 +16,7 @@ const BOOKS = [
   {
     link: '/',
     title: 'Тут будуть відвіданні книги',
-    time: new Date(),
+    time: '00',
   },
 ];
 
@@ -24,8 +24,14 @@ const History = () => {
   const [books, setBooks] = useState(BOOKS);
 
   useEffect(() => {
-    const storage = getStorageAr('historybooks');
-    setBooks(storage);
+    const storage = getStorageAr('historybooks') || [];
+
+    const updatedBooks = storage.map((book: any) => ({
+      ...book,
+      time: getTimeHistoryDifference(book.time),
+    }));
+
+    setBooks(updatedBooks);
   }, []);
 
   return (
@@ -43,7 +49,7 @@ const History = () => {
               sx={{ display: 'flex', justifyContent: 'space-between' }}
             >
               <Link href={link}>{title}</Link>
-              <Typography>{getTimeHistoryDifference(time)}</Typography>
+              {time && <Typography>{time}</Typography>}
             </CardActions>
           )}
         />

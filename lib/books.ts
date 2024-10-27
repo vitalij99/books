@@ -1,3 +1,4 @@
+'use client';
 import { getStorageAr, setStorage } from '@/lib/getStorage';
 import { BooksSaveDB } from '@/types/book';
 
@@ -36,8 +37,9 @@ export const setHistoryBooks = (url: string, title: string) => {
     setStorage(updatedStorage, 'historybooks');
   }
 };
-export const getTimeHistoryDifference = (date: Date): string => {
-  if (!(date instanceof Date) || isNaN(date.getTime())) return '';
+export const getTimeHistoryDifference = (dateSave: string) => {
+  const date = new Date(dateSave);
+  if (!date) return '';
 
   const dateNow = new Date();
   const diffInMs = Math.abs(dateNow.getTime() - date.getTime());
