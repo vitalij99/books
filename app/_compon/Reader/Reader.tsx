@@ -49,13 +49,15 @@ const Reader = ({
     const storage: InitParamsReader = getSrorageJSON(PARAMSREADER);
 
     if (storage) {
-      const dateSave = new Date(storage.timer.timeSave);
-      const dateNow = new Date();
+      if (storage.timer.timeSave) {
+        const dateSave = new Date(storage.timer.timeSave);
+        const dateNow = new Date();
+        if (dateSave >= dateNow && storage.timer.checked) {
+          setIsreade(prev => ({ ...prev, read: true }));
+        }
+      }
 
       setParamsReader(prev => ({ ...prev, ...storage }));
-      if (dateSave >= dateNow && storage.timer.checked) {
-        setIsreade(prev => ({ ...prev, read: true }));
-      }
     }
   }, []);
 
@@ -113,8 +115,15 @@ const Reader = ({
   const handleReadeCancel = () => {
     if (!reader) return;
     reader.handleCancel();
-
-    setIsreade({ read: false, pause: false });
+    setParamsReader(prev => {
+      const updateParams = {
+        ...prev,
+        timer: { ...prev.timer, timeSave: undefined },
+      };
+      setIsreade({ read: false, pause: false });
+      setStorage(updateParams, PARAMSREADER);
+      return updateParams;
+    });
   };
 
   const handleSliderParams = (event: Event, value: number | number[]) => {

@@ -36,7 +36,7 @@ export interface InitParamsReader {
 }
 
 export interface TimerParams {
-  timeSave: Date;
+  timeSave: Date | undefined;
   timer: number;
   checked: boolean;
 }

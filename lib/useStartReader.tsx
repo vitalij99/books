@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { InitParamsReader, READER_KEY } from '@/types/reader';
-import { getStorage } from '@/lib/getStorage';
+import { InitParamsReader, PARAMSREADER, READER_KEY } from '@/types/reader';
+import { getSrorageJSON, getStorage } from '@/lib/getStorage';
 
 interface StartReaderProps {
   book: string[];
@@ -91,19 +91,15 @@ export const useStartReader = ({
   ]);
 
   useEffect(() => {
-    const timerStr = getStorage(READER_KEY.timer);
-    if (!timerStr) return;
-    const timer: {
-      timeSave: Date;
-      timer: number;
-    } = JSON.parse(timerStr);
-    if (!timer) return;
+    const storage: InitParamsReader = getSrorageJSON(PARAMSREADER);
 
-    const date1 = new Date(timer.timeSave);
-    const date2 = new Date();
+    if (storage && storage.timer.timeSave) {
+      const dateSave = new Date(storage.timer.timeSave);
+      const date2 = new Date();
 
-    if (date1 >= date2) {
-      setParagraf(0);
+      if (dateSave >= date2) {
+        setParagraf(0);
+      }
     }
   }, []);
   if (!synth || !voices) {
