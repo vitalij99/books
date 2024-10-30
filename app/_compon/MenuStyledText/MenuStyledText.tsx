@@ -1,11 +1,6 @@
 'use client';
-import { getStorageRootValue, setPropertyStyle } from '@/lib/getStorage';
-import {
-  AllowedKeys,
-  MENUSTYLEDTEXT,
-  STORAGE_KEY,
-  StorageType,
-} from '@/types/book';
+import { getSrorageJSON, setPropertyStyle } from '@/lib/getStorage';
+import { AllowedKeys, MENUSTYLEDTEXT, StorageType } from '@/types/book';
 import {
   Box,
   InputAdornment,
@@ -24,10 +19,8 @@ import { TranslateContext } from '@/Providers/TranslateProvider';
 import InputColor from '@/app/_compon/InputColor/InputColor';
 
 const defaultStorage = (): StorageType => {
-  const storage: StorageType = {} as StorageType;
-  STORAGE_KEY.forEach(key => {
-    storage[key] = getStorageRootValue(key as AllowedKeys);
-  });
+  const storage: StorageType = getSrorageJSON(MENUSTYLEDTEXT);
+
   return storage;
 };
 

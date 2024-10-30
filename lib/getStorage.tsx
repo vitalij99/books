@@ -1,7 +1,7 @@
 'use client';
 import debounce from 'lodash.debounce';
 
-import { AllowedKeys, StorageType } from '@/types/book';
+import { StorageType } from '@/types/book';
 import { getRootValue } from '@/lib/setRootValue';
 
 export const getStorageRootValue = (key: string) => {
@@ -40,3 +40,12 @@ export function getStorageAr(key: string) {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : [];
 }
+export const getSrorageJSON = (key: string) => {
+  const data = localStorage.getItem(key);
+  try {
+    return data ? JSON.parse(data) : '';
+  } catch (error) {
+    console.warn(`Failed to parse JSON for key "${key}":`, error);
+    return data;
+  }
+};

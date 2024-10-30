@@ -1,10 +1,20 @@
 'use client';
 
-import { getStorage, getStorageRootValue, setStorage } from '@/lib/getStorage';
+import {
+  getSrorageJSON,
+  getStorage,
+  getStorageRootValue,
+  setStorage,
+} from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
-import { AllowedKeys, STORAGE_KEY } from '@/types/book';
+import {
+  AllowedKeys,
+  MENUSTYLEDTEXT,
+  STORAGE_KEY,
+  StorageType,
+} from '@/types/book';
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
@@ -42,13 +52,13 @@ const BookRead = ({
   const translate = useContext(TranslateContext);
 
   useEffect(() => {
-    const storage = STORAGE_KEY.map(key => getStorageRootValue(key));
+    const storage: StorageType = getSrorageJSON(MENUSTYLEDTEXT);
     if (storage) {
-      storage.forEach((value, index) => {
-        if (value) {
-          setRootValue(STORAGE_KEY[index], value);
+      for (const cssKey in storage) {
+        if (cssKey.startsWith('--')) {
+          setRootValue(cssKey, storage[cssKey as keyof StorageType]);
         }
-      });
+      }
     }
 
     const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
