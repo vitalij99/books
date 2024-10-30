@@ -1,3 +1,5 @@
+export const PARAMSREADER = 'paramsReader';
+
 export const READER_KEY = {
   voice: 'voice',
   rate: 'rate',

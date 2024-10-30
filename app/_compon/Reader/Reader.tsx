@@ -16,7 +16,12 @@ import debounce from 'lodash.debounce';
 
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
-import { READER_KEY, StartReaderProps, initParamsReader } from '@/types/reader';
+import {
+  PARAMSREADER,
+  READER_KEY,
+  StartReaderProps,
+  initParamsReader,
+} from '@/types/reader';
 import ReaderCard from '@/app/_compon/ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice';
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
@@ -71,7 +76,11 @@ const Reader = ({
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
 
-    setParamsReader(prev => ({ ...prev, language: value }));
+    setParamsReader(prev => {
+      const updateParams = { ...prev, language: value };
+      setStorage(updateParams, PARAMSREADER);
+      return updateParams;
+    });
     setStorage(value, READER_KEY.voice);
   };
 
