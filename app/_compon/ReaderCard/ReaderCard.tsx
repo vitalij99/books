@@ -1,6 +1,6 @@
-import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
-import { Box, Button, Card, Typography } from '@mui/material';
 import React from 'react';
+import { Box, Button, Card, Typography } from '@mui/material';
+import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 
 interface ReaderCardProps {
   reader: any;

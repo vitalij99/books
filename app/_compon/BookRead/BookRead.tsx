@@ -14,6 +14,7 @@ import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 import React from 'react';
+import { InitParamsReader, PARAMSREADER } from '@/types/reader';
 
 interface BookProps {
   book: string[];
@@ -55,6 +56,17 @@ const BookRead = ({
 
     if (storageAutoScroll === 'true') {
       setisAutoScroll(true);
+    }
+
+    const storageReader: InitParamsReader = getSrorageJSON(PARAMSREADER);
+
+    if (storage && storageReader.timer.timeSave) {
+      const dateSave = new Date(storageReader.timer.timeSave);
+      const date2 = new Date();
+
+      if (dateSave >= date2) {
+        setTextIsRead(0);
+      }
     }
   }, []);
 
