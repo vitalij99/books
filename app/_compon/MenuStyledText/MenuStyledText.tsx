@@ -1,6 +1,11 @@
 'use client';
 import { getStorageRootValue, setPropertyStyle } from '@/lib/getStorage';
-import { AllowedKeys, STORAGE_KEY } from '@/types/book';
+import {
+  AllowedKeys,
+  MENUSTYLEDTEXT,
+  STORAGE_KEY,
+  StorageType,
+} from '@/types/book';
 import {
   Box,
   InputAdornment,
@@ -18,10 +23,6 @@ import { ColorModeContext } from '@/Providers/DarkProvider';
 import { TranslateContext } from '@/Providers/TranslateProvider';
 import InputColor from '@/app/_compon/InputColor/InputColor';
 
-type StorageType = {
-  [key in AllowedKeys]: string;
-};
-
 const defaultStorage = (): StorageType => {
   const storage: StorageType = {} as StorageType;
   STORAGE_KEY.forEach(key => {
@@ -38,7 +39,8 @@ const MenuStyledText = () => {
 
   const handleChange = (value: string, key: AllowedKeys) => {
     setStorageDef(prev => ({ ...prev, [key]: value }));
-    setPropertyStyle(value, key);
+
+    setPropertyStyle(MENUSTYLEDTEXT, { ...storageDef, [key]: value });
   };
 
   return (

@@ -8,6 +8,7 @@ export enum AllowedKeys {
   Translate = 'translate',
   HistoryBooks = 'historybooks',
 }
+export const MENUSTYLEDTEXT = 'MenuStyledText';
 
 export const STORAGE_KEY = [
   AllowedKeys.FontSize,
@@ -17,6 +18,10 @@ export const STORAGE_KEY = [
   AllowedKeys.TextMargin,
   AllowedKeys.TextLineHeight,
 ];
+
+export type StorageType = {
+  [key in AllowedKeys]: string;
+};
 export interface Book {
   name: string;
   book: string;
