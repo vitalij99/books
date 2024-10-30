@@ -143,7 +143,7 @@ const BookRead = ({
         maxHeight: '100%',
       }}
     >
-      <Box sx={{ position: 'fixed', right: '0' }}>
+      <Box sx={{ position: 'fixed', right: '0', zIndex: 3 }}>
         <Reader
           book={textBook}
           changeText={changeTextRead}
