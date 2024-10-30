@@ -173,7 +173,7 @@ const Reader = ({
   };
 
   return (
-    <>
+    <Box sx={{ position: 'fixed', right: '0', zIndex: 3 }}>
       <ReaderCard
         reader={reader}
         isreade={isreade}
@@ -260,7 +260,7 @@ const Reader = ({
           </Box>
         </Box>
       </Drawer>
-    </>
+    </Box>
   );
 };
 

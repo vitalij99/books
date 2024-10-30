@@ -1,20 +1,10 @@
 'use client';
 
-import {
-  getSrorageJSON,
-  getStorage,
-  getStorageRootValue,
-  setStorage,
-} from '@/lib/getStorage';
+import { getSrorageJSON, getStorage, setStorage } from '@/lib/getStorage';
 
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
-import {
-  AllowedKeys,
-  MENUSTYLEDTEXT,
-  STORAGE_KEY,
-  StorageType,
-} from '@/types/book';
+import { AllowedKeys, MENUSTYLEDTEXT, StorageType } from '@/types/book';
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
@@ -143,14 +133,13 @@ const BookRead = ({
         maxHeight: '100%',
       }}
     >
-      <Box sx={{ position: 'fixed', right: '0', zIndex: 3 }}>
-        <Reader
-          book={textBook}
-          changeText={changeTextRead}
-          autoScroll={{ handleAutoScroll, isAutoScroll }}
-          srcNextPage={data.nav.nextPage}
-        />
-      </Box>
+      <Reader
+        book={textBook}
+        changeText={changeTextRead}
+        autoScroll={{ handleAutoScroll, isAutoScroll }}
+        srcNextPage={data.nav.nextPage}
+      />
+
       <NavigationPages
         navigate={data.nav}
         title={params.book}
