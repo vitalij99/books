@@ -1,6 +1,6 @@
 'use client';
-import { getStorage, setStorage } from '@/lib/getStorage';
-import { useStartReader } from '@/lib/useStartReader';
+import React from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -11,23 +11,21 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-
-import debounce from 'lodash.debounce';
-
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
-
 import {
+  InitParamsReader,
   PARAMSREADER,
   READER_KEY,
   StartReaderProps,
   initParamsReader,
 } from '@/types/reader';
+import { getSrorageJSON, setStorage } from '@/lib/getStorage';
+import { useStartReader } from '@/lib/useStartReader';
+import { ReaderContext } from '@/Providers/ReaderProvider';
+
 import ReaderCard from '@/app/_compon/ReaderCard/ReaderCard';
 import SelectReaderVoice from '@/app/_compon/SelectReaderVoice/SelectReaderVoice';
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
 import Timer from '@/app/_compon/Timer/Timer';
-import { ReaderContext } from '@/Providers/ReaderProvider';
-import React from 'react';
 
 const Reader = ({
   book,
@@ -48,28 +46,16 @@ const Reader = ({
   });
 
   useEffect(() => {
-    const storage = {
-      pitch: Number(getStorage(READER_KEY.pitch)) || 1,
-      rate: Number(getStorage(READER_KEY.rate)) || 2,
-      language: getStorage(READER_KEY.voice) || '',
-      volume: Number(getStorage(READER_KEY.volume)) || 1,
-    };
-    const storageTimer = getStorage(READER_KEY.timer);
-    const timer: {
-      timeSave: Date;
-      timer: number;
-      checked: boolean;
-    } =
-      storageTimer.length === 0
-        ? initParamsReader.timer
-        : JSON.parse(storageTimer);
+    const storage: InitParamsReader = getSrorageJSON(PARAMSREADER);
 
-    const dateSave = new Date(timer.timeSave);
-    const dateNow = new Date();
+    if (storage) {
+      const dateSave = new Date(storage.timer.timeSave);
+      const dateNow = new Date();
 
-    setParamsReader(prev => ({ ...prev, ...storage, timer }));
-    if (dateSave >= dateNow && timer.checked) {
-      setIsreade(prev => ({ ...prev, read: true }));
+      setParamsReader(prev => ({ ...prev, ...storage }));
+      if (dateSave >= dateNow && storage.timer.checked) {
+        setIsreade(prev => ({ ...prev, read: true }));
+      }
     }
   }, []);
 
@@ -117,8 +103,10 @@ const Reader = ({
 
       const newTimer = { ...prev.timer, timeSave };
 
-      setStorage(newTimer, READER_KEY.timer);
-      return { ...prev, timer: newTimer };
+      const updateParams = { ...prev, timer: newTimer };
+      setStorage(updateParams, PARAMSREADER);
+
+      return updateParams;
     });
   };
 
@@ -137,19 +125,22 @@ const Reader = ({
     const key: string = element.name;
 
     if (key) {
-      setParamsReader(prev => ({ ...prev, [key]: value }));
+      setParamsReader(prev => {
+        const updateParams = { ...prev, [key]: value };
+        setStorage(updateParams, PARAMSREADER);
+        return updateParams;
+      });
     }
-
-    debounce(() => {
-      setStorage(value + '', [key] + '');
-    }, 1000)();
   };
   const handleParamsTimer = (event: any, value: number | number[]) => {
     if (typeof value === 'number') {
       setParamsReader(prev => {
         const newTimer = { ...prev.timer, timer: value };
-        setStorage(newTimer, READER_KEY.timer);
-        return { ...prev, timer: newTimer };
+        const updateParams = { ...prev, timer: newTimer };
+
+        setStorage(updateParams, PARAMSREADER);
+
+        return updateParams;
       });
     }
   };
@@ -163,8 +154,12 @@ const Reader = ({
   ) => {
     setParamsReader(prev => {
       const newTimer = { ...prev.timer, checked };
-      setStorage(newTimer, READER_KEY.timer);
-      return { ...prev, timer: newTimer };
+
+      const updateParams = { ...prev, timer: newTimer };
+
+      setStorage(updateParams, PARAMSREADER);
+
+      return updateParams;
     });
   };
 
