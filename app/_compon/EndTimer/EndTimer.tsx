@@ -18,7 +18,7 @@ const EndTimer = ({ isreade, paramsReader }: EndTimerProps) => {
               minute: '2-digit',
             })
           : new Date(
-              new Date().getTime() + paramsReader.timer.timer * 60000
+              new Date().getTime() + paramsReader?.timer?.timer * 60000
             ).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
