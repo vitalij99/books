@@ -69,7 +69,6 @@ const Reader = ({
       setStorage(updateParams, PARAMSREADER);
       return updateParams;
     });
-    setStorage(value, READER_KEY.voice);
   };
 
   const toggleDrawer =
