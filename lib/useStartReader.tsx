@@ -93,8 +93,8 @@ export const useStartReader = ({
   useEffect(() => {
     const storage: InitParamsReader = getSrorageJSON(PARAMSREADER);
 
-    if (storage && storage.timer.timeSave) {
-      const dateSave = new Date(storage.timer.timeSave);
+    if (storage && storage?.timer?.timeSave) {
+      const dateSave = new Date(storage?.timer?.timeSave);
       const date2 = new Date();
 
       if (dateSave >= date2) {

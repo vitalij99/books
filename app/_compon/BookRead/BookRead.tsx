@@ -60,8 +60,8 @@ const BookRead = ({
 
     const storageReader: InitParamsReader = getSrorageJSON(PARAMSREADER);
 
-    if (storage && storageReader.timer.timeSave) {
-      const dateSave = new Date(storageReader.timer.timeSave);
+    if (storage && storageReader?.timer?.timeSave) {
+      const dateSave = new Date(storageReader?.timer?.timeSave);
       const date2 = new Date();
 
       if (dateSave >= date2) {

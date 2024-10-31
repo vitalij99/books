@@ -49,10 +49,10 @@ const Reader = ({
     const storage: InitParamsReader = getSrorageJSON(PARAMSREADER);
 
     if (storage) {
-      if (storage.timer.timeSave) {
-        const dateSave = new Date(storage.timer.timeSave);
+      if (storage?.timer?.timeSave) {
+        const dateSave = new Date(storage?.timer?.timeSave);
         const dateNow = new Date();
-        if (dateSave >= dateNow && storage.timer.checked) {
+        if (dateSave >= dateNow && storage?.timer?.checked) {
           setIsreade(prev => ({ ...prev, read: true }));
         }
       }
