@@ -14,7 +14,6 @@ import {
 import {
   InitParamsReader,
   PARAMSREADER,
-  READER_KEY,
   StartReaderProps,
   initParamsReader,
 } from '@/types/reader';
@@ -61,6 +60,7 @@ const Reader = ({
     }
   }, []);
 
+  // TODO try setStorage(updateParams, PARAMSREADER)
   const handleChangeSelect = (event: SelectChangeEvent) => {
     const value = event.target.value || '';
 
