@@ -1,6 +1,6 @@
 'use server';
 
-import novelbin from '@/back/novelbin';
+import { novelbin } from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
 import { scribblehub } from '@/back/scribblehub';
 

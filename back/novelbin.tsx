@@ -65,10 +65,10 @@ const getBookLinks = async ({ book }: { book: string }) => {
 
   for (let i = 0; i < textHtmlAll.length; i++) {
     const parag = textHtmlAll[i];
-    const url = parag.getAttribute('href');
+    const url = parag.getAttribute('href')?.split('?');
     if (url) {
       linksBook.push({
-        book: transformLink(url),
+        book: transformLink(url[0]),
         name: parag.getAttribute('title') || parag.textContent,
       });
     }
@@ -85,7 +85,7 @@ const getBookFromLink = async ({
   chapter: string;
 }) => {
   // https://novelbjn.novelupdates.net/book/card-apprentice-daily-log/chapter-3
-  const linkBook = `https://novelbjn.novelupdates.net/book/${book}/chapter-${chapter}`;
+  const linkBook = reTransformLink(book, chapter);
   const res = await fetch(linkBook);
 
   const data = await res.text();
@@ -134,8 +134,11 @@ const getBookImageLink = async ({ book }: { book: string }) => {
 };
 
 const transformLink = (url: string) => {
-  const indexOfChapter = url.lastIndexOf('/chapter-');
-  return url.slice(indexOfChapter + 9);
+  const arr = url.split('/');
+  return arr[arr.length - 1];
+};
+const reTransformLink = (book: string, chapter: string) => {
+  return `https://novelbjn.novelupdates.net/book/${book}/${chapter}`;
 };
 
 const getBookPopular = async () => {
@@ -180,10 +183,11 @@ const getBookPopular = async () => {
   }
 };
 
-export default {
+export const novelbin = {
   getBookSearchByName,
   getBookLinks,
   getBookFromLink,
   getBookImageLink,
   getBookPopular,
+  web,
 };
