@@ -17,43 +17,39 @@ const BreadcrumbsCustl = () => {
     setWeb(webParam || undefined);
   }, []);
 
-  if (pathname.length <= 1) {
-    return null;
-  }
-
   return (
     <Breadcrumbs sx={{ color: 'var(--text)', p: 3 }} aria-label="breadcrumb">
       <Link underline="hover" color="inherit" href="/">
         Головна
       </Link>
 
-      {pathname[0] && (
-        <Link
-          underline="hover"
-          color="inherit"
-          sx={{ textTransform: 'capitalize' }}
-          href={`/${pathname[0]}`}
-        >
-          {pathname[0]}
-        </Link>
-      )}
+      {pathname.map((segment, index) => {
+        const href = `/${pathname.slice(0, index + 1).join('/')}${
+          web && index === 1 ? `?web=${web}` : ''
+        }`;
+        const isLast = index === pathname.length - 1;
 
-      {pathname[1] && (
-        <Link
-          underline="hover"
-          color="inherit"
-          sx={{ textTransform: 'capitalize' }}
-          href={`/${pathname[0]}/${pathname[1]}${web ? `?web=${web}` : ''}`}
-        >
-          {pathname[1]}
-        </Link>
-      )}
-
-      {pathname[2] && (
-        <Typography color="inherit" sx={{ textTransform: 'capitalize' }}>
-          {pathname[2]}
-        </Typography>
-      )}
+        return isLast ? (
+          <Typography
+            key={index}
+            color="inherit"
+            sx={{ textTransform: 'capitalize' }}
+            aria-current="page"
+          >
+            {segment}
+          </Typography>
+        ) : (
+          <Link
+            key={index}
+            underline="hover"
+            color="inherit"
+            sx={{ textTransform: 'capitalize' }}
+            href={href}
+          >
+            {segment}
+          </Link>
+        );
+      })}
     </Breadcrumbs>
   );
 };
