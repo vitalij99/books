@@ -3,8 +3,11 @@ import SaveBooksLinks from '@/app/_compon/SaveBooksLinks/SaveBooksLinks';
 import Container from '@/app/_compon/Container/Container';
 import { Box } from '@mui/material';
 import History from '@/app/_compon/History/History';
+import { auth } from '@/auth';
 
 const Books = async () => {
+  const session = await auth();
+
   return (
     <>
       <Container>
@@ -18,7 +21,7 @@ const Books = async () => {
           }}
         >
           <Box sx={{ gridArea: '1 / 1 / 2 / 5' }}>
-            <SaveBooksLinks />
+            {session && <SaveBooksLinks />}
           </Box>
           <Box sx={{ gridArea: '1 / 5 / 2 / 6' }}>
             <History />
