@@ -31,9 +31,10 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
   return (
     <Box padding={3} sx={{ display: 'flex', justifyContent: 'center' }}>
       <Box>
-        <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Pagination
             onChange={handlePagination}
+            page={pagination}
             count={Math.floor(books.length / amountBook)}
           />
         </Box>
@@ -53,6 +54,13 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
                 </Typography>
               </Link>
             )}
+          />
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Pagination
+            onChange={handlePagination}
+            count={Math.floor(books.length / amountBook)}
+            page={pagination}
           />
         </Box>
       </Box>
