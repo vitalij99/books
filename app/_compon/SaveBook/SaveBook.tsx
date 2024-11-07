@@ -39,8 +39,11 @@ const SaveBook = () => {
   }, [pathname, session]);
 
   useEffect(() => {
-    if (!saveBooks) return;
     const nameBook = pathname.split('/');
+    if (nameBook[1] === 'books') {
+      setHistoryBooks(window.location.href, nameBook[2]);
+    }
+    if (!saveBooks) return;
     setStringPathname(nameBook);
 
     const res = findSaveBook(saveBooks, nameBook);
@@ -53,10 +56,6 @@ const SaveBook = () => {
     } else {
       setBookSaveDB(res);
       setIsAdded(res ? true : false);
-    }
-
-    if (nameBook[1] === 'books') {
-      setHistoryBooks(window.location.href, nameBook[2]);
     }
   }, [pathname, saveBooks]);
 
