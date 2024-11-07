@@ -6,14 +6,13 @@ import { IconButton } from '@mui/material';
 
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import { ReaderContext } from '@/Providers/ReaderProvider';
-import { ColorModeContext } from '@/Providers/DarkProvider';
+
 import React from 'react';
 
 const BookHeader = () => {
   const [isBooksPath, setIsBooksPath] = useState(false);
 
   const { handleOpen } = useContext(ReaderContext);
-  const { mode } = useContext(ColorModeContext);
 
   useEffect(() => {
     const pathname = document.location.pathname;
