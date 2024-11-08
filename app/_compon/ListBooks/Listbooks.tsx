@@ -7,7 +7,7 @@ import { ListbooksLink } from '@/types/book';
 import Loading from '@/app/_compon/Loading/Loading';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
-const amountBook = 10;
+const amountBook = 20;
 export const Listbooks = ({ books, link, web }: ListbooksLink) => {
   const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
@@ -56,7 +56,7 @@ export const Listbooks = ({ books, link, web }: ListbooksLink) => {
             )}
           />
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: 1 }}>
           <Pagination
             onChange={handlePagination}
             count={Math.floor(books.length / amountBook)}
