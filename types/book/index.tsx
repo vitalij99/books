@@ -39,6 +39,10 @@ export interface ListbooksLink {
   }[];
   web: string;
   link: string;
+  bookInfo?: {
+    categories?: string[];
+    image?: string;
+  };
 }
 export interface BooksSave {
   title: string;

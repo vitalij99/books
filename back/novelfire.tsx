@@ -120,7 +120,9 @@ const getBookLinks = async ({ book }: { book: string }) => {
     }
   }
 
-  return { linksBook, web, bookHref: book };
+  const bookInfo = getBookInfoLink({ book });
+
+  return { linksBook, web, bookHref: book, bookInfo };
 };
 
 const getBookFromLink = async ({
@@ -169,6 +171,17 @@ const getBookFromLink = async ({
   return { book: allText, nav };
 };
 
+const getBookInfoLink = async ({ book }: { book: string }) => {
+  const linkBook = `${link}book/${book}/`;
+  const data = await fetch(linkBook);
+  const textData = await data.text();
+
+  const resultCategories = getCategories(textData);
+  const resultImage = getBookImage(textData);
+
+  return { categories: resultCategories, image: resultImage };
+};
+
 const getBookImageLink = async ({ book }: { book: string }) => {
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1
   const linkBook = `${link}book/${book}/`;
@@ -176,20 +189,38 @@ const getBookImageLink = async ({ book }: { book: string }) => {
   const data = await fetch(linkBook);
   const textData = await data.text();
 
-  const result = transformInHtml({
-    html: textData,
-    elem: '.fixed-img',
-  });
+  const resultImage = getBookImage(textData);
 
-  if (!result) return undefined;
+  return resultImage;
+};
 
-  const element = result[0];
+const getBookImage = (textData: string) => {
+  try {
+    const resultImage = transformInHtml({
+      html: textData,
+      elem: '.fixed-img',
+    });
 
-  const imgWrapp = element.querySelector('img');
+    if (!resultImage) return undefined;
 
-  const res = imgWrapp?.getAttribute('data-src');
+    const element = resultImage[0];
 
-  return res;
+    const imgWrapp = element.querySelector('img');
+
+    return imgWrapp?.getAttribute('data-src');
+  } catch (error) {}
+};
+
+const getCategories = (textData: string) => {
+  try {
+    const resultCategories = transformInHtml({
+      html: textData,
+      elem: '.categories a',
+    });
+
+    const text = resultCategories.map(title => title?.textContent);
+    return text;
+  } catch (error) {}
 };
 
 const getBooksFromTags = async ({ name }: { name: string }) => {
