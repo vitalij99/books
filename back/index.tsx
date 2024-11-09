@@ -47,9 +47,6 @@ export const getBooksPopularAll = async () => {
     const resScribblehub = await scribblehub.getBookPopular();
     result.push(resScribblehub);
 
-    // const resHelheimscan = await helheimscan.getBookPopular();
-    // result.push(resHelheimscan);
-
     return result;
   } catch (error) {
     return [{ books: [], web: 'novelfire' }];
