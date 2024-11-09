@@ -69,9 +69,6 @@ export const getBookLinksAll = async ({
   if (web === WEBSITE.scribblehub) {
     return await scribblehub.getBookLinks({ book });
   }
-  // if (web === WEBSITE.helheimscan) {
-  //   return await helheimscan.getBookLinks({ book });
-  // }
 };
 export const getBookFromLinkAll = async ({
   chapter,
@@ -92,9 +89,6 @@ export const getBookFromLinkAll = async ({
     if (web === WEBSITE.scribblehub) {
       return await scribblehub.getBookFromLink({ book, chapter });
     }
-    // if (web === WEBSITE.helheimscan) {
-    //   return await helheimscan.getBookFromLink({ book, chapter });
-    // }
   } catch (error) {
     console.log(error);
   }
@@ -117,9 +111,6 @@ export const getBookImageLinkAll = async ({
     if (web === WEBSITE.scribblehub) {
       return await scribblehub.getBookImageLink({ book });
     }
-    // if (web === WEBSITE.helheimscan) {
-    //   return await helheimscan.getBookImageLink({ book });
-    // }
   } catch (error) {
     console.log(error);
   }
