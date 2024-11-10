@@ -44,7 +44,7 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
     return { books: [], web };
   }
 };
-
+// TODO bookInfo
 const getBookLinks = async ({ book }: { book: string }) => {
   // https://novelbin.com/ajax/chapter-archive?novelId=barbarian-quest
   const linkBook = `${link}ajax/chapter-archive?novelId=${book}`;
@@ -73,8 +73,8 @@ const getBookLinks = async ({ book }: { book: string }) => {
       });
     }
   }
-
-  return { linksBook, web, bookHref: book };
+  const bookInfo = {};
+  return { linksBook, web, bookHref: book, bookInfo };
 };
 
 const getBookFromLink = async ({

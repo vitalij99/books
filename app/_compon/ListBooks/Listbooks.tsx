@@ -36,7 +36,10 @@ export const Listbooks = ({
     return <Loading />;
   }
   return (
-    <Box padding={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+    <Box
+      padding={3}
+      sx={{ display: 'flex', justifyContent: 'center', gap: '20px' }}
+    >
       <BookInfo bookInfo={bookInfo} />
 
       <Box>
