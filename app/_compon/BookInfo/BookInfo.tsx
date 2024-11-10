@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Box, Typography } from '@mui/material';
+import { Box, Card, Link, Typography } from '@mui/material';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
 interface BookInfoProps {
@@ -9,21 +9,33 @@ interface BookInfoProps {
 
 const BookInfo = ({ bookInfo }: BookInfoProps) => {
   return (
-    <Box>
+    <Box sx={{ width: '400px' }}>
       {bookInfo && (
         <Box>
           {bookInfo.image && (
             <Image
-              width="300"
-              height="400"
+              width="400"
+              height="500"
               src={bookInfo.image}
               alt={'Зображення книги'}
             />
           )}
-          <ItemList
-            items={bookInfo?.categories}
-            renderItem={categori => <Typography>{categori}</Typography>}
-          />
+          <Card variant={'outlined'} sx={{ p: 2, borderRadius: 3 }}>
+            <Typography>Жанри:</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+              }}
+            >
+              <ItemList
+                items={bookInfo?.categories}
+                renderItem={categori => <Link href="/">{categori}</Link>}
+              />
+            </Box>
+          </Card>
         </Box>
       )}
     </Box>
