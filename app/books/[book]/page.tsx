@@ -20,12 +20,7 @@ const page = async ({
   }
   return (
     <>
-      <Listbooks
-        link={book.bookHref}
-        books={book.linksBook}
-        web={book.web}
-        bookInfo={book?.bookInfo}
-      />
+      <Listbooks link={book.bookHref} books={book?.linksBook} web={book?.web} />
     </>
   );
 };

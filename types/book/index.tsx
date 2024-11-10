@@ -27,12 +27,12 @@ export interface Book {
   book: string;
   img: string;
 }
-export interface ListbooksProps {
+export interface ListBooksCardProps {
   books: Book[];
   link?: string;
   web?: string;
 }
-export interface ListbooksLink {
+export interface ListBooksLinkProps {
   books: {
     book: string;
     name: string;

@@ -4,7 +4,7 @@ import { novelbin } from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
 import { scribblehub } from '@/back/scribblehub';
 
-import { ListbooksProps } from '@/types/book';
+import { ListBooksCardProps } from '@/types/book';
 
 const WEBSITE = {
   novelfire: 'novelfire',
@@ -17,7 +17,7 @@ export const getBookSearchByNameAll = async ({
 }: {
   name: string;
 }) => {
-  const result: ListbooksProps[] = [];
+  const result: ListBooksCardProps[] = [];
   try {
     const resNovelfire = await novelfire.getBookSearchByName({ name });
     result.push(resNovelfire);
@@ -36,7 +36,7 @@ export const getBookSearchByNameAll = async ({
 
 export const getBooksPopularAll = async () => {
   try {
-    const result: ListbooksProps[] = [];
+    const result: ListBooksCardProps[] = [];
 
     const resNovelfire = await novelfire.getBookPopular();
     result.push(resNovelfire);

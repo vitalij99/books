@@ -1,5 +1,5 @@
 import ItemList from '@/app/_compon/ItemList/ItemList';
-import { ListbooksProps } from '@/types/book';
+import { ListBooksCardProps } from '@/types/book';
 import {
   Box,
   ImageListItem,
@@ -11,7 +11,7 @@ import {
 
 import Image from 'next/image';
 
-const ListBooksCard = ({ books, web }: ListbooksProps) => {
+const ListBooksCard = ({ books, web }: ListBooksCardProps) => {
   return (
     <Box padding={4}>
       <Typography>{web}</Typography>

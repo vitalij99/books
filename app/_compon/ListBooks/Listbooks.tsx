@@ -3,12 +3,12 @@ import { Box, Link, Pagination, Typography } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 
-import { ListbooksLink } from '@/types/book';
+import { ListBooksLinkProps } from '@/types/book';
 import Loading from '@/app/_compon/Loading/Loading';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
 const amountBook = 20;
-export const Listbooks = ({ books, link, web }: ListbooksLink) => {
+export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
   const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
 
