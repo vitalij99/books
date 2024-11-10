@@ -120,7 +120,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
     }
   }
 
-  const bookInfo = getBookInfoLink({ book });
+  const bookInfo = await getBookInfoLink({ book });
 
   return { linksBook, web, bookHref: book, bookInfo };
 };
