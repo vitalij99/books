@@ -42,6 +42,11 @@ export interface ListBooksLinkProps {
   bookInfo?: {
     categories?: string[];
     image?: string;
+    author?: string;
+    status?: string;
+    publishers?: string;
+    tags?: [''];
+    yearPublishing?: string;
   };
 }
 export interface BooksSave {
