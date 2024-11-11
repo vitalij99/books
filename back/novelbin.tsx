@@ -44,7 +44,7 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
     return { books: [], web };
   }
 };
-// TODO bookInfo
+
 const getBookLinks = async ({ book }: { book: string }) => {
   // https://novelbin.com/ajax/chapter-archive?novelId=barbarian-quest
   const linkBook = `${link}ajax/chapter-archive?novelId=${book}`;
@@ -73,8 +73,70 @@ const getBookLinks = async ({ book }: { book: string }) => {
       });
     }
   }
-  const bookInfo = {};
+  const bookInfo = await getBookInfoLink({ book });
+
   return { linksBook, web, bookHref: book, bookInfo };
+};
+
+const getBookInfoLink = async ({ book }: { book: string }) => {
+  //  https://novelbin.com/b/atticuss-odyssey-reincarnated-into-a-playground
+  const linkBook = `${link}b/${book}/`;
+  const data = await fetch(linkBook);
+  const textData = await data.text();
+
+  const resultCategories = getBookInfo(textData);
+  const resultImage = await getBookImageLink({ book });
+
+  return { ...resultCategories, image: resultImage };
+};
+
+const getBookInfo = (textData: string) => {
+  try {
+    const info = transformInHtml({
+      html: textData,
+      elem: '.info.info-meta ',
+    });
+
+    const result = {
+      author: '',
+      categories: [''],
+      status: '',
+      publishers: '',
+      tags: [''],
+      yearPublishing: '',
+    };
+
+    info[0].querySelectorAll('li').forEach(li => {
+      const title = li
+        .querySelector('h3')
+        ?.textContent.replace(':', '')
+        .trim()
+        .toLowerCase();
+
+      if (!title) return;
+
+      if (title === 'author') {
+        result.author = li.querySelector('a')?.textContent.trim() || '';
+      } else if (title === 'genre') {
+        result.categories = Array.from(li.querySelectorAll('a')).map(a =>
+          a.textContent.trim()
+        );
+      } else if (title === 'status') {
+        result.status = li.querySelector('a')?.textContent.trim() || '';
+      } else if (title === 'publishers') {
+        result.publishers =
+          li.textContent.replace('Publishers:', '').trim() || '';
+      } else if (title === 'tag') {
+        result.tags = Array.from(li.querySelectorAll('a')).map(a =>
+          a.textContent.trim()
+        );
+      } else if (title === 'year of publishing') {
+        result.yearPublishing = li.querySelector('a')?.textContent.trim() || '';
+      }
+    });
+
+    return result;
+  } catch (error) {}
 };
 
 const getBookFromLink = async ({
