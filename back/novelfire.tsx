@@ -1,3 +1,4 @@
+import { BookInfoType } from '@/types/book';
 import { transformInHtml } from '../lib/htmlTransform';
 
 const link = 'https://novelfire.net/';
@@ -176,10 +177,13 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
   const data = await fetch(linkBook);
   const textData = await data.text();
 
-  const resultCategories = getCategories(textData);
-  const resultImage = getBookImage(textData);
+  const result = {
+    author: getAuthor(textData),
+    categories: getCategories(textData),
+    image: getBookImage(textData),
+  } as BookInfoType;
 
-  return { categories: resultCategories, image: resultImage };
+  return result;
 };
 
 const getBookImageLink = async ({ book }: { book: string }) => {
@@ -219,6 +223,17 @@ const getCategories = (textData: string) => {
     });
 
     const text = resultCategories.map(title => title?.textContent);
+    return text;
+  } catch (error) {}
+};
+const getAuthor = (textData: string) => {
+  try {
+    const result = transformInHtml({
+      html: textData,
+      elem: '.author a',
+    });
+
+    const text = result.map(title => title?.textContent);
     return text;
   } catch (error) {}
 };

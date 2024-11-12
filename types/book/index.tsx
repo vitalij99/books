@@ -39,16 +39,19 @@ export interface ListBooksLinkProps {
   }[];
   web: string;
   link: string;
-  bookInfo?: {
-    categories?: string[];
-    image?: string;
-    author?: string;
-    status?: string;
-    publishers?: string;
-    tags?: [''];
-    yearPublishing?: string;
-  };
+  bookInfo?: BookInfoType;
 }
+
+export interface BookInfoType {
+  categories?: string[];
+  image?: string;
+  author?: string;
+  status?: string;
+  publishers?: string;
+  tags?: string[];
+  yearPublishing?: string;
+}
+
 export interface BooksSave {
   title: string;
   link: string;

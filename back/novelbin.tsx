@@ -1,3 +1,4 @@
+import { BookInfoType } from '@/types/book';
 import { transformInHtml } from '../lib/htmlTransform';
 
 const link = 'https://novelbin.com/';
@@ -104,7 +105,7 @@ const getBookInfo = (textData: string) => {
       publishers: '',
       tags: [''],
       yearPublishing: '',
-    };
+    } as BookInfoType;
 
     info[0].querySelectorAll('li').forEach(li => {
       const title = li
