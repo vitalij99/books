@@ -1,3 +1,4 @@
+import { BookInfoType } from '@/types/book';
 import { transformInHtml } from '../lib/htmlTransform';
 
 const link = 'https://www.scribblehub.com/';
@@ -87,7 +88,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
       });
     }
   }
-  const bookInfo = {};
+  const bookInfo = await getBookInfoLink({ book });
   return { linksBook, web, bookHref: book, bookInfo };
 };
 
@@ -147,15 +148,9 @@ const getBookImageLink = async ({ book }: { book: string }) => {
 
   const data = await res.text();
 
-  const result = transformInHtml({
-    html: data,
-    elem: '.novel-cover',
-  });
+  const result = getBookImage(data);
 
-  if (!result) return undefined;
-
-  const image = result[0].querySelector('img')?.getAttribute('src');
-  return image;
+  return result;
 };
 
 const getBookPopular = async () => {
@@ -208,6 +203,112 @@ const transformLink = (url: string) => {
   const indexOfChapter = url.lastIndexOf('/chapter/');
 
   return url.slice(indexOfChapter + 9);
+};
+
+const getBookInfoLink = async ({ book }: { book: string }) => {
+  //  https://www.scribblehub.com/series/1033116/luminary-institute/
+  const linkBook = `${link}series/${book.replace(`_`, '/')}/`;
+  const data = await fetch(linkBook);
+  const textData = await data.text();
+
+  const result = {
+    author: getAuthor(textData),
+    categories: getCategories(textData),
+    image: getBookImage(textData),
+    tags: getTags(textData),
+  } as BookInfoType;
+
+  return result;
+};
+
+const getBookImage = (textData: string) => {
+  try {
+    const result = transformInHtml({
+      html: textData,
+      elem: '.novel-cover',
+    });
+
+    if (!result) return undefined;
+
+    const image = result[0].querySelector('img')?.getAttribute('src');
+    return image;
+  } catch (error) {}
+};
+
+const getCategories = (textData: string) => {
+  try {
+    const genreContainer = transformInHtml({
+      html: textData,
+      elem: '.wi_fic_genre',
+    });
+
+    const genres = Array.from(
+      genreContainer[0].querySelectorAll("span[property='genre'] a")
+    ).map(a => a.textContent.trim());
+    return genres;
+  } catch (error) {}
+};
+const getTags = (textData: string) => {
+  try {
+    const tagsContainer = transformInHtml({
+      html: textData,
+      elem: '.wi_fic_showtags a',
+    });
+
+    const result = tagsContainer.map(tag => tag.textContent);
+    return result;
+  } catch (error) {}
+};
+const getAuthor = (textData: string) => {
+  try {
+    const result = transformInHtml({
+      html: textData,
+      elem: '.auth_name_fic',
+    });
+
+    const text = result.map(title => title?.textContent);
+    return text;
+  } catch (error) {}
+};
+
+const getBooksFromTags = async ({ name }: { name: string }) => {
+  try {
+    const linkBook = `${link}tags/{name}/order-popular`;
+
+    const data = await fetch(linkBook);
+    const textData = await data.text();
+
+    const result = transformInHtml({
+      html: textData,
+      elem: '.novel-list',
+    });
+
+    if (!result) throw new Error();
+
+    const links = result[0].querySelectorAll('a');
+
+    const linkInfoArray: {
+      name: string;
+      book: string;
+      img: string;
+    }[] = [];
+
+    links.forEach(link => {
+      if (link !== null) {
+        const name = link.getAttribute('title') || '';
+        const href = link.getAttribute('href') || '';
+        const book = href.replace(`https://novelfire.net/book/`, '');
+        const image = link.querySelector('img');
+        const img = image?.getAttribute('data-src') || '';
+
+        linkInfoArray.push({ name, book, img });
+      }
+    });
+
+    return { books: linkInfoArray, web };
+  } catch (error) {
+    return { books: [], web };
+  }
 };
 
 export const scribblehub = {
