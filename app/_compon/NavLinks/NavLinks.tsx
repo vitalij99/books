@@ -5,11 +5,11 @@ import React from 'react';
 const NAVLINK = [
   {
     href: '/',
-    key: 'Популярне',
+    key: 'Головна',
   },
   {
     href: '/books',
-    key: 'Збережені книги',
+    key: 'Книги',
   },
 ];
 
