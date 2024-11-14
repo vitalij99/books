@@ -216,6 +216,7 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
     categories: getCategories(textData),
     image: getBookImage(textData),
     tags: getTags(textData),
+    chapters: getChapters(textData),
   } as BookInfoType;
 
   return result;
@@ -270,7 +271,28 @@ const getAuthor = (textData: string) => {
     return text;
   } catch (error) {}
 };
+const getChapters = (textData: string) => {
+  try {
+    const statsContainer = transformInHtml({
+      html: textData,
+      elem: '.novel-container .fic_stats',
+    });
 
+    statsContainer[0].querySelectorAll('span').forEach(span => {
+      const strongText = span.childNodes[1]?.textContent.trim();
+      const statType = span
+        .querySelector('.mb_stat')
+        ?.textContent.trim()
+        .toLowerCase();
+
+      if (!strongText || !statType) return;
+
+      if (statType === 'chapters') {
+        return parseInt(strongText, 10);
+      }
+    });
+  } catch (error) {}
+};
 const getBooksFromTags = async ({ name }: { name: string }) => {
   try {
     const linkBook = `${link}tags/{name}/order-popular`;

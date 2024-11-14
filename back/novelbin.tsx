@@ -74,12 +74,23 @@ const getBookLinks = async ({ book }: { book: string }) => {
       });
     }
   }
-  const bookInfo = await getBookInfoLink({ book });
+  const bookInfo = await getBookInfoLink({ book, charpters: linkBook.length });
 
-  return { linksBook, web, bookHref: book, bookInfo };
+  return {
+    linksBook,
+    web,
+    bookHref: book,
+    bookInfo,
+  };
 };
 
-const getBookInfoLink = async ({ book }: { book: string }) => {
+const getBookInfoLink = async ({
+  book,
+  charpters,
+}: {
+  book: string;
+  charpters: number;
+}) => {
   //  https://novelbin.com/b/atticuss-odyssey-reincarnated-into-a-playground
   const linkBook = `${link}b/${book}/`;
   const data = await fetch(linkBook);
@@ -88,7 +99,11 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
   const resultCategories = getBookInfo(textData);
   const resultImage = await getBookImageLink({ book });
 
-  return { ...resultCategories, image: resultImage };
+  return {
+    ...resultCategories,
+    image: resultImage,
+    charpters,
+  };
 };
 
 const getBookInfo = (textData: string) => {

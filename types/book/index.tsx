@@ -50,6 +50,7 @@ export interface BookInfoType {
   publishers?: string;
   tags?: string[];
   yearPublishing?: string;
+  chapters?: string | number;
 }
 
 export interface BooksSave {

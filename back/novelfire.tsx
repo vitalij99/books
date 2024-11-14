@@ -181,6 +181,7 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
     author: getAuthor(textData),
     categories: getCategories(textData),
     image: getBookImage(textData),
+    chapters: getChapters(textData),
   } as BookInfoType;
 
   return result;
@@ -235,6 +236,28 @@ const getAuthor = (textData: string) => {
 
     const text = result.map(title => title?.textContent);
     return text;
+  } catch (error) {}
+};
+const getChapters = (textData: string) => {
+  try {
+    const statsContainer = transformInHtml({
+      html: textData,
+      elem: '.header-stats',
+    });
+
+    statsContainer[0].querySelectorAll('span').forEach(span => {
+      const strongText = span.querySelector('strong')?.textContent.trim();
+      const smallText = span
+        .querySelector('small')
+        ?.textContent.trim()
+        .toLowerCase();
+
+      if (!strongText || !smallText) return;
+
+      if (smallText === 'chapters') {
+        return parseInt(strongText, 10);
+      }
+    });
   } catch (error) {}
 };
 
