@@ -49,7 +49,7 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
     return { books: [], web };
   }
 };
-// TODO bookInfo
+
 const getBookLinks = async ({ book }: { book: string }) => {
   //  https://www.scribblehub.com/wp-admin/admin-ajax.php
 
