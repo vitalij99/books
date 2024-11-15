@@ -12,7 +12,7 @@ interface BookInfoProps {
 const BookInfo = ({ bookInfo }: BookInfoProps) => {
   return (
     <Box>
-      <BookInfoText>{bookInfo.title}</BookInfoText>
+      <BookInfoText>{bookInfo?.title}</BookInfoText>
       {bookInfo && (
         <Box sx={{ display: 'flex', gap: '10px' }}>
           {bookInfo.image && (
