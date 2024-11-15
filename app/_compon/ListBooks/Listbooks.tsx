@@ -38,7 +38,7 @@ export const Listbooks = ({
   return (
     <Box
       padding={3}
-      sx={{ display: 'flex', justifyContent: 'center', gap: '20px' }}
+      
     >
       <BookInfo bookInfo={bookInfo} />
 

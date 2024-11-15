@@ -43,6 +43,7 @@ export interface ListBooksLinkProps {
 }
 
 export interface BookInfoType {
+  title?: string;
   categories?: string[];
   image?: string;
   author?: string;
