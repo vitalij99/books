@@ -14,7 +14,7 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
     <Box>
       <BookInfoText>{bookInfo?.title}</BookInfoText>
       {bookInfo && (
-        <Box sx={{ display: 'flex', gap: '10px' }}>
+        <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
           {bookInfo.image && (
             <Image
               width="400"

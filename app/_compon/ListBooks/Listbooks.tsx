@@ -36,12 +36,8 @@ export const Listbooks = ({
     return <Loading />;
   }
   return (
-    <Box
-      padding={3}
-      
-    >
+    <Box padding={3}>
       <BookInfo bookInfo={bookInfo} />
-
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Pagination
