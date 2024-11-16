@@ -4,6 +4,7 @@ import { Box, Card, Link, Typography } from '@mui/material';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 import { BookInfoType } from '@/types/book';
 import BookInfoText from '@/app/_compon/BookInfoText/BookInfoText';
+import BookInfoCategories from '@/app/_compon/BookInfoCategories/BookInfoCategories';
 
 interface BookInfoProps {
   bookInfo?: BookInfoType;
@@ -25,22 +26,6 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
           )}
           <Box>
             <Card variant={'outlined'} sx={{ p: 2, borderRadius: 3 }}>
-              <Typography>Жанри:</Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: 1,
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <ItemList
-                  items={bookInfo?.categories}
-                  renderItem={categori => <Link href="/">{categori}</Link>}
-                />
-              </Box>
-            </Card>
-            <Card variant={'outlined'} sx={{ p: 2, borderRadius: 3 }}>
               <BookInfoText isEmpty={bookInfo.author}>
                 Автор: {bookInfo.author}
               </BookInfoText>
@@ -57,6 +42,11 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
                 Видано: {bookInfo.status}
               </BookInfoText>
             </Card>
+            <BookInfoCategories
+              title="Категорії:"
+              categories={bookInfo.categories}
+            />
+            <BookInfoCategories title="Теги:" categories={bookInfo.tags} />
           </Box>
         </Box>
       )}
