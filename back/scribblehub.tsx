@@ -267,7 +267,7 @@ const getAuthor = (textData: string) => {
       elem: '.auth_name_fic',
     });
 
-    const text = result.map(title => title?.textContent);
+    const text = result[0]?.textContent;
     return text;
   } catch (error) {}
 };
@@ -275,11 +275,12 @@ const getChapters = (textData: string) => {
   try {
     const statsContainer = transformInHtml({
       html: textData,
-      elem: '.novel-container .fic_stats',
+      elem: '.novel-container .fic_stats span',
     });
 
-    statsContainer[0].querySelectorAll('span').forEach(span => {
-      const strongText = span.childNodes[1]?.textContent.trim();
+    return statsContainer.map(span => {
+      const strongText = span?.textContent.trim();
+
       const statType = span
         .querySelector('.mb_stat')
         ?.textContent.trim()
