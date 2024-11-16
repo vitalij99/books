@@ -182,6 +182,7 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
     categories: getCategories(textData),
     image: getBookImage(textData),
     chapters: getChapters(textData),
+    title: book,
   } as BookInfoType;
 
   return result;

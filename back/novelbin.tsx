@@ -103,6 +103,7 @@ const getBookInfoLink = async ({
     ...resultInfo,
     image: resultImage,
     charpters,
+    title: book,
   };
 };
 
