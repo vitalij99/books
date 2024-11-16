@@ -41,10 +41,18 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
               </Box>
             </Card>
             <Card variant={'outlined'} sx={{ p: 2, borderRadius: 3 }}>
-              <BookInfoText>Автор: {bookInfo.author}</BookInfoText>
-              <BookInfoText>Глави: {bookInfo.chapters}</BookInfoText>
-              <BookInfoText>Видавництво: {bookInfo.publishers}</BookInfoText>
-              <BookInfoText>Видано: {bookInfo.yearPublishing}</BookInfoText>
+              <BookInfoText isEmpty={bookInfo.author}>
+                Автор: {bookInfo.author}
+              </BookInfoText>
+              <BookInfoText isEmpty={bookInfo.chapters}>
+                Глави: {bookInfo.chapters}
+              </BookInfoText>
+              <BookInfoText isEmpty={bookInfo.publishers}>
+                Видавництво: {bookInfo.publishers}
+              </BookInfoText>
+              <BookInfoText isEmpty={bookInfo.yearPublishing}>
+                Видано: {bookInfo.yearPublishing}
+              </BookInfoText>
             </Card>
           </Box>
         </Box>
