@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import { Box, Card, Link, Typography } from '@mui/material';
-import ItemList from '@/app/_compon/ItemList/ItemList';
+import { Box, Card, Typography } from '@mui/material';
+
 import { BookInfoType } from '@/types/book';
 import BookInfoText from '@/app/_compon/BookInfoText/BookInfoText';
 import BookInfoCategories from '@/app/_compon/BookInfoCategories/BookInfoCategories';
@@ -13,7 +13,7 @@ interface BookInfoProps {
 const BookInfo = ({ bookInfo }: BookInfoProps) => {
   return (
     <Box>
-      <BookInfoText>{bookInfo?.title}</BookInfoText>
+      <Typography fontSize="30px">{bookInfo?.title}</Typography>
       {bookInfo && (
         <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
           {bookInfo.image && (

@@ -6,7 +6,7 @@ const BookInfoText = ({
   isEmpty,
 }: {
   children: React.ReactNode;
-  isEmpty?: string | number;
+  isEmpty: string | number | undefined;
 }) => {
   return <> {children && isEmpty && <Typography>{children}</Typography>}</>;
 };
