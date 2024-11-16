@@ -278,20 +278,17 @@ const getChapters = (textData: string) => {
       elem: '.novel-container .fic_stats span',
     });
 
-    return statsContainer.map(span => {
+    for (const span of statsContainer) {
       const strongText = span?.textContent.trim();
-
       const statType = span
         .querySelector('.mb_stat')
         ?.textContent.trim()
         .toLowerCase();
 
-      if (!strongText || !statType) return;
-
-      if (statType === 'chapters') {
+      if (strongText && statType === 'chapters') {
         return parseInt(strongText, 10);
       }
-    });
+    }
   } catch (error) {}
 };
 const getBooksFromTags = async ({ name }: { name: string }) => {
