@@ -10,6 +10,10 @@ const BookInfoCategories = ({
   categories?: string[];
   title?: string;
 }) => {
+  if (categories?.length === 0 || !categories) {
+    return null;
+  }
+  console.log(categories);
   return (
     <Card variant={'outlined'} sx={{ p: 2, borderRadius: 3 }}>
       <Typography>{title}</Typography>
