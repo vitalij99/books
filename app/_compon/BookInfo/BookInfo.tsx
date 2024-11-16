@@ -53,6 +53,9 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
               <BookInfoText isEmpty={bookInfo.yearPublishing}>
                 Видано: {bookInfo.yearPublishing}
               </BookInfoText>
+              <BookInfoText isEmpty={bookInfo.status}>
+                Видано: {bookInfo.status}
+              </BookInfoText>
             </Card>
           </Box>
         </Box>

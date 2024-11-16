@@ -96,11 +96,11 @@ const getBookInfoLink = async ({
   const data = await fetch(linkBook);
   const textData = await data.text();
 
-  const resultCategories = getBookInfo(textData);
+  const resultInfo = getBookInfo(textData);
   const resultImage = await getBookImageLink({ book });
 
   return {
-    ...resultCategories,
+    ...resultInfo,
     image: resultImage,
     charpters,
   };
