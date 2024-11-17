@@ -27,7 +27,9 @@ const BookInfoCategories = ({
       >
         <ItemList
           items={categories}
-          renderItem={categori => <Link href="/">{categori}</Link>}
+          renderItem={categori => (
+            <Link href={`/search?filter=${categori}`}>{categori}</Link>
+          )}
         />
       </Box>
     </Card>
