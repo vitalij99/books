@@ -70,7 +70,6 @@ const getBookPopular = async () => {
       img: string;
     }[] = [];
 
-    // popular have data-src
     links.forEach(link => {
       if (link !== null) {
         const name = link.getAttribute('title') || '';
@@ -267,7 +266,7 @@ const getChapters = (textData: string) => {
 const getBooksFromTags = async ({ name }: { name: string }) => {
   // https://novelfire.net/tags/academy/order-popular
   try {
-    const linkBook = `${link}tags/{name}/order-popular`;
+    const linkBook = `${link}tags/${name}/order-popular`;
 
     const data = await fetch(linkBook);
     const textData = await data.text();
