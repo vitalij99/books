@@ -121,8 +121,8 @@ export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
     const resNovelfire = await novelfire.getBooksFromTags({ name });
     result.push(resNovelfire);
 
-    // const resNovelbin = await novelbin.getBooksFromTags({ name });
-    // result.push(resNovelbin);
+    const resNovelbin = await novelbin.getBooksFromTags({ name });
+    result.push(resNovelbin);
 
     // const resScribblehub = await scribblehub.getBooksFromTags({ name });
     // result.push(resScribblehub);
