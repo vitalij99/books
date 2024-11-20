@@ -234,9 +234,18 @@ const getBooksSearch = (textData: string) => {
     return { books: [], web };
   }
 };
-const getBooksFromTags = async ({ name }: { name: string }) => {
+const getBooksFromGenre = async ({ name }: { name: string }) => {
   // https://novelbin.com/genre/adventure
-  const linkSearch = `${link}genre/${name}`;
+  const linkSearch = `${link}genre/${name.toLocaleLowerCase()}`;
+
+  const data = await fetch(linkSearch);
+  const textData = await data.text();
+
+  return getBooksSearch(textData);
+};
+const getBooksFromTags = async ({ name }: { name: string }) => {
+  // https://novelbin.com/tag/MODERN%20DAY
+  const linkSearch = `${link}tag/${name.toLocaleUpperCase()}`;
 
   const data = await fetch(linkSearch);
   const textData = await data.text();
@@ -250,5 +259,6 @@ export const novelbin = {
   getBookImageLink,
   getBookPopular,
   getBooksFromTags,
+  getBooksFromGenre,
   web,
 };

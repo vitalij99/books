@@ -46,7 +46,11 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
               title="Категорії:"
               categories={bookInfo.categories}
             />
-            <BookInfoCategories title="Теги:" categories={bookInfo.tags} />
+            <BookInfoCategories
+              genre={false}
+              title="Теги:"
+              categories={bookInfo.tags}
+            />
           </Box>
         </Box>
       )}

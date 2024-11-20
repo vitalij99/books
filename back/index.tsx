@@ -121,6 +121,23 @@ export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
     const resNovelfire = await novelfire.getBooksFromTags({ name });
     result.push(resNovelfire);
 
+    const resNovelbin = await novelbin.getBooksFromGenre({ name });
+    result.push(resNovelbin);
+
+    // const resScribblehub = await scribblehub.getBooksFromTags({ name });
+    // result.push(resScribblehub);
+
+    return result;
+  } catch (error) {
+    return [{ books: [], web: 'novelfire' }];
+  }
+};
+export const getBooksByGenreAll = async ({ name = '' }: { name: string }) => {
+  const result: ListBooksCardProps[] = [];
+  try {
+    const resNovelfire = await novelfire.getBooksFromTags({ name });
+    result.push(resNovelfire);
+
     const resNovelbin = await novelbin.getBooksFromTags({ name });
     result.push(resNovelbin);
 

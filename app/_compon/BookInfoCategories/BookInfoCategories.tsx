@@ -6,7 +6,9 @@ import React from 'react';
 const BookInfoCategories = ({
   categories,
   title,
+  genre = true,
 }: {
+  genre?: boolean;
   categories?: string[];
   title?: string;
 }) => {
@@ -28,7 +30,13 @@ const BookInfoCategories = ({
         <ItemList
           items={categories}
           renderItem={categori => (
-            <Link href={`/search?filter=${categori}`}>{categori}</Link>
+            <Link
+              href={
+                genre ? `/search?genre=${categori}` : `/search?tag=${categori}`
+              }
+            >
+              {categori}
+            </Link>
           )}
         />
       </Box>
