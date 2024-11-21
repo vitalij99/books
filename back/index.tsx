@@ -121,11 +121,11 @@ export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
     const resNovelfire = await novelfire.getBooksFromTags({ name });
     result.push(resNovelfire);
 
-    const resNovelbin = await novelbin.getBooksFromGenre({ name });
+    const resNovelbin = await novelbin.getBooksFromTags({ name });
     result.push(resNovelbin);
 
-    // const resScribblehub = await scribblehub.getBooksFromTags({ name });
-    // result.push(resScribblehub);
+    const resScribblehub = await scribblehub.getBooksFromTags({ name });
+    result.push(resScribblehub);
 
     return result;
   } catch (error) {
@@ -138,11 +138,11 @@ export const getBooksByGenreAll = async ({ name = '' }: { name: string }) => {
     const resNovelfire = await novelfire.getBooksFromTags({ name });
     result.push(resNovelfire);
 
-    const resNovelbin = await novelbin.getBooksFromTags({ name });
+    const resNovelbin = await novelbin.getBooksFromGenre({ name });
     result.push(resNovelbin);
 
-    // const resScribblehub = await scribblehub.getBooksFromTags({ name });
-    // result.push(resScribblehub);
+    const resScribblehub = await scribblehub.getBooksFromGenre({ name });
+    result.push(resScribblehub);
 
     return result;
   } catch (error) {

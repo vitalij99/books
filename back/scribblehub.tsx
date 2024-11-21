@@ -260,51 +260,27 @@ const getChapters = (textData: string) => {
     }
   } catch (error) {}
 };
-const getBooksFromTags = async ({ name }: { name: string }) => {
-  try {
-    const linkBook = `${link}tags/{name}/order-popular`;
-
-    const data = await fetch(linkBook);
-    const textData = await data.text();
-
-    const result = transformInHtml({
-      html: textData,
-      elem: '.novel-list',
-    });
-
-    if (!result) throw new Error();
-
-    const links = result[0].querySelectorAll('a');
-
-    const linkInfoArray: {
-      name: string;
-      book: string;
-      img: string;
-    }[] = [];
-
-    links.forEach(link => {
-      if (link !== null) {
-        const name = link.getAttribute('title') || '';
-        const href = link.getAttribute('href') || '';
-        const book = href.replace(`https://novelfire.net/book/`, '');
-        const image = link.querySelector('img');
-        const img = image?.getAttribute('data-src') || '';
-
-        linkInfoArray.push({ name, book, img });
-      }
-    });
-
-    return { books: linkInfoArray, web };
-  } catch (error) {
-    return { books: [], web };
-  }
+const getBooksFromGenre = async ({ name }: { name: string }) => {
+  //  https://www.scribblehub.com/genre/adventure/
+  const linkBook = `${link}genre/${name.toLocaleLowerCase()}/`;
+  const data = await fetch(linkBook);
+  const textData = await data.text();
+  return getBooksWrapper(textData);
 };
-
+const getBooksFromTags = async ({ name }: { name: string }) => {
+  //  https://www.scribblehub.com/tag/accelerated-growth/
+  const linkBook = `${link}tag/${name.toLocaleLowerCase()}/`;
+  const data = await fetch(linkBook);
+  const textData = await data.text();
+  return getBooksWrapper(textData);
+};
 export const scribblehub = {
   getBookSearchByName,
   getBookLinks,
   getBookFromLink,
   getBookImageLink,
   getBookPopular,
+  getBooksFromGenre,
+  getBooksFromTags,
   web,
 };
