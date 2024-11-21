@@ -5,27 +5,30 @@ const link = 'https://www.scribblehub.com/';
 const web = 'scribblehub';
 
 const getBookSearchByName = async ({ name }: { name: string }) => {
-  //  https://www.scribblehub.com/?s=var&post_type=fictionposts
+  //  https://www.scribblehub.com/?s=Fantasy+Realm&post_type=fictionposts
   const linkSearch = `${link}?s=${name}&post_type=fictionposts`;
 
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
+  return getBooksWrapper(textData);
+};
+
+const getBooksWrapper = (textData: string) => {
+  const linkInfoArray: {
+    name: string;
+    book: string;
+    img: string;
+  }[] = [];
+
   try {
     const result = transformInHtml({
       html: textData,
-      elem: '.wi-fic_l-content.fic.search',
+      elem: '.wi_fic_wrap  .search_main_box',
     });
     if (!result) throw new Error();
-    const linkInfoArray: {
-      name: string;
-      book: string;
-      img: string;
-    }[] = [];
 
-    const wrapper = result[0].querySelectorAll('.search_main_box');
-    if (!wrapper) throw new Error();
-    wrapper.forEach(element => {
+    result.forEach(element => {
       if (element !== null) {
         const img = element.querySelector('img')?.getAttribute('src') || '';
         const link = element.querySelector('a');
@@ -46,7 +49,7 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
-    return { books: [], web };
+    return { books: linkInfoArray, web };
   }
 };
 
@@ -160,42 +163,7 @@ const getBookPopular = async () => {
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
-  const linkInfoArray: {
-    name: string;
-    book: string;
-    img: string;
-  }[] = [];
-
-  try {
-    const result = transformInHtml({
-      html: textData,
-      elem: '.wi_fic_wrap > .search_main_box',
-    });
-    if (!result) throw new Error();
-
-    result.forEach(element => {
-      if (element !== null) {
-        const img = element.querySelector('img')?.getAttribute('src') || '';
-        const link = element.querySelector('a');
-        if (!link) return;
-        const name = link.textContent || '';
-        const href = link.getAttribute('href') || '';
-        const bookTransform = href.replace(
-          `https://www.scribblehub.com/series/`,
-          ''
-        );
-        const book = bookTransform.replace(`/`, '_');
-
-        if (book) {
-          linkInfoArray.push({ name, book, img });
-        }
-      }
-    });
-
-    return { books: linkInfoArray, web };
-  } catch (error) {
-    return { books: linkInfoArray, web };
-  }
+  return getBooksWrapper(textData);
 };
 
 const transformLink = (url: string) => {
