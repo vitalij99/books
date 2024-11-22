@@ -1,35 +1,42 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import ItemList from '@/app/_compon/ItemList/ItemList';
 
-const CATEGORIES = ['romans', 'fantasy', 'all'];
+const CATEGORIES = {
+  romans: 'Романи',
+  fantasy: 'Фантастика',
+  detective: 'Детективи',
+  science: 'Наукова література',
+  biography: 'Біографії',
+  history: 'Історичні',
+  horror: 'Жахи',
+  poetry: 'Поезія',
+  adventure: 'Пригоди',
+  kids: 'Дитяча література',
+  classics: 'Класика',
+  all: 'Всі',
+};
 
 const Categories = () => {
-  const searhCategorie = (search: string) => {
-    if (!window) return;
+  const searchCategorie = (search: string) => {
     const trimmedValue = search.trim();
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window?.location.search);
 
-    searchParams.set('categori', trimmedValue);
+    searchParams.set('genre', trimmedValue);
 
     window.history.pushState({}, '', `?${searchParams}`);
   };
 
   return (
     <div>
-      <ItemList
-        items={CATEGORIES}
-        renderItem={categori => (
-          <>
-            <Button
-              onClick={() => searhCategorie(categori)}
-              sx={{ textTransform: 'capitalize' }}
-            >
-              {categori}
-            </Button>
-          </>
-        )}
-      />
+      {Object.entries(CATEGORIES).map(([key, label]) => (
+        <Button
+          key={key}
+          onClick={() => searchCategorie(key)}
+          sx={{ textTransform: 'capitalize' }}
+        >
+          {label}
+        </Button>
+      ))}
     </div>
   );
 };
