@@ -1,29 +1,34 @@
+'use client';
 import React from 'react';
 import { Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const CATEGORIES = {
   romans: 'Романи',
   fantasy: 'Фантастика',
   detective: 'Детективи',
   science: 'Наукова література',
-  biography: 'Біографії',
-  history: 'Історичні',
   horror: 'Жахи',
-  poetry: 'Поезія',
   adventure: 'Пригоди',
-  kids: 'Дитяча література',
   classics: 'Класика',
-  all: 'Всі',
 };
 
 const Categories = () => {
+  const router = useRouter();
   const searchCategorie = (search: string) => {
+    if (typeof window === 'undefined') return;
+
     const trimmedValue = search.trim();
-    const searchParams = new URLSearchParams(window?.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
 
     searchParams.set('genre', trimmedValue);
 
-    window.history.pushState({}, '', `?${searchParams}`);
+    searchParams.delete('search');
+
+    const newQueryString = `?${searchParams.toString()}`;
+    window.history.pushState({}, '', newQueryString);
+
+    router.push(`/search${newQueryString}`);
   };
 
   return (
