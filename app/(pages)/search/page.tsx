@@ -23,20 +23,17 @@ const search = async ({
     books = await getBooksFromTagsAll({ name: tag });
   }
 
-  if (!books) {
-    return <Loading />;
-  }
-
   return (
     <>
       <Categories />
-      {books.map(website => (
-        <ListBooksCard
-          key={website.web}
-          books={website.books}
-          web={website.web}
-        />
-      ))}
+      {books &&
+        books.map(website => (
+          <ListBooksCard
+            key={website.web}
+            books={website.books}
+            web={website.web}
+          />
+        ))}
     </>
   );
 };

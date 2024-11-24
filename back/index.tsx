@@ -135,7 +135,7 @@ export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
 export const getBooksByGenreAll = async ({ name = '' }: { name: string }) => {
   const result: ListBooksCardProps[] = [];
   try {
-    const resNovelfire = await novelfire.getBooksFromTags({ name });
+    const resNovelfire = await novelfire.getBooksFromGenre({ name });
     result.push(resNovelfire);
 
     const resNovelbin = await novelbin.getBooksFromGenre({ name });

@@ -303,7 +303,46 @@ const getBooksFromTags = async ({ name }: { name: string }) => {
     return { books: [], web };
   }
 };
+const getBooksFromGenre = async ({ name }: { name: string }) => {
+  // https://novelfire.net/genre-adult/sort-new/status-all/all-novel
+  try {
+    const linkBook = `${link}genre-${name}/sort-new/status-all/all-novel`;
 
+    const data = await fetch(linkBook);
+    const textData = await data.text();
+
+    const result = transformInHtml({
+      html: textData,
+      elem: '.novel-list',
+    });
+
+    if (!result) throw new Error();
+
+    const links = result[0].querySelectorAll('a');
+
+    const linkInfoArray: {
+      name: string;
+      book: string;
+      img: string;
+    }[] = [];
+
+    links.forEach(link => {
+      if (link !== null) {
+        const name = link.getAttribute('title') || '';
+        const href = link.getAttribute('href') || '';
+        const book = href.replace(`https://novelfire.net/book/`, '');
+        const image = link.querySelector('img');
+        const img = image?.getAttribute('data-src') || '';
+
+        linkInfoArray.push({ name, book, img });
+      }
+    });
+
+    return { books: linkInfoArray, web };
+  } catch (error) {
+    return { books: [], web };
+  }
+};
 const transformLink = (url: string) => {
   const indexOfChapter = url.lastIndexOf('chapter-');
   return url.slice(indexOfChapter + 8);
@@ -316,4 +355,5 @@ export const novelfire = {
   getBookPopular,
   getBookImageLink,
   getBooksFromTags,
+  getBooksFromGenre,
 };
