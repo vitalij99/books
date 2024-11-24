@@ -2,16 +2,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
-
-const CATEGORIES = {
-  romans: 'Романи',
-  fantasy: 'Фантастика',
-  detective: 'Детективи',
-  science: 'Наукова література',
-  horror: 'Жахи',
-  adventure: 'Пригоди',
-  classics: 'Класика',
-};
+import { CATEGORIES } from '@/types/categories/categories';
 
 const Categories = () => {
   const router = useRouter();
