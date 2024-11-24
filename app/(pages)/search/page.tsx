@@ -25,7 +25,7 @@ const search = async ({
 
   return (
     <>
-      <Categories />
+      <Categories genre={genre} />
       {books &&
         books.map(website => (
           <ListBooksCard

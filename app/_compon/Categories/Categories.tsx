@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { CATEGORIES } from '@/types/categories/categories';
 
-const Categories = () => {
+const Categories = ({ genre }: { genre?: string }) => {
   const router = useRouter();
   const searchCategorie = (search: string) => {
     if (typeof window === 'undefined') return;
@@ -29,6 +29,7 @@ const Categories = () => {
           key={key}
           onClick={() => searchCategorie(key)}
           sx={{ textTransform: 'capitalize' }}
+          variant={key !== genre ? 'text' : 'outlined'}
         >
           {label}
         </Button>
