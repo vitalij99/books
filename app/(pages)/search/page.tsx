@@ -1,6 +1,6 @@
 import Categories from '@/app/_compon/Categories/Categories';
 import ListBooksCard from '@/app/_compon/ListBooksCard/ListBooksCard';
-import Loading from '@/app/_compon/Loading/Loading';
+
 import {
   getBooksByGenreAll,
   getBookSearchByNameAll,
