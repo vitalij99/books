@@ -29,7 +29,6 @@ export interface Book {
 }
 export interface ListBooksCardProps {
   books: Book[];
-  link?: string;
   web?: string;
 }
 export interface ListBooksLinkProps {
