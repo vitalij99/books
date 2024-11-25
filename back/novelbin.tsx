@@ -82,14 +82,7 @@ const getBookInfo = (textData: string) => {
       elem: '.info.info-meta ',
     });
 
-    const result = {
-      author: '',
-      categories: [''],
-      status: '',
-      publishers: '',
-      tags: [''],
-      yearPublishing: '',
-    } as BookInfoType;
+    const result = {} as BookInfoType;
 
     info[0].querySelectorAll('li').forEach(li => {
       const title = li
@@ -101,22 +94,21 @@ const getBookInfo = (textData: string) => {
       if (!title) return;
 
       if (title === 'author') {
-        result.author = li.querySelector('a')?.textContent.trim() || '';
+        result.author = li.querySelector('a')?.textContent.trim();
       } else if (title === 'genre') {
         result.categories = Array.from(li.querySelectorAll('a')).map(a =>
           a.textContent.trim()
         );
       } else if (title === 'status') {
-        result.status = li.querySelector('a')?.textContent.trim() || '';
+        result.status = li.querySelector('a')?.textContent.trim();
       } else if (title === 'publishers') {
-        result.publishers =
-          li.textContent.replace('Publishers:', '').trim() || '';
+        result.publishers = li.textContent.replace('Publishers:', '').trim();
       } else if (title === 'tag') {
         result.tags = Array.from(li.querySelectorAll('a')).map(a =>
           a.textContent.trim()
         );
       } else if (title === 'year of publishing') {
-        result.yearPublishing = li.querySelector('a')?.textContent.trim() || '';
+        result.yearPublishing = li.querySelector('a')?.textContent.trim();
       }
     });
 
