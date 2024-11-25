@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { CATEGORIES } from '@/types/categories/categories';
 
@@ -23,18 +23,24 @@ const Categories = ({ genre }: { genre?: string }) => {
   };
 
   return (
-    <div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+      }}
+    >
       {Object.entries(CATEGORIES).map(([key, label]) => (
         <Button
           key={key}
           onClick={() => searchCategorie(key)}
           sx={{ textTransform: 'capitalize' }}
-          variant={key !== genre ? 'text' : 'outlined'}
+          variant={key !== genre?.toLocaleLowerCase() ? 'text' : 'outlined'}
         >
           {label}
         </Button>
       ))}
-    </div>
+    </Box>
   );
 };
 
