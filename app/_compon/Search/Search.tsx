@@ -1,5 +1,5 @@
 'use client';
-
+import React from 'react';
 import {
   Box,
   FormControl,
@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
 
 import { useState } from 'react';
 
@@ -21,7 +20,7 @@ const theme = createTheme({
   },
 });
 
-const Search = () => {
+const Search = ({ page = false }: { page?: boolean }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -42,7 +41,13 @@ const Search = () => {
   };
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: page ? 'flex' : { md: 'flex', xs: 'none' },
+          alignItems: 'center',
+          justifyContent: page ? 'center' : 'normal',
+        }}
+      >
         <Link
           href={`/search?search=${search}`}
           sx={{ my: 2, p: 2, color: 'white', display: 'block' }}

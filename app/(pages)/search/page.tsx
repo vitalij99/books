@@ -1,5 +1,6 @@
 import Categories from '@/app/_compon/Categories/Categories';
 import ListBooksCard from '@/app/_compon/ListBooksCard/ListBooksCard';
+import Search from '@/app/_compon/Search/Search';
 
 import {
   getBooksByGenreAll,
@@ -25,6 +26,7 @@ const search = async ({
 
   return (
     <>
+      <Search page={true} />
       <Categories genre={genre} />
       {books &&
         books.map(website => (
