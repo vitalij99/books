@@ -1,7 +1,6 @@
-import ItemList from '@/app/_compon/ItemList/ItemList';
-
-import { Box, Card, Link, Typography } from '@mui/material';
 import React from 'react';
+import { Box, Card, Link, Typography } from '@mui/material';
+import ItemList from '@/app/_compon/ItemList/ItemList';
 
 const BookInfoCategories = ({
   categories,
