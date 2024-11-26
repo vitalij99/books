@@ -41,6 +41,9 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
               <BookInfoText isEmpty={bookInfo.status}>
                 Видано: {bookInfo.status}
               </BookInfoText>
+              <BookInfoText isEmpty={bookInfo.chapters}>
+                Кількість розділів: {bookInfo.chapters}
+              </BookInfoText>
             </Card>
             <BookInfoCategories
               title="Категорії:"
