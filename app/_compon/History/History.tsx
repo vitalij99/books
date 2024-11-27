@@ -24,7 +24,9 @@ const History = () => {
   const [books, setBooks] = useState(BOOKS);
 
   useEffect(() => {
-    const storage = getStorageAr('historybooks') || [];
+    const storage = getStorageAr('historybooks');
+
+    if (!storage) return;
 
     const updatedBooks = storage.map((book: any) => ({
       ...book,
