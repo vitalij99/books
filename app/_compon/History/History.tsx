@@ -12,6 +12,12 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 import { getStorageAr } from '@/lib/getStorage';
 import { getTimeHistoryDifference } from '@/lib/books';
 
+type HistoryBook = {
+  link?: string;
+  title?: string;
+  time?: string;
+};
+
 const BOOKS = [
   {
     link: '/',
@@ -21,12 +27,12 @@ const BOOKS = [
 ];
 
 const History = () => {
-  const [books, setBooks] = useState(BOOKS);
+  const [books, setBooks] = useState<HistoryBook[]>(BOOKS);
 
   useEffect(() => {
-    const storage = getStorageAr('historybooks');
+    const storage: HistoryBook[] = getStorageAr('historybooks');
 
-    if (!storage) return;
+    if (!storage || storage.length === 0) return;
 
     const updatedBooks = storage.map((book: any) => ({
       ...book,
