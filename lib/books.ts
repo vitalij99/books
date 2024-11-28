@@ -48,9 +48,12 @@ export const getTimeHistoryDifference = (dateSave: string) => {
     (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
   const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  if (hours === 0) {
-    return `${String(minutes).padStart(2, '0')} хв`;
+  if (hours >= 24) {
+    return `${Math.floor(hours / 24)} д. ${
+      hours - Math.floor(hours / 24) * 24
+    } год.`;
+  } else if (hours === 0) {
+    return `${String(minutes).padStart(2, '0')} хв.`;
   } else {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
       2,
