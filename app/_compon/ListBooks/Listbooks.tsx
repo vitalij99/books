@@ -7,15 +7,8 @@ import { ListBooksLinkProps } from '@/types/book';
 import Loading from '@/app/_compon/Loading/Loading';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
-import BookInfo from '@/app/_compon/BookInfo/BookInfo';
-
 const amountBook = 10;
-export const Listbooks = ({
-  books,
-  link,
-  web,
-  bookInfo,
-}: ListBooksLinkProps) => {
+export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
   const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
 
@@ -37,7 +30,6 @@ export const Listbooks = ({
   }
   return (
     <Box padding={3}>
-      <BookInfo bookInfo={bookInfo} />
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Pagination

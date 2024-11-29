@@ -1,3 +1,4 @@
+import BookInfo from '@/app/_compon/BookInfo/BookInfo';
 import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
 import { getBookLinksAll } from '@/back';
 
@@ -20,12 +21,8 @@ const page = async ({
   }
   return (
     <>
-      <Listbooks
-        link={book.bookHref}
-        books={book?.linksBook}
-        web={book?.web}
-        bookInfo={book?.bookInfo}
-      />
+      <BookInfo bookInfo={book?.bookInfo} />
+      <Listbooks link={book.bookHref} books={book?.linksBook} web={book?.web} />
     </>
   );
 };

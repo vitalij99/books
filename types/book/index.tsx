@@ -38,7 +38,6 @@ export interface ListBooksLinkProps {
   }[];
   web: string;
   link: string;
-  bookInfo?: BookInfoType;
 }
 
 export interface BookInfoType {

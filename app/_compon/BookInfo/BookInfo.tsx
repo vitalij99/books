@@ -1,6 +1,7 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Container, Typography } from '@mui/material';
 
 import { BookInfoType } from '@/types/book';
 import BookInfoText from '@/app/_compon/BookInfoText/BookInfoText';
@@ -12,20 +13,37 @@ interface BookInfoProps {
 
 const BookInfo = ({ bookInfo }: BookInfoProps) => {
   return (
-    <Box>
+    <Container sx={{ p: 1 }}>
       <Typography fontSize="30px">{bookInfo?.title}</Typography>
       {bookInfo && (
-        <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+        <Box
+          sx={{
+            display: { xs: 'block', md: 'flex' },
+            gap: '10px',
+            justifyContent: 'center',
+          }}
+        >
           {bookInfo.image && (
-            <Image
-              width="400"
-              height="500"
-              src={bookInfo.image}
-              alt={'Зображення книги'}
-            />
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: 1,
+              }}
+            >
+              <Image
+                width="400"
+                height="500"
+                src={bookInfo.image}
+                alt={'Зображення книги'}
+              />
+            </Box>
           )}
           <Box>
-            <Card variant={'outlined'} sx={{ p: 2, borderRadius: 3 }}>
+            <Card
+              variant={'outlined'}
+              sx={{ p: 2, borderRadius: 3, marginBottom: 1 }}
+            >
               <BookInfoText isEmpty={bookInfo.author}>
                 Автор: {bookInfo.author}
               </BookInfoText>
@@ -45,10 +63,12 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
                 Кількість розділів: {bookInfo.chapters}
               </BookInfoText>
             </Card>
-            <BookInfoCategories
-              title="Категорії:"
-              categories={bookInfo.categories}
-            />
+            <Box sx={{ marginBottom: 1 }}>
+              <BookInfoCategories
+                title="Категорії:"
+                categories={bookInfo.categories}
+              />
+            </Box>
             <BookInfoCategories
               genre={false}
               title="Теги:"
@@ -57,7 +77,7 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
           </Box>
         </Box>
       )}
-    </Box>
+    </Container>
   );
 };
 
