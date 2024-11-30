@@ -13,7 +13,7 @@ const Books = async () => {
       <Container>
         <Box
           sx={{
-            display: 'grid',
+            display: { xs: 'block', md: 'grid' },
             gridTemplate: 'repeat(5, 1fr)',
             gridTemplateRows: 'repeat(5, 1fr)',
             p: 2,
