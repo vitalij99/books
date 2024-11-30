@@ -14,16 +14,16 @@ const Books = async () => {
         <Box
           sx={{
             display: { xs: 'block', md: 'grid' },
-            gridTemplate: 'repeat(5, 1fr)',
-            gridTemplateRows: 'repeat(5, 1fr)',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateRows: '1fr',
             p: 2,
             gap: 2,
           }}
         >
-          <Box sx={{ gridArea: '1 / 1 / 2 / 5' }}>
+          <Box sx={{ gridArea: '1 / 1 / 2 / 4' }}>
             {session && <SaveBooksLinks />}
           </Box>
-          <Box sx={{ gridArea: '1 / 5 / 2 / 6' }}>
+          <Box sx={{ gridArea: '1 / 4 / 2 / 5' }}>
             <History />
           </Box>
         </Box>

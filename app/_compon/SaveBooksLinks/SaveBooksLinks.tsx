@@ -70,87 +70,99 @@ const SaveBooksLinks = () => {
   };
 
   if (saveBooks.length === 0) {
-    return <Typography>немає</Typography>;
+    return null;
   }
   return (
     <Box>
       <SaveOptionsBooks selectShowBooks={selectShowBooks} />
-      <ImageList
+      <Box
         sx={{
-          gridTemplateColumns: '200px ',
-          gridAutoColumns: '200px',
-          justifyItems: 'center',
+          overflowX: 'auto',
+          whiteSpace: { xs: 'nowrap', md: 'wrap' },
+          maxWidth: '1000px',
+          maxHeight: { xs: '1200px', md: 'none' },
         }}
       >
-        <ItemList
-          items={showBooks}
-          keyExtractor={book => book.id}
-          renderItem={book => (
-            <Box
-              sx={{
-                display: 'inline-block',
-                p: 2,
-              }}
-            >
-              <ImageListItem>
-                <Box
-                  sx={{
-                    position: 'relative',
-                    width: '200px',
-                    height: '250px',
-                  }}
-                >
-                  <IconButton
+        <ImageList
+          sx={{
+            display: 'grid',
+            gridAutoFlow: { xs: 'column', md: 'row' },
+            gridTemplateRows: 'repeat(2, 370px)',
+            gridAutoColumns: '230px',
+            gap: 10,
+            width: 'auto',
+          }}
+        >
+          <ItemList
+            items={showBooks.slice(0, 10)}
+            keyExtractor={book => book.id}
+            renderItem={book => (
+              <Box
+                sx={{
+                  display: 'inline-block',
+                  p: 2,
+                }}
+              >
+                <ImageListItem>
+                  <Box
                     sx={{
-                      position: 'absolute',
-                      right: 0,
-                      zIndex: 3,
+                      position: 'relative',
+                      width: '200px',
+                      height: '250px',
                     }}
-                    onClick={() => handleDeleteBook(book.id)}
-                    aria-label="delete"
                   >
-                    <DeleteIcon />
-                  </IconButton>
-                  <Link href={book.link}>
-                    {book.image ? (
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          width: '200px',
-                          height: '250px',
-                        }}
-                      >
-                        <Image
-                          src={book.image}
-                          fill
-                          priority
-                          sizes="300px"
-                          alt={book.title}
+                    <IconButton
+                      sx={{
+                        position: 'absolute',
+                        right: 0,
+                        zIndex: 3,
+                      }}
+                      onClick={() => handleDeleteBook(book.id)}
+                      aria-label="delete"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <Link href={book.link}>
+                      {book.image ? (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            width: '200px',
+                            height: '250px',
+                          }}
+                        >
+                          <Image
+                            src={book.image}
+                            fill
+                            priority
+                            sizes="300px"
+                            alt={book.title}
+                          />
+                        </Box>
+                      ) : (
+                        <Skeleton
+                          variant="rectangular"
+                          width={200}
+                          height={250}
                         />
-                      </Box>
-                    ) : (
-                      <Skeleton
-                        variant="rectangular"
-                        width={200}
-                        height={250}
-                      />
-                    )}
-                  </Link>
+                      )}
+                    </Link>
 
-                  <ImageListItemBar
-                    title={book.title ? book.title : 'Ой щось трапилось'}
-                    subtitle={book.title ? book.title : 'Ой щось трапилось'}
-                  />
-                </Box>
-              </ImageListItem>
-              <DropDownLinks
-                book={book}
-                handleDeleteCharpter={handleDeleteCharpter}
-              />
-            </Box>
-          )}
-        />
-      </ImageList>
+                    <ImageListItemBar
+                      title={book.title || 'Ой щось трапилось'}
+                      subtitle={book.title || 'Ой щось трапилось'}
+                    />
+                  </Box>
+                </ImageListItem>
+                <DropDownLinks
+                  book={book}
+                  handleDeleteCharpter={handleDeleteCharpter}
+                />
+              </Box>
+            )}
+          />
+        </ImageList>
+      </Box>
     </Box>
   );
 };
