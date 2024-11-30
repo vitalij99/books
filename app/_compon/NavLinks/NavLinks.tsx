@@ -71,11 +71,8 @@ const NavLinks = () => {
         >
           {NAVLINKMOBILE.map(({ href, key }) => (
             <MenuItem key={key}>
-              <Link
-                href={href}
-                sx={{ my: 2, p: 2, color: 'white', display: 'block' }}
-              >
-                <Typography> {key}</Typography>
+              <Link href={href} sx={{ my: 2, p: 2, display: 'block' }}>
+                <Typography>{key}</Typography>
               </Link>
             </MenuItem>
           ))}
