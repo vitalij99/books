@@ -1,5 +1,6 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
+
 import {
   Box,
   FormControl,
@@ -12,14 +13,11 @@ import {
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useState } from 'react';
-
 const theme = createTheme({
   palette: {
     mode: 'dark',
   },
 });
-
 const Search = ({ page = false }: { page?: boolean }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -39,43 +37,55 @@ const Search = ({ page = false }: { page?: boolean }) => {
     event.preventDefault();
     router.push(`/search?search=${search}`);
   };
+
+  const textField = (
+    <FormControl>
+      <TextField
+        name="search"
+        label="Поле введення"
+        type="search"
+        variant="outlined"
+        value={search}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          handleSearchChange(event.target.value);
+        }}
+      />
+    </FormControl>
+  );
+
   return (
-    <ThemeProvider theme={theme}>
-      <Box
+    <Box
+      sx={{
+        display: page ? 'flex' : { md: 'flex', xs: 'none' },
+        alignItems: 'center',
+        justifyContent: page ? 'center' : 'normal',
+      }}
+    >
+      <Link
+        href={`/search?search=${search}`}
         sx={{
-          display: page ? 'flex' : { md: 'flex', xs: 'none' },
-          alignItems: 'center',
-          justifyContent: page ? 'center' : 'normal',
+          my: 2,
+          p: 2,
+          color: page ? 'primary' : 'white',
+          display: 'block',
         }}
       >
-        <Link
-          href={`/search?search=${search}`}
-          sx={{ my: 2, p: 2, color: 'white', display: 'block' }}
+        <Typography>Пошук</Typography>
+      </Link>
+      <Box>
+        <form
+          onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
+            handleSubmit(event);
+          }}
         >
-          <Typography>Пошук</Typography>
-        </Link>
-        <Box>
-          <form
-            onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
-              handleSubmit(event);
-            }}
-          >
-            <FormControl>
-              <TextField
-                name="search"
-                label="Поле введення"
-                type="search"
-                variant="filled"
-                value={search}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  handleSearchChange(event.target.value);
-                }}
-              />
-            </FormControl>
-          </form>
-        </Box>
+          {page ? (
+            textField
+          ) : (
+            <ThemeProvider theme={theme}>{textField}</ThemeProvider>
+          )}
+        </form>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };
 
