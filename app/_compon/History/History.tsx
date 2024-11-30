@@ -43,7 +43,7 @@ const History = () => {
   }, []);
 
   return (
-    <Box>
+    <Box minWidth="300px">
       <Card variant="outlined">
         <CardContent>Відвіданні книжки</CardContent>
         <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -53,12 +53,18 @@ const History = () => {
         <ItemList
           items={books}
           renderItem={({ link, title, time }) => (
-            <CardActions
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
             >
-              <Link href={link}>{title}</Link>
+              <Link sx={{ maxWidth: '200px' }} href={link}>
+                {title}
+              </Link>
               {time && <Typography>{time}</Typography>}
-            </CardActions>
+            </Box>
           )}
         />
       </Card>
