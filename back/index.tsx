@@ -17,6 +17,7 @@ export const getBookSearchByNameAll = async ({
 }: {
   name: string;
 }) => {
+  if (!name) return;
   const result: ListBooksCardProps[] = [];
   try {
     const resNovelfire = await novelfire.getBookSearchByName({ name });
