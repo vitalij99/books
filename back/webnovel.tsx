@@ -31,9 +31,8 @@ const getBooksListType = (textData: string) => {
         const name = link.querySelector('h3')?.getAttribute('title') || '';
         const image = link.querySelector('img');
 
-        const modifiedImg =
-          image?.getAttribute('src') || image?.getAttribute('data-original');
-        const img = modifiedImg?.replace(/novel_\d+_\d+/, 'novel') || '';
+        const modifiedImg = image?.getAttribute('data-original');
+        const img = 'https://' + modifiedImg || '';
         const book =
           link.querySelector('a')?.getAttribute('data-report-did') || '';
 

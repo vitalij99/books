@@ -32,7 +32,7 @@ export const getBookSearchByNameAll = async ({
         result.push(data);
       } catch (error) {
         console.error(`Error fetching books from ${web}:`, error);
-        result.push({ books: [], web: web.web }); // Include fallback for failed sources
+        result.push({ books: [], web: web.web });
       }
     }
     return result;
@@ -46,19 +46,13 @@ export const getBooksPopularAll = async (): Promise<ListBooksCardProps[]> => {
   const result: ListBooksCardProps[] = [];
 
   try {
-    const sources = [
-      { web: 'novelfire', fetch: novelfire.getBookPopular },
-      { web: 'novelbin', fetch: novelbin.getBookPopular },
-      { web: 'scribblehub', fetch: scribblehub.getBookPopular },
-    ];
-
-    for (const { web, fetch } of sources) {
+    for (const web of sourcesAll) {
       try {
-        const data = await fetch();
+        const data = await web.getBookPopular();
         result.push(data);
       } catch (error) {
         console.error(`Error fetching popular books from ${web}:`, error);
-        result.push({ books: [], web }); // Include empty results for failed sources
+        result.push({ books: [], web: web.web });
       }
     }
 
