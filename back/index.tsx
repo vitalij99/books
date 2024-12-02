@@ -70,14 +70,17 @@ export const getBookLinksAll = async ({
   book: string;
   web: string;
 }) => {
-  if (web === WEBSITE.novelfire) {
-    return await novelfire.getBookLinks({ book });
+  const source = sourcesAll.find(source => source.web === web);
+
+  if (!source) {
+    throw new Error(`Unsupported web source: ${web}`);
   }
-  if (web === WEBSITE.novelbin) {
-    return await novelbin.getBookLinks({ book });
-  }
-  if (web === WEBSITE.scribblehub) {
-    return await scribblehub.getBookLinks({ book });
+
+  try {
+    return await source.getBookLinks({ book });
+  } catch (error) {
+    console.error(`Error fetching book links from ${web}:`, error);
+    throw new Error(`Failed to fetch book links from ${web}`);
   }
 };
 export const getBookFromLinkAll = async ({
