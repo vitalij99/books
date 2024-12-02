@@ -148,17 +148,18 @@ export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
 export const getBooksByGenreAll = async ({ name = '' }: { name: string }) => {
   const result: ListBooksCardProps[] = [];
   try {
-    const resNovelfire = await novelfire.getBooksFromGenre({ name });
-    result.push(resNovelfire);
-
-    const resNovelbin = await novelbin.getBooksFromGenre({ name });
-    result.push(resNovelbin);
-
-    const resScribblehub = await scribblehub.getBooksFromGenre({ name });
-    result.push(resScribblehub);
-
+    for (const web of sourcesAll) {
+      try {
+        const data = await web.getBooksFromGenre({ name });
+        result.push(data);
+      } catch (error) {
+        console.error(`Error fetching books from ${web}:`, error);
+        result.push({ books: [], web: web.web });
+      }
+    }
     return result;
   } catch (error) {
-    return [{ books: [], web: 'novelfire' }];
+    console.error('Unexpected error in getBooksFromGenreAll:', error);
+    return [{ books: [], web: 'unknown' }];
   }
 };
