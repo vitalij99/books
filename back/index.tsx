@@ -113,18 +113,17 @@ export const getBookImageLinkAll = async ({
   book: string;
   web: string;
 }) => {
+  const source = sourcesAll.find(source => source.web === web);
+
+  if (!source) {
+    throw new Error(`Unsupported web source: ${web}`);
+  }
+
   try {
-    if (web === WEBSITE.novelfire) {
-      return await novelfire.getBookImageLink({ book });
-    }
-    if (web === WEBSITE.novelbin) {
-      return await novelbin.getBookImageLink({ book });
-    }
-    if (web === WEBSITE.scribblehub) {
-      return await scribblehub.getBookImageLink({ book });
-    }
+    return await source.getBookImageLink({ book });
   } catch (error) {
-    console.log(error);
+    console.error(`Error fetching book links from ${web}:`, error);
+    throw new Error(`Failed to fetch book links from ${web}`);
   }
 };
 export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
