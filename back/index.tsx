@@ -3,54 +3,69 @@
 import { novelbin } from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
 import { scribblehub } from '@/back/scribblehub';
+import { webnovel } from '@/back/webnovel';
 
 import { ListBooksCardProps } from '@/types/book';
 
 const WEBSITE = {
-  novelfire: 'novelfire',
-  novelbin: 'novelbin',
+  novelfire: novelfire.web,
+  novelbin: novelbin.web,
   scribblehub: scribblehub.web,
+  webnovel: webnovel.web,
 };
+
+const sourcesAll = [novelfire, novelbin, scribblehub, webnovel];
 
 export const getBookSearchByNameAll = async ({
   name = '',
 }: {
   name: string;
 }) => {
-  if (!name) return;
+  if (!name) return [];
+
   const result: ListBooksCardProps[] = [];
+
   try {
-    const resNovelfire = await novelfire.getBookSearchByName({ name });
-    result.push(resNovelfire);
-
-    const resNovelbin = await novelbin.getBookSearchByName({ name });
-    result.push(resNovelbin);
-
-    const resScribblehub = await scribblehub.getBookSearchByName({ name });
-    result.push(resScribblehub);
-
+    for (const web of sourcesAll) {
+      try {
+        const data = await web.getBookSearchByName({ name });
+        result.push(data);
+      } catch (error) {
+        console.error(`Error fetching books from ${web}:`, error);
+        result.push({ books: [], web: web.web }); // Include fallback for failed sources
+      }
+    }
     return result;
   } catch (error) {
-    return [{ books: [], web: 'novelfire' }];
+    console.error('Unexpected error in getBookSearchByNameAll:', error);
+    return [{ books: [], web: 'unknown' }];
   }
 };
 
-export const getBooksPopularAll = async () => {
+export const getBooksPopularAll = async (): Promise<ListBooksCardProps[]> => {
+  const result: ListBooksCardProps[] = [];
+
   try {
-    const result: ListBooksCardProps[] = [];
+    const sources = [
+      { web: 'novelfire', fetch: novelfire.getBookPopular },
+      { web: 'novelbin', fetch: novelbin.getBookPopular },
+      { web: 'scribblehub', fetch: scribblehub.getBookPopular },
+    ];
 
-    const resNovelfire = await novelfire.getBookPopular();
-    result.push(resNovelfire);
-
-    const resNovelbin = await novelbin.getBookPopular();
-    result.push(resNovelbin);
-
-    const resScribblehub = await scribblehub.getBookPopular();
-    result.push(resScribblehub);
+    for (const { web, fetch } of sources) {
+      try {
+        const data = await fetch();
+        result.push(data);
+      } catch (error) {
+        console.error(`Error fetching popular books from ${web}:`, error);
+        result.push({ books: [], web }); // Include empty results for failed sources
+      }
+    }
 
     return result;
   } catch (error) {
-    return [{ books: [], web: 'novelfire' }];
+    console.error('Unexpected error in getBooksPopularAll:', error);
+    return [{ books: [], web: 'unknown' }];
   }
 };
 
