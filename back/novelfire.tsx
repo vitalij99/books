@@ -356,4 +356,5 @@ export const novelfire = {
   getBookImageLink,
   getBooksFromTags,
   getBooksFromGenre,
+  web,
 };
