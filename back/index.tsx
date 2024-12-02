@@ -92,18 +92,17 @@ export const getBookFromLinkAll = async ({
   chapter: string;
   web: string;
 }) => {
+  const source = sourcesAll.find(source => source.web === web);
+
+  if (!source) {
+    throw new Error(`Unsupported web source: ${web}`);
+  }
+
   try {
-    if (web === WEBSITE.novelfire) {
-      return await novelfire.getBookFromLink({ book, chapter });
-    }
-    if (web === WEBSITE.novelbin) {
-      return await novelbin.getBookFromLink({ book, chapter });
-    }
-    if (web === WEBSITE.scribblehub) {
-      return await scribblehub.getBookFromLink({ book, chapter });
-    }
+    return await source.getBookFromLink({ book, chapter });
   } catch (error) {
-    console.log(error);
+    console.error(`Error fetching book links from ${web}:`, error);
+    throw new Error(`Failed to fetch book links from ${web}`);
   }
 };
 
