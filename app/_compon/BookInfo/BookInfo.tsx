@@ -49,9 +49,7 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
               <BookInfoText isEmpty={bookInfo.author}>
                 Автор: {bookInfo.author}
               </BookInfoText>
-              <BookInfoText isEmpty={bookInfo.chapters}>
-                Глави: {bookInfo.chapters}
-              </BookInfoText>
+
               <BookInfoText isEmpty={bookInfo.publishers}>
                 Видавництво: {bookInfo.publishers}
               </BookInfoText>
