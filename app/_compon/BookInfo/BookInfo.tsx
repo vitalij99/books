@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Box, Card, Container, Typography } from '@mui/material';
+import { Box, Card, Container, Skeleton, Typography } from '@mui/material';
 
 import { BookInfoType } from '@/types/book';
 import BookInfoText from '@/app/_compon/BookInfoText/BookInfoText';
@@ -23,7 +23,7 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
             justifyContent: 'center',
           }}
         >
-          {bookInfo.image && (
+          {bookInfo.image && bookInfo.image.length !== 1 ? (
             <Box
               sx={{
                 display: 'flex',
@@ -38,6 +38,8 @@ const BookInfo = ({ bookInfo }: BookInfoProps) => {
                 alt={'Зображення книги'}
               />
             </Box>
+          ) : (
+            <Skeleton />
           )}
           <Box>
             <Card
