@@ -213,7 +213,9 @@ const getBookImage = (textData: string) => {
     const imgWrapp = element.querySelector('img');
 
     return imgWrapp?.getAttribute('data-src');
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getCategories = (textData: string) => {
@@ -225,7 +227,9 @@ const getCategories = (textData: string) => {
 
     const text = resultCategories.map(title => title?.textContent);
     return text;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 const getAuthor = (textData: string) => {
   try {
@@ -236,7 +240,9 @@ const getAuthor = (textData: string) => {
 
     const text = result.map(title => title?.textContent);
     return text;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 const getChapters = (textData: string) => {
   try {
@@ -300,6 +306,7 @@ const getBooksFromTags = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
+    console.log(error);
     return { books: [], web };
   }
 };
@@ -340,6 +347,7 @@ const getBooksFromGenre = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
+    console.log(error);
     return { books: [], web };
   }
 };
