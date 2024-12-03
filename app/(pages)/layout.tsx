@@ -1,3 +1,4 @@
+import React from 'react';
 import Container from '@/app/_compon/Container/Container';
 
 export default async function RootLayout({

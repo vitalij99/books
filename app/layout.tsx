@@ -10,6 +10,7 @@ import BreadcrumbsCustl from '@/app/_compon/Breadcrumbs/Breadcrumbs';
 import Header from '@/app/_compon/Header/Header';
 import DarkProvider from '@/Providers/DarkProvider';
 import TranslateProvider from '@/Providers/TranslateProvider';
+import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Books uk',
