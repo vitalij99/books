@@ -9,12 +9,12 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 
 const amountBook = 10;
 export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
-  const [corectBooks, setCorectBooks] = useState(books.slice(0, amountBook));
+  const [corectBooks, setCorectBooks] = useState(books?.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
 
   useEffect(() => {
     setCorectBooks(
-      books.slice(
+      books?.slice(
         (pagination - 1) * amountBook,
         pagination * amountBook + amountBook
       )
@@ -22,13 +22,13 @@ export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
   }, [books, pagination]);
 
   const handlePagination = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     page: number
   ) => {
     setPagination(page);
   };
 
-  if (books.length === 0) {
+  if (books?.length === 0 || !books) {
     return <Loading />;
   }
   return (

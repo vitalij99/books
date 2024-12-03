@@ -32,10 +32,12 @@ export interface ListBooksCardProps {
   web?: string;
 }
 export interface ListBooksLinkProps {
-  books: {
-    book: string;
-    name: string;
-  }[];
+  books:
+    | {
+        book: string;
+        name: string;
+      }[]
+    | undefined;
   web: string;
   link: string;
 }
