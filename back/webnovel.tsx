@@ -140,11 +140,12 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
   const textData = await data.text();
 
   const resultInfo = getBookInfo(textData);
-  const { img, title } = getBookImage(textData);
+  const image = getBookImage(textData);
+  const title = getBookTitle(textData);
 
   return {
     ...resultInfo,
-    image: img,
+    image,
 
     title,
   };
@@ -185,9 +186,18 @@ const getBookImage = (textData: string) => {
 
   const modifiedImg = info[0]?.getAttribute('src');
   const result = 'https://' + modifiedImg || '';
+
+  return result;
+};
+const getBookTitle = (textData: string) => {
+  const info = transformInHtml({
+    html: textData,
+    elem: 'i.g_thumb img ',
+  });
+
   const title = info[0]?.getAttribute('alt') || '';
 
-  return { img: result, title };
+  return title;
 };
 
 const getBookFromLink = async ({

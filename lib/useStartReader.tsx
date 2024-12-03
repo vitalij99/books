@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { InitParamsReader, PARAMSREADER, READER_KEY } from '@/types/reader';
-import { getSrorageJSON, getStorage } from '@/lib/getStorage';
+import { InitParamsReader, PARAMSREADER } from '@/types/reader';
+import { getSrorageJSON } from '@/lib/getStorage';
 
 interface StartReaderProps {
   book: string[];
@@ -36,7 +36,7 @@ export const useStartReader = ({
     const firstVoices = firstSynth.getVoices();
     setVoices(firstVoices);
 
-    firstSynth.onvoiceschanged = event => {
+    firstSynth.onvoiceschanged = () => {
       const firstVoices = firstSynth.getVoices();
       setVoices(firstVoices);
     };
@@ -59,7 +59,7 @@ export const useStartReader = ({
     firstUtterThis.rate = paramsReader.rate;
     firstUtterThis.pitch = paramsReader.pitch;
     firstUtterThis.volume = paramsReader.volume;
-    firstUtterThis.onend = event => {
+    firstUtterThis.onend = () => {
       setParagraf(prev => prev + 1);
       changeText(paragraf + 1);
     };
@@ -75,6 +75,7 @@ export const useStartReader = ({
     if (book.length >= paragraf) {
       speakParagrap();
     } else if (book.length < paragraf + 1) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       srcNextPage && router.push(srcNextPage);
     }
   }, [

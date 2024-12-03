@@ -6,7 +6,6 @@ export const translateGoogle = async (text: string) => {
   const encodeText = encodeURI(text);
 
   if (!encodeText) {
-    console.log(encodeText, text);
     return text;
   }
 
@@ -14,7 +13,7 @@ export const translateGoogle = async (text: string) => {
 
   const textData = await data.json();
 
-  if (!data) undefined;
+  if (!data) return;
 
   const result = textData.sentences.map(
     (textTrans: { trans: string }) => textTrans.trans

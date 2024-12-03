@@ -85,7 +85,7 @@ const BookRead = ({
   }, [params.book, params.chapter, searchParams.web]);
 
   useEffect(() => {
-    async function getTranslate(bookTranslate: string | any[]) {
+    async function getTranslate(bookTranslate: string[]) {
       const allTextBook: string[] = [];
 
       for (let index = 0; index < bookTranslate.length; index++) {

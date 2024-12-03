@@ -9,7 +9,6 @@ import {
   ImageListItemBar,
   Link,
   Skeleton,
-  Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';

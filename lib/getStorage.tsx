@@ -13,7 +13,7 @@ export const getStorage = (key: string) => {
 
   return res ? res : '';
 };
-
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export const setStorage = debounce((value: string | {} | [], key: string) => {
   if (typeof value !== 'string') {
     localStorage.setItem(key, JSON.stringify(value));

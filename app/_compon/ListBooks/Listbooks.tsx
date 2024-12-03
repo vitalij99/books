@@ -21,7 +21,10 @@ export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
     );
   }, [books, pagination]);
 
-  const handlePagination = (even: any, page: number) => {
+  const handlePagination = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
     setPagination(page);
   };
 

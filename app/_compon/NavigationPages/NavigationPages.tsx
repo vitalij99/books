@@ -1,5 +1,5 @@
 'use client';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 interface NavigationPagesProps {
