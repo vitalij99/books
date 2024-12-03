@@ -55,7 +55,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return null;
           }
         } catch (error: any) {
-          throw new Error('Неправильний email або пароль.');
+          throw new Error('Неправильний email або пароль.', error);
         }
       },
     }),
