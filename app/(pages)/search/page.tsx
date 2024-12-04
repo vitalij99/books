@@ -29,13 +29,15 @@ const search = async ({
       <Search page={true} />
       <Categories genre={genre} />
       {books &&
-        books.map(website => (
-          <ListBooksCard
-            key={website.web}
-            books={website.books}
-            web={website.web}
-          />
-        ))}
+        books
+          .sort((a, b) => b.books.length - a.books.length)
+          .map(website => (
+            <ListBooksCard
+              key={website.web}
+              books={website.books}
+              web={website.web}
+            />
+          ))}
     </>
   );
 };
