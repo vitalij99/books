@@ -178,7 +178,7 @@ const getBookInfo = (textData: string) => {
 
     return result;
   } catch (error) {
-    console.log('web error:', error);
+    console.log(`error ${web}:`, error);
   }
 };
 

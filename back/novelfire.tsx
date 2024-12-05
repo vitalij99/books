@@ -42,7 +42,7 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
     return { books: [], web };
   }
 };
@@ -85,7 +85,7 @@ const getBookPopular = async () => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
     return { books: [], web };
   }
 };
@@ -214,7 +214,7 @@ const getBookImage = (textData: string) => {
 
     return imgWrapp?.getAttribute('data-src');
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
   }
 };
 
@@ -228,7 +228,7 @@ const getCategories = (textData: string) => {
     const text = resultCategories.map(title => title?.textContent);
     return text;
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
   }
 };
 const getAuthor = (textData: string) => {
@@ -241,7 +241,7 @@ const getAuthor = (textData: string) => {
     const text = result.map(title => title?.textContent);
     return text;
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
   }
 };
 const getChapters = (textData: string) => {
@@ -263,7 +263,7 @@ const getChapters = (textData: string) => {
       }
     }
   } catch (error) {
-    console.error('Error while parsing chapters:', error);
+    console.log(`error ${web}:`, error);
   }
 
   return undefined;
@@ -306,7 +306,7 @@ const getBooksFromTags = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
     return { books: [], web };
   }
 };
@@ -347,7 +347,7 @@ const getBooksFromGenre = async ({ name }: { name: string }) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
-    console.log(error);
+    console.log(`error ${web}:`, error);
     return { books: [], web };
   }
 };

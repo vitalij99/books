@@ -113,7 +113,9 @@ const getBookInfo = (textData: string) => {
     });
 
     return result;
-  } catch (error) {}
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 
 const getBookFromLink = async ({
@@ -223,6 +225,7 @@ const getBooksSearch = (textData: string) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
+    console.log(`error ${web}:`, error);
     return { books: [], web };
   }
 };

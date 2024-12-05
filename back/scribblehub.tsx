@@ -49,6 +49,7 @@ const getBooksWrapper = (textData: string) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
+    console.log(`error ${web}:`, error);
     return { books: linkInfoArray, web };
   }
 };
@@ -202,7 +203,9 @@ const getBookImage = (textData: string) => {
 
     const image = result[0].querySelector('img')?.getAttribute('src');
     return image;
-  } catch (error) {}
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 
 const getCategories = (textData: string) => {
@@ -216,7 +219,9 @@ const getCategories = (textData: string) => {
       genreContainer[0].querySelectorAll("span[property='genre'] a")
     ).map(a => a.textContent.trim());
     return genres;
-  } catch (error) {}
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 const getTags = (textData: string) => {
   try {
@@ -227,7 +232,9 @@ const getTags = (textData: string) => {
 
     const result = tagsContainer.map(tag => tag.textContent);
     return result;
-  } catch (error) {}
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 const getAuthor = (textData: string) => {
   try {
@@ -238,7 +245,9 @@ const getAuthor = (textData: string) => {
 
     const text = result[0]?.textContent;
     return text;
-  } catch (error) {}
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 const getChapters = (textData: string) => {
   try {
@@ -258,7 +267,9 @@ const getChapters = (textData: string) => {
         return parseInt(strongText, 10);
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 const getBooksFromGenre = async ({ name }: { name: string }) => {
   //  https://www.scribblehub.com/genre/adventure/
