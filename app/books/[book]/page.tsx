@@ -1,6 +1,26 @@
 import BookInfo from '@/app/_compon/BookInfo/BookInfo';
 import { Listbooks } from '@/app/_compon/ListBooks/Listbooks';
 import { getBookLinksAll } from '@/back';
+import { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: { book: string };
+  searchParams: { [key: string]: string | '' };
+}): Promise<Metadata> {
+  const book = await getBookLinksAll({
+    book: params.book,
+    web: searchParams.web,
+  });
+
+  const title = book?.bookInfo?.title || params.book;
+
+  return {
+    title: title,
+  };
+}
 
 const page = async ({
   params,

@@ -3,6 +3,7 @@
 import React from 'react';
 
 export const ReaderContext = React.createContext({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleOpen: (toggle?: boolean) => {},
   isOpen: false,
 });

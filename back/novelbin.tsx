@@ -71,7 +71,6 @@ const getBookInfoLink = async ({
     ...resultInfo,
     image: resultImage,
     chapters,
-    title: book,
   };
 
   return result;
@@ -114,6 +113,12 @@ const getBookInfo = (textData: string) => {
       }
     });
 
+    const title = transformInHtml({ html: textData, elem: '.title' })[0]
+      ?.textContent;
+
+    if (title) {
+      result.title = title;
+    }
     return result;
   } catch (error) {
     console.log(`error ${web}:`, error);

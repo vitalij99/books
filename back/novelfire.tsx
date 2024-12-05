@@ -181,10 +181,25 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
     categories: getCategories(textData),
     image: getBookImage(textData),
     chapters: getChapters(textData),
-    title: book,
+    title: getBookTitle(textData) || book,
   } as BookInfoType;
 
   return result;
+};
+
+const getBookTitle = (textData: string) => {
+  try {
+    const result = transformInHtml({
+      html: textData,
+      elem: '.novel-title',
+    });
+
+    if (!result) return undefined;
+
+    return result[0].textContent;
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 
 const getBookImageLink = async ({ book }: { book: string }) => {
