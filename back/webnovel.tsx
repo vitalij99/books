@@ -95,8 +95,9 @@ const getBookLinks = async ({ book }: { book: string }) => {
   // https://www.webnovel.com/book/30240152305644005/catalog
 
   const linksBook = await getBooksChaptersLink({ book });
+  if (!linksBook) return undefined;
 
-  const bookInfo = await getBookInfoLink({ book });
+  const bookInfo: BookInfoType = await getBookInfoLink({ book });
 
   return {
     linksBook,
