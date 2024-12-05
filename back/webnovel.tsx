@@ -44,6 +44,7 @@ const getBooksListType = (textData: string) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
+    console.log('web error:', error);
     return { books: [], web };
   }
 };
@@ -75,7 +76,7 @@ const getBooksListSearch = (textData: string) => {
         const image = link.querySelector('img');
 
         const modifiedImg = image?.getAttribute('src');
-        const img = 'https://' + modifiedImg || '';
+        const img = 'https:' + modifiedImg || '';
         const book = link.querySelector('a')?.getAttribute('data-bookid') || '';
 
         if (book) {
@@ -86,6 +87,7 @@ const getBooksListSearch = (textData: string) => {
 
     return { books: linkInfoArray, web };
   } catch (error) {
+    console.log('web error:', error);
     return { books: [], web };
   }
 };
@@ -175,7 +177,9 @@ const getBookInfo = (textData: string) => {
     });
 
     return result;
-  } catch (error) {}
+  } catch (error) {
+    console.log('web error:', error);
+  }
 };
 
 const getBookImage = (textData: string) => {
@@ -185,7 +189,7 @@ const getBookImage = (textData: string) => {
   });
 
   const modifiedImg = info[0]?.getAttribute('src');
-  const result = 'https://' + modifiedImg || '';
+  const result = 'https:' + modifiedImg || '';
 
   return result;
 };
