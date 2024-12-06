@@ -15,7 +15,7 @@ const ListBooksCard = ({ books, web }: ListBooksCardProps) => {
   return (
     <Box padding={4}>
       <Typography>{web}</Typography>
-      {books.length === 0 ? (
+      {books && books.length === 0 ? (
         <Typography>немає</Typography>
       ) : (
         <List

@@ -73,4 +73,6 @@ export const genreWebn = {
   realisticFiction: 'realistic-male',
   history: 'history-male',
   acg: 'acg-male',
+  lgbt: 'lgbt-female',
+  general: 'general-female',
 };

@@ -82,9 +82,13 @@ const getBooksListSearch = ({
         const name = link.querySelector('h3')?.textContent || '';
         const image = link.querySelector('img');
 
-        const modifiedImg = image?.getAttribute('src');
+        const modifiedImg =
+          image?.getAttribute('data-original') || image?.getAttribute('src');
         const img = 'https:' + modifiedImg || '';
-        const book = link.querySelector('a')?.getAttribute('data-bookid') || '';
+        const book =
+          link.querySelector('a')?.getAttribute('data-bookid') ||
+          link.querySelector('a')?.getAttribute('href') ||
+          '';
 
         if (book) {
           linkInfoArray.push({ name, book, img });
@@ -279,21 +283,32 @@ const reTransformLink = (book: string, chapter: string) => {
   // https://www.webnovel.com/book/22883421205730405/61427216130562225
   return `${link}book/${book}/${chapter}`;
 };
-// TODO
+
 const getBooksFromGenre = async ({ name }: { name: string }) => {
   // https://www.webnovel.com/stories/novel-urban-male
-  const genre = Object.keys(genreWebn).find(item => name === item);
 
-  if (!genre) return;
+  try {
+    const genre = Object.keys(genreWebn).find(
+      item => name.toLocaleLowerCase() === item
+    );
 
-  const linkSearch = `${link}stories/novel-${
-    genreWebn[genre as keyof typeof genreWebn]
-  }`;
+    if (!genre) return { books: [], web };
 
-  const data = await fetch(linkSearch);
-  const textData = await data.text();
+    const linkSearch = `${link}stories/novel-${
+      genreWebn[genre as keyof typeof genreWebn]
+    }`;
 
-  return getBooksListSearch({ textData, elem: '.j_category_wrapper li' });
+    const data = await fetch(linkSearch);
+    const textData = await data.text();
+
+    return getBooksListSearch({
+      textData,
+      elem: '.j_category_wrapper li',
+    });
+  } catch (error) {
+    console.log('web error:', error);
+    return { books: [], web };
+  }
 };
 const getBooksFromTags = async ({ name }: { name: string }) => {
   // https://novelbin.com/tag/MODERN%20DAY

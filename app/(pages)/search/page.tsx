@@ -30,7 +30,7 @@ const search = async ({
       <Categories genre={genre} />
       {books &&
         books
-          .sort((a, b) => b.books.length - a.books.length)
+          .sort((a, b) => a && b && b.books?.length - a.books?.length)
           .map(website => (
             <ListBooksCard
               key={website.web}
