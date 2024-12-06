@@ -1,5 +1,6 @@
 import { BookInfoType } from '@/types/book';
 import { transformInHtml } from '../lib/htmlTransform';
+import { genreWebn } from '@/types/categories/categories';
 
 const link = 'https://www.webnovel.com/';
 const web = 'webnovel';
@@ -55,13 +56,19 @@ const getBookSearchByName = async ({ name }: { name: string }) => {
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
-  return getBooksListSearch(textData);
+  return getBooksListSearch({ textData, elem: '.search-result-container li' });
 };
-const getBooksListSearch = (textData: string) => {
+const getBooksListSearch = ({
+  textData,
+  elem,
+}: {
+  textData: string;
+  elem: string;
+}) => {
   try {
     const result = transformInHtml({
       html: textData,
-      elem: '.search-result-container li',
+      elem,
     });
     if (!result) throw new Error();
     const linkInfoArray: {
@@ -274,13 +281,19 @@ const reTransformLink = (book: string, chapter: string) => {
 };
 // TODO
 const getBooksFromGenre = async ({ name }: { name: string }) => {
-  // https://novelbin.com/genre/adventure
-  const linkSearch = `${link}genre/${name.toLocaleLowerCase()}`;
+  // https://www.webnovel.com/stories/novel-urban-male
+  const genre = Object.keys(genreWebn).find(item => name === item);
+
+  if (!genre) return;
+
+  const linkSearch = `${link}stories/novel-${
+    genreWebn[genre as keyof typeof genreWebn]
+  }`;
 
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
-  return getBooksListType(textData);
+  return getBooksListSearch({ textData, elem: '.j_category_wrapper li' });
 };
 const getBooksFromTags = async ({ name }: { name: string }) => {
   // https://novelbin.com/tag/MODERN%20DAY
@@ -289,7 +302,7 @@ const getBooksFromTags = async ({ name }: { name: string }) => {
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
-  return getBooksListType(textData);
+  return getBooksListSearch({ textData, elem: '.j_category_wrapper' });
 };
 
 export const webnovel = {

@@ -59,3 +59,18 @@ export const CATEGORIES = {
   yaoi: 'Яой',
   yuri: 'Юрі',
 };
+
+export const genreWebn = {
+  urban: 'urban-male',
+  eastern: 'eastern-male',
+  videoGames: 'games-male',
+  fantasy: 'fantasy-male',
+  scifi: 'scifi-male',
+  horror: 'horror-male',
+  sports: 'sports-male',
+  action: 'action-male',
+  war: 'war-male',
+  realisticFiction: 'realistic-male',
+  history: 'history-male',
+  acg: 'acg-male',
+};
