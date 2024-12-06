@@ -12,13 +12,19 @@ const getBookPopular = async () => {
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
-  return getBooksListType(textData);
+  return getBooksListType({ textData, elem: '.j_rank_wrapper section' });
 };
-const getBooksListType = (textData: string) => {
+const getBooksListType = ({
+  textData,
+  elem,
+}: {
+  textData: string;
+  elem: string;
+}) => {
   try {
     const result = transformInHtml({
       html: textData,
-      elem: '.j_rank_wrapper section',
+      elem,
     });
     if (!result) throw new Error();
     const linkInfoArray: {
@@ -34,9 +40,11 @@ const getBooksListType = (textData: string) => {
 
         const modifiedImg = image?.getAttribute('data-original');
         const img = 'https:' + modifiedImg || '';
-        const book =
-          link.querySelector('a')?.getAttribute('data-report-did') || '';
-
+        const linkBook =
+          link.querySelector('a')?.getAttribute('data-report-did') ||
+          link.querySelector('a')?.getAttribute('href') ||
+          '';
+        const book = linkBook?.match(/\d+$/)?.[0];
         if (book) {
           linkInfoArray.push({ name, book, img });
         }
@@ -155,13 +163,37 @@ const getBookInfoLink = async ({ book }: { book: string }) => {
   const resultInfo = getBookInfo(textData);
   const image = getBookImage(textData);
   const title = getBookTitle(textData);
+  const tags = getTags(textData);
 
   return {
     ...resultInfo,
     image,
-
     title,
+    tags,
   };
+};
+
+const getTags = (textData: string) => {
+  try {
+    const info = transformInHtml({
+      html: textData,
+      elem: '.j_tagWrap a',
+    });
+
+    const result: string[] = [];
+
+    info.forEach(tag => {
+      const title = tag?.textContent.replace('#', '').trim().toLowerCase();
+
+      if (!title) return;
+
+      result.push(title);
+    });
+
+    return result;
+  } catch (error) {
+    console.log(`error ${web}:`, error);
+  }
 };
 
 const getBookInfo = (textData: string) => {
@@ -311,12 +343,12 @@ const getBooksFromGenre = async ({ name }: { name: string }) => {
 };
 const getBooksFromTags = async ({ name }: { name: string }) => {
   // https://novelbin.com/tag/MODERN%20DAY
-  const linkSearch = `${link}tag/${name.toLocaleUpperCase()}`;
+  const linkSearch = `${link}tags/${name.toLocaleLowerCase()}-novel`;
 
   const data = await fetch(linkSearch);
   const textData = await data.text();
 
-  return getBooksListSearch({ textData, elem: '.j_category_wrapper' });
+  return getBooksListType({ textData, elem: '.j_bookList li' });
 };
 
 export const webnovel = {
