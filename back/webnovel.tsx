@@ -85,11 +85,10 @@ const getBooksListSearch = ({
         const modifiedImg =
           image?.getAttribute('data-original') || image?.getAttribute('src');
         const img = 'https:' + modifiedImg || '';
-        const book =
+        const linkBook =
           link.querySelector('a')?.getAttribute('data-bookid') ||
-          link.querySelector('a')?.getAttribute('href') ||
-          '';
-
+          link.querySelector('a')?.getAttribute('href');
+        const book = linkBook?.match(/\d+$/)?.[0];
         if (book) {
           linkInfoArray.push({ name, book, img });
         }
