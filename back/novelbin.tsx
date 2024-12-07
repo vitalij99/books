@@ -182,8 +182,9 @@ const getBookImageLink = async ({ book }: { book: string }) => {
 };
 
 const transformLink = (url: string) => {
+  if (!url) return '';
   const arr = url.split('/');
-  return arr[arr.length - 1];
+  return arr.length > 0 ? arr[arr.length - 1].split('?')[0] : '';
 };
 const reTransformLink = (book: string, chapter: string) => {
   return `https://novelbjn.novelupdates.net/book/${book}/${chapter}`;
