@@ -3,20 +3,27 @@ const linkGoogle =
 
 export const translateGoogle = async (text: string) => {
   if (text.length === 0) return text;
-  const encodeText = encodeURI(text);
 
-  if (!encodeText) {
+  const regex = /[\p{L}]/u;
+
+  if (!regex.test(text)) {
     return text;
+  } else {
+    const encodeText = encodeURI(text);
+
+    if (!encodeText) {
+      return text;
+    }
+
+    const data = await fetch(`${linkGoogle}&q=${encodeText}`);
+
+    const textData = await data.json();
+
+    if (!data) return;
+
+    const result = textData.sentences.map(
+      (textTrans: { trans: string }) => textTrans.trans
+    );
+    return result;
   }
-
-  const data = await fetch(`${linkGoogle}&q=${encodeText}`);
-
-  const textData = await data.json();
-
-  if (!data) return;
-
-  const result = textData.sentences.map(
-    (textTrans: { trans: string }) => textTrans.trans
-  );
-  return result;
 };

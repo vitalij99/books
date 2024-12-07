@@ -6,7 +6,7 @@ import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
 import { AllowedKeys, MENUSTYLEDTEXT, StorageType } from '@/types/book';
 import { Box, Typography } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { getBookFromLinkAll } from '@/back';
 import { TranslateContext } from '@/Providers/TranslateProvider';
@@ -84,29 +84,30 @@ const BookRead = ({
     getBook();
   }, [params.book, params.chapter, searchParams.web]);
 
-  useEffect(() => {
-    async function getTranslate(bookTranslate: string[]) {
-      const allTextBook: string[] = [];
+  const translatedBook = useMemo(async () => {
+    if (!data || !data.book || !translate.translate) {
+      return data?.book || [];
+    }
 
-      for (let index = 0; index < bookTranslate.length; index++) {
-        const element = bookTranslate[index];
-        const result = await translateGoogle(element);
-        allTextBook.push(...result);
-        if (index === 20) {
-          setTextBook(allTextBook);
-        }
+    const bookTranslate = data.book;
+    const allTextBook: string[] = [];
+
+    for (let index = 0; index < bookTranslate.length; index++) {
+      const element = bookTranslate[index];
+      const result = await translateGoogle(element);
+      allTextBook.push(result);
+
+      if (index === 20) {
+        setTextBook([...allTextBook]);
       }
-
-      setTextBook(allTextBook);
     }
 
-    if (!data || !data.book) {
-      return;
-    }
-    if (translate.translate) {
-      getTranslate(data.book);
-    } else setTextBook(data.book);
+    return allTextBook;
   }, [data, translate.translate]);
+
+  useEffect(() => {
+    translatedBook.then(setTextBook);
+  }, [translatedBook]);
 
   // autoScroll
   useEffect(() => {
