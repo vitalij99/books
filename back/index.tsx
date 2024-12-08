@@ -56,6 +56,7 @@ export const getBooksPopularAll = async (): Promise<ListBooksCardProps[]> => {
   }
 };
 
+// on page book
 export const getBookLinksAll = async ({
   book,
   web,

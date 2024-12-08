@@ -72,5 +72,13 @@ export interface BooksSaveDB {
   updatedAt: Date;
 }
 [];
-
+export interface BookProps {
+  book: string[];
+  nav: {
+    nextPage?: string;
+    prevPage?: string;
+    nextText?: string;
+    prevText?: string;
+  };
+}
 export const THEME = 'theme';

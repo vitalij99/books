@@ -1,42 +1,34 @@
 'use client';
+import React from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Box, Typography } from '@mui/material';
 
 import { getSrorageJSON, getStorage, setStorage } from '@/lib/getStorage';
-
 import { setRootValue } from '@/lib/setRootValue';
 import { translateGoogle } from '@/lib/translate';
-import { AllowedKeys, MENUSTYLEDTEXT, StorageType } from '@/types/book';
-import { Box, Typography } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
 
-import { getBookFromLinkAll } from '@/back';
 import { TranslateContext } from '@/Providers/TranslateProvider';
 import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
-import React from 'react';
-import { InitParamsReader, PARAMSREADER } from '@/types/reader';
 
-interface BookProps {
-  book: string[];
-  nav: {
-    nextPage?: string;
-    prevPage?: string;
-    nextText?: string;
-    prevText?: string;
-  };
-}
+import {
+  AllowedKeys,
+  BookProps,
+  MENUSTYLEDTEXT,
+  StorageType,
+} from '@/types/book';
+import { InitParamsReader, PARAMSREADER } from '@/types/reader';
 
 const IS_AUTO_SCROLL = 'isAutoScroll';
 
-const BookRead = ({
-  params,
-  searchParams,
-}: {
+type BookReadProps = {
+  book: BookProps;
   params: { chapter: string; book: string };
-  searchParams: { [key: string]: string | '' };
-}) => {
-  const [data, setData] = useState<BookProps>();
-  const [textBook, setTextBook] = useState(['loading']);
+};
+
+const BookRead = ({ book, params }: BookReadProps) => {
+  const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
 
@@ -71,23 +63,7 @@ const BookRead = ({
   }, []);
 
   useEffect(() => {
-    const getBook = async () => {
-      const result = await getBookFromLinkAll({
-        chapter: params.chapter,
-        book: params.book,
-        web: searchParams.web,
-      });
-      if (result) {
-        setData(result);
-        setTextBook(result.book);
-      }
-    };
-
-    getBook();
-  }, [params.book, params.chapter, searchParams.web]);
-
-  useEffect(() => {
-    if (!data || !data.book || !translate.translate) return;
+    if (!book || !book.book || !translate.translate) return;
 
     async function getTranslate(bookTranslate: string[]) {
       const allTextBook: string[] = [];
@@ -104,9 +80,9 @@ const BookRead = ({
     }
 
     if (translate.translate) {
-      getTranslate(data.book);
-    }
-  }, [data, translate.translate]);
+      getTranslate(book.book);
+    } else setTextBook(book.book);
+  }, [book, translate.translate]);
 
   // autoScroll
   useEffect(() => {
@@ -132,7 +108,7 @@ const BookRead = ({
     });
   };
 
-  if (!data || !textBook) {
+  if (!book || !textBook) {
     return <></>;
   }
 
@@ -149,11 +125,11 @@ const BookRead = ({
         book={textBook}
         changeText={changeTextRead}
         autoScroll={{ handleAutoScroll, isAutoScroll }}
-        srcNextPage={data.nav.nextPage}
+        srcNextPage={book.nav.nextPage}
       />
 
       <NavigationPages
-        navigate={data.nav}
+        navigate={book.nav}
         title={params.book}
         charpter={params.chapter}
       />
@@ -176,7 +152,7 @@ const BookRead = ({
         )}
       />
       <NavigationPages
-        navigate={data.nav}
+        navigate={book.nav}
         title={params.book}
         charpter={params.chapter}
       />

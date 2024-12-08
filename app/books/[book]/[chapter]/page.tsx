@@ -1,8 +1,7 @@
-import BookRead from '@/app/_compon/BookRead/BookRead';
-import { getBookLinksAll } from '@/back';
-
-import { Metadata } from 'next';
 import React from 'react';
+import { Metadata } from 'next';
+import BookRead from '@/app/_compon/BookRead/BookRead';
+import { getBookFromLinkAll, getBookLinksAll } from '@/back';
 
 export async function generateMetadata({
   params,
@@ -33,12 +32,13 @@ const page = async ({
   if (!searchParams.web) {
     return <>error</>;
   }
+  const book = await getBookFromLinkAll({
+    chapter: params.chapter,
+    book: params.book,
+    web: searchParams.web,
+  });
 
-  return (
-    <>
-      <BookRead params={params} searchParams={searchParams} />
-    </>
-  );
+  return <>{book && <BookRead book={book} params={params} />}</>;
 };
 
 export default page;
