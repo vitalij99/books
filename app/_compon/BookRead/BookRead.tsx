@@ -65,23 +65,40 @@ const BookRead = ({ book, params }: BookReadProps) => {
   useEffect(() => {
     if (!book || !book.book || !translate.translate) return;
 
-    async function getTranslate(bookTranslate: string[]) {
-      const allTextBook: string[] = [];
+    let isCancelled = false;
 
+    const getFastTranslate = async (bookTranslate: string[]) => {
+      const allTextBook: string[] = [];
       for (let index = 0; index < bookTranslate.length; index++) {
-        const element = bookTranslate[index];
-        const result = await translateGoogle(element);
+        if (isCancelled) return;
+        const result = await translateGoogle(bookTranslate[index]);
         allTextBook.push(result);
-        if (index === 10) {
-          setTextBook(allTextBook);
+        console.log(index);
+        if (index === 20) {
+          setTextBook([...allTextBook]);
+          return;
         }
       }
-      setTextBook(allTextBook);
-    }
+    };
 
-    if (translate.translate) {
-      getTranslate(book.book);
-    } else setTextBook(book.book);
+    const getFullTranslate = async (bookTranslate: string[]) => {
+      const allTextBook: string[] = [];
+      for (let index = 0; index < bookTranslate.length; index++) {
+        if (isCancelled) return;
+        const result = await translateGoogle(bookTranslate[index]);
+        allTextBook.push(result);
+        console.log(index);
+      }
+      setTextBook([...allTextBook]);
+    };
+
+    getFastTranslate(book.book);
+
+    getFullTranslate(book.book);
+
+    return () => {
+      isCancelled = true;
+    };
   }, [book, translate.translate]);
 
   // autoScroll
