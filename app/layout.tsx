@@ -11,6 +11,7 @@ import BreadcrumbsCustl from '@/app/_compon/Breadcrumbs/Breadcrumbs';
 import Header from '@/app/_compon/Header/Header';
 import DarkProvider from '@/Providers/DarkProvider';
 import TranslateProvider from '@/Providers/TranslateProvider';
+import BookInfoProvider from '@/Providers/BookInfoProvider';
 
 export const metadata: Metadata = {
   title: 'Books uk',
@@ -30,11 +31,13 @@ export default async function RootLayout({
         <SessionWrapper>
           <TranslateProvider>
             <DarkProvider theme={theme}>
-              <ReaderProvider>
-                <Header />
-                <BreadcrumbsCustl />
-                <main>{children}</main>
-              </ReaderProvider>
+              <BookInfoProvider>
+                <ReaderProvider>
+                  <Header />
+                  <BreadcrumbsCustl />
+                  <main>{children}</main>
+                </ReaderProvider>
+              </BookInfoProvider>
             </DarkProvider>
           </TranslateProvider>
         </SessionWrapper>

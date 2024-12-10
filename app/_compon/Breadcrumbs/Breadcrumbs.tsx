@@ -1,11 +1,13 @@
 'use client';
 
+import { BookInfoContext } from '@/Providers/BookInfoProvider';
 import { Breadcrumbs, Link, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 const BreadcrumbsCustl = () => {
   const [pathname, setPathname] = useState<string[]>(['/']);
   const [web, setWeb] = useState<string | undefined>();
+  const { bookInfo } = useContext(BookInfoContext);
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
@@ -46,7 +48,7 @@ const BreadcrumbsCustl = () => {
             sx={{ textTransform: 'capitalize' }}
             href={href}
           >
-            {segment}
+            {bookInfo?.title && index === 2 ? bookInfo?.title : segment}
           </Link>
         );
       })}
