@@ -1,4 +1,5 @@
 import './globals.css';
+import React from 'react';
 import type { Metadata } from 'next';
 
 import { getCookies } from '@/lib/cookis';
@@ -10,7 +11,6 @@ import BreadcrumbsCustl from '@/app/_compon/Breadcrumbs/Breadcrumbs';
 import Header from '@/app/_compon/Header/Header';
 import DarkProvider from '@/Providers/DarkProvider';
 import TranslateProvider from '@/Providers/TranslateProvider';
-import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Books uk',
