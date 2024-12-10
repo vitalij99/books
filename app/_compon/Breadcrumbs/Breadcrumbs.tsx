@@ -38,7 +38,7 @@ const BreadcrumbsCustl = () => {
             sx={{ textTransform: 'capitalize' }}
             aria-current="page"
           >
-            {segment}
+            {bookInfo?.title && index === 1 ? bookInfo?.title : segment}
           </Typography>
         ) : (
           <Link
@@ -48,7 +48,7 @@ const BreadcrumbsCustl = () => {
             sx={{ textTransform: 'capitalize' }}
             href={href}
           >
-            {bookInfo?.title && index === 2 ? bookInfo?.title : segment}
+            {bookInfo?.title && index === 1 ? bookInfo?.title : segment}
           </Link>
         );
       })}

@@ -1,17 +1,26 @@
 'use client';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import Image from 'next/image';
 import { Box, Card, Container, Skeleton, Typography } from '@mui/material';
 
 import { BookInfoType } from '@/types/book';
 import BookInfoText from '@/app/_compon/BookInfoText/BookInfoText';
 import BookInfoCategories from '@/app/_compon/BookInfoCategories/BookInfoCategories';
+import { BookInfoContext } from '@/Providers/BookInfoProvider';
 
 interface BookInfoProps {
   bookInfo?: BookInfoType;
 }
 
 const BookInfo = ({ bookInfo }: BookInfoProps) => {
+  const { setBookInfoUpdate } = useContext(BookInfoContext);
+
+  useEffect(() => {
+    if (!bookInfo) return;
+
+    setBookInfoUpdate(bookInfo);
+  }, [bookInfo, setBookInfoUpdate]);
+
   return (
     <Container sx={{ p: 1 }}>
       <Typography fontSize="30px">{bookInfo?.title}</Typography>
