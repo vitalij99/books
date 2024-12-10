@@ -73,7 +73,7 @@ const BookRead = ({ book, params }: BookReadProps) => {
         if (isCancelled) return;
         const result = await translateGoogle(bookTranslate[index]);
         allTextBook.push(result);
-        console.log(index);
+
         if (index === 20) {
           setTextBook([...allTextBook]);
           return;
@@ -87,7 +87,6 @@ const BookRead = ({ book, params }: BookReadProps) => {
         if (isCancelled) return;
         const result = await translateGoogle(bookTranslate[index]);
         allTextBook.push(result);
-        console.log(index);
       }
       setTextBook([...allTextBook]);
     };
