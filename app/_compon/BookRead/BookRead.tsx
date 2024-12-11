@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
@@ -19,6 +19,7 @@ import {
   StorageType,
 } from '@/types/book';
 import { InitParamsReader, PARAMSREADER } from '@/types/reader';
+import { BookInfoContext } from '@/Providers/BookInfoProvider';
 
 const IS_AUTO_SCROLL = 'isAutoScroll';
 
@@ -33,33 +34,38 @@ const BookRead = ({ book, params }: BookReadProps) => {
   const [isAutoScroll, setisAutoScroll] = useState(false);
 
   const translate = useContext(TranslateContext);
+  const info = useRef(useContext(BookInfoContext));
 
   useEffect(() => {
-    const storage: StorageType = getSrorageJSON(MENUSTYLEDTEXT);
-    if (storage) {
-      for (const cssKey in storage) {
-        if (cssKey.startsWith('--')) {
-          setRootValue(cssKey, storage[cssKey as keyof StorageType]);
+    info.current.setBookInfoUpdate({ title: book.title });
+  }, [book.title]);
+
+  useEffect(() => {
+    const initializeStorage = () => {
+      const storage: StorageType = getSrorageJSON(MENUSTYLEDTEXT);
+      if (storage) {
+        Object.keys(storage).forEach(cssKey => {
+          if (cssKey.startsWith('--')) {
+            setRootValue(cssKey, storage[cssKey as keyof StorageType]);
+          }
+        });
+      }
+
+      const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
+      if (storageAutoScroll === 'true') {
+        setisAutoScroll(true);
+      }
+
+      const storageReader: InitParamsReader = getSrorageJSON(PARAMSREADER);
+      if (storage && storageReader?.timer?.timeSave) {
+        const dateSave = new Date(storageReader.timer.timeSave);
+        if (dateSave >= new Date()) {
+          setTextIsRead(0);
         }
       }
-    }
+    };
 
-    const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
-
-    if (storageAutoScroll === 'true') {
-      setisAutoScroll(true);
-    }
-
-    const storageReader: InitParamsReader = getSrorageJSON(PARAMSREADER);
-
-    if (storage && storageReader?.timer?.timeSave) {
-      const dateSave = new Date(storageReader?.timer?.timeSave);
-      const date2 = new Date();
-
-      if (dateSave >= date2) {
-        setTextIsRead(0);
-      }
-    }
+    initializeStorage();
   }, []);
 
   useEffect(() => {
@@ -67,49 +73,45 @@ const BookRead = ({ book, params }: BookReadProps) => {
 
     let isCancelled = false;
 
-    const getFastTranslate = async (bookTranslate: string[]) => {
+    const translateText = async (
+      bookTranslate: string[],
+      earlyExitIndex?: number
+    ) => {
       const allTextBook: string[] = [];
       for (let index = 0; index < bookTranslate.length; index++) {
         if (isCancelled) return;
-        const result = await translateGoogle(bookTranslate[index]);
-        allTextBook.push(result);
+        try {
+          const result = await translateGoogle(bookTranslate[index]);
+          allTextBook.push(result);
 
-        if (index === 20) {
-          setTextBook([...allTextBook]);
-          return;
+          if (earlyExitIndex !== undefined && index === earlyExitIndex) {
+            setTextBook([...allTextBook]);
+            return;
+          }
+        } catch (error) {
+          console.error(`Error translating text at index ${index}:`, error);
         }
-      }
-    };
-
-    const getFullTranslate = async (bookTranslate: string[]) => {
-      const allTextBook: string[] = [];
-      for (let index = 0; index < bookTranslate.length; index++) {
-        if (isCancelled) return;
-        const result = await translateGoogle(bookTranslate[index]);
-        allTextBook.push(result);
       }
       setTextBook([...allTextBook]);
     };
 
-    getFastTranslate(book.book);
-
-    getFullTranslate(book.book);
+    translateText(book.book, 20).then(() => translateText(book.book));
 
     return () => {
       isCancelled = true;
     };
   }, [book, translate.translate]);
 
-  // autoScroll
   useEffect(() => {
     if (!isAutoScroll) return;
 
     const paragraf = document.getElementsByClassName(IS_AUTO_SCROLL);
-
-    paragraf[0]?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
+    if (paragraf[0]) {
+      paragraf[0].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
   }, [isAutoScroll, textIsRead]);
 
   const changeTextRead = (textReadeIndex: number) => {

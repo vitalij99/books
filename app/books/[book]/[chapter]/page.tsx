@@ -32,12 +32,13 @@ const page = async ({
   if (!searchParams.web) {
     return <>error</>;
   }
+
   const book = await getBookFromLinkAll({
     chapter: params.chapter,
     book: params.book,
     web: searchParams.web,
   });
-
+  console.log(book?.title, searchParams.web);
   return <>{book && <BookRead book={book} params={params} />}</>;
 };
 

@@ -13,7 +13,7 @@ export const BookInfoContext = createContext<{
 });
 
 const BookInfoProvider = ({ children }: { children: React.ReactNode }) => {
-  const [bookInfo, setBookInfo] = useState<BookInfoType>();
+  const [bookInfo, setBookInfo] = useState<BookInfoType | undefined>();
 
   const setBookInfoUpdate = (info: BookInfoType) => {
     setBookInfo(info);

@@ -141,7 +141,10 @@ const getBookFromLink = async ({
     prevText,
   };
 
-  return { book: allText, nav };
+  const title = transformInHtml({ html: data, elem: '.chp_byauthor a' })[0]
+    ?.textContent;
+
+  return { book: allText, nav, title };
 };
 const getBookImageLink = async ({ book }: { book: string }) => {
   // https://www.scribblehub.com/series/1015814/i-sting-pokemon-poison-type-specialist/

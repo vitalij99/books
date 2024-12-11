@@ -168,7 +168,10 @@ const getBookFromLink = async ({
     prevText,
   };
 
-  return { book: allText, nav };
+  const title = transformInHtml({ html: textData, elem: '.titles a' })[0]
+    ?.textContent;
+
+  return { book: allText, nav, title };
 };
 
 const getBookInfoLink = async ({ book }: { book: string }) => {

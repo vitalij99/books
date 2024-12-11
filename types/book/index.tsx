@@ -80,5 +80,6 @@ export interface BookProps {
     nextText?: string;
     prevText?: string;
   };
+  title?: string;
 }
 export const THEME = 'theme';

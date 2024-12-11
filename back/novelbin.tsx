@@ -174,7 +174,9 @@ const getBookFromLink = async ({
     prevText,
   };
 
-  return { book: allText, nav };
+  const title = result[0].querySelector('.novel-title')?.textContent;
+
+  return { book: allText, nav, title };
 };
 const getBookImageLink = async ({ book }: { book: string }) => {
   // https://novelbin.com/media/novel/card-apprentice-daily-log.jpg

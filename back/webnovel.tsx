@@ -125,6 +125,16 @@ const getBookLinks = async ({ book }: { book: string }) => {
   };
 };
 
+const getTitleBookFromLink = async ({ book }: { book: string }) => {
+  const linkBook = `${link}book/${book}/catalog`;
+
+  const res = await fetch(linkBook);
+
+  const textData = await res.text();
+
+  return getBookTitle(textData);
+};
+
 const getBooksChaptersLink = async ({ book }: { book: string }) => {
   // https://www.webnovel.com/book/30240152305644005/catalog
   const linkBook = `${link}book/${book}/catalog`;
@@ -151,6 +161,7 @@ const getBooksChaptersLink = async ({ book }: { book: string }) => {
       });
     }
   }
+
   return linksBook;
 };
 
@@ -296,7 +307,9 @@ const getBookFromLink = async ({
     prevText,
   };
 
-  return { book: allText, nav };
+  const title = await getTitleBookFromLink({ book });
+
+  return { book: allText, nav, title };
 };
 const getBookImageLink = async ({ book }: { book: string }) => {
   const linkBook = `${link}book/${book}`;
