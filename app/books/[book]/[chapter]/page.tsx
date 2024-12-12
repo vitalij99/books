@@ -1,24 +1,25 @@
 import React from 'react';
 import { Metadata } from 'next';
 import BookRead from '@/app/_compon/BookRead/BookRead';
-import { getBookFromLinkAll, getBookLinksAll } from '@/back';
+import { getBookFromLinkAll } from '@/back';
 
 export async function generateMetadata({
   params,
   searchParams,
 }: {
-  params: { book: string };
+  params: { chapter: string; book: string };
   searchParams: { [key: string]: string | '' };
 }): Promise<Metadata> {
-  const book = await getBookLinksAll({
+  const book = await getBookFromLinkAll({
+    chapter: params.chapter,
     book: params.book,
     web: searchParams.web,
   });
 
-  const title = book?.bookInfo?.title || params.book;
+  const title = book?.title || params.book;
 
   return {
-    title: title,
+    title,
   };
 }
 
@@ -38,7 +39,7 @@ const page = async ({
     book: params.book,
     web: searchParams.web,
   });
-  console.log(book?.title, searchParams.web);
+
   return <>{book && <BookRead book={book} params={params} />}</>;
 };
 
