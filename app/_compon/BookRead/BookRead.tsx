@@ -148,7 +148,7 @@ const BookRead = ({ book, params }: BookReadProps) => {
 
       <NavigationPages
         navigate={book.nav}
-        title={params.book}
+        title={book.title || params.book}
         charpter={params.chapter}
       />
       <ItemList
@@ -171,7 +171,7 @@ const BookRead = ({ book, params }: BookReadProps) => {
       />
       <NavigationPages
         navigate={book.nav}
-        title={params.book}
+        title={book.title || params.book}
         charpter={params.chapter}
       />
     </Box>
