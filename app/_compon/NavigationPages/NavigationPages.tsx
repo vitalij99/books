@@ -29,6 +29,10 @@ const NavigationPages = ({
     setHrefBook(`/${pathSegments[0]}/${pathSegments[1]}?web=${webParam}`);
   }, []);
 
+  const textTitle = title.length >= 20 ? title.slice(0, 20) + '...' : title;
+  const textCharpter =
+    charpter.length >= 20 ? charpter.slice(0, 20) + '...' : charpter;
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
       {navigate.prevPage && (
@@ -37,7 +41,7 @@ const NavigationPages = ({
         </Link>
       )}
       <Link href={hrefBook}>
-        {title} параграф {charpter}
+        {textTitle} параграф {textCharpter}
       </Link>
       {navigate.nextPage && (
         <Link href={navigate.nextPage}>
