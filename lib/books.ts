@@ -25,16 +25,22 @@ export const setHistoryBooks = (url: string, title: string) => {
     time: new Date(),
   };
 
-  const isDuplicate = storage.some(
+  const isDuplicateIndex = storage.findIndex(
     (item: { title: string }) => item.title === book.title
   );
-  if (!isDuplicate) {
+
+  if (isDuplicateIndex === -1) {
     const updatedStorage = [book, ...storage];
     if (updatedStorage.length > 10) {
       updatedStorage.splice(10);
-    }
 
-    setStorage(updatedStorage, 'historybooks');
+      setStorage(updatedStorage, 'historybooks');
+    } else {
+      const updatedStorage = [...storage];
+      updatedStorage[isDuplicateIndex] = book;
+
+      setStorage(updatedStorage, 'historybooks');
+    }
   }
 };
 export const getTimeHistoryDifference = (dateSave: string) => {
