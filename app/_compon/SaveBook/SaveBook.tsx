@@ -71,7 +71,7 @@ const SaveBook = () => {
 
   const handleSaveBook = async () => {
     if (!saveBooks || !stringPathname) return;
-    // TODO add tags
+
     if (isAdded) {
       if (!bookSaveDB) return;
 
