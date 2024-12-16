@@ -24,16 +24,23 @@ const SaveBooksLinks = () => {
   const [showBooks, setShowBooks] = useState<BooksSaveDB[]>(saveBooks);
 
   useEffect(() => {
-    getSaveBooks().then(result => {
-      setSaveBooks(result ? result : []);
-      setShowBooks(result ? result : []);
-    });
+    const fetchBooks = async () => {
+      try {
+        const result = await getSaveBooks();
+        const books = result || [];
+        setSaveBooks(books);
+        setShowBooks(books);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+    fetchBooks();
   }, []);
 
   const selectShowBooks = (web: string) => {
-    if (web === 'all') {
-      setShowBooks(saveBooks);
-    } else setShowBooks(saveBooks.filter(book => book.web === web));
+    setShowBooks(
+      web === 'all' ? saveBooks : saveBooks.filter(book => book.web === web)
+    );
   };
 
   const handleDeleteBook = async (bookId: string) => {
@@ -52,21 +59,22 @@ const SaveBooksLinks = () => {
     const book = saveBooks[bookIndex];
     if (!book.chapter) return;
 
-    const newCharpters = book.chapter?.filter(
+    const newChapters = book.chapter?.filter(
       chapter => chapter !== deleteChapter
     );
 
-    const res = await updateChapter(bookId, newCharpters);
-
-    if (res) {
-      setSaveBooks(prev => {
-        return prev.map((item, index) => (index === bookIndex ? res : item));
-      });
-      setShowBooks(prev => {
-        return prev.map(item =>
-          item.id === saveBooks[bookIndex].id ? res : item
+    try {
+      const updatedBook = await updateChapter(bookId, newChapters);
+      if (updatedBook) {
+        setSaveBooks(prev =>
+          prev.map(item => (item.id === bookId ? updatedBook : item))
         );
-      });
+        setShowBooks(prev =>
+          prev.map(item => (item.id === bookId ? updatedBook : item))
+        );
+      }
+    } catch (error) {
+      console.error('Error updating chapters:', error);
     }
   };
 
