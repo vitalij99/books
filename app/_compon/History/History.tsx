@@ -37,7 +37,7 @@ const History = () => {
 
   return (
     <Box minWidth="300px">
-      <Card variant="outlined">
+      <Card variant="outlined" sx={{ p: 1 }}>
         <CardContent>Відвіданні книжки</CardContent>
         <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography>Назва</Typography>
