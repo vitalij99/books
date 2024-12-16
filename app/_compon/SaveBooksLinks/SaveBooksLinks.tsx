@@ -46,24 +46,26 @@ const SaveBooksLinks = () => {
     bookId: string,
     deleteChapter: string
   ) => {
-    let bookIndex = 0;
-    const book = saveBooks.find((item, index) => {
-      if (item.id === bookId) {
-        bookIndex = index;
-        return item;
-      }
-    });
+    const bookIndex = saveBooks.findIndex(item => item.id === bookId);
+    if (bookIndex === -1) return;
 
-    if (!book) return;
+    const book = saveBooks[bookIndex];
+    if (!book.chapter) return;
+
     const newCharpters = book.chapter?.filter(
       chapter => chapter !== deleteChapter
     );
-    if (!newCharpters) return;
+
     const res = await updateChapter(bookId, newCharpters);
 
     if (res) {
       setSaveBooks(prev => {
         return prev.map((item, index) => (index === bookIndex ? res : item));
+      });
+      setShowBooks(prev => {
+        return prev.map(item =>
+          item.id === saveBooks[bookIndex].id ? res : item
+        );
       });
     }
   };
