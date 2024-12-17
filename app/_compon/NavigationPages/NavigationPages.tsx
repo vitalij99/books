@@ -29,23 +29,23 @@ const NavigationPages = ({
     setHrefBook(`/${pathSegments[0]}/${pathSegments[1]}?web=${webParam}`);
   }, []);
 
-  const textTitle = title.length >= 20 ? title.slice(0, 20) + '...' : title;
-  const textCharpter =
-    charpter.length >= 20 ? charpter.slice(0, 20) + '...' : charpter;
+  const textShorten = (text: string, num = 20) => {
+    return text.length >= num ? text.slice(0, num) + '...' : text;
+  };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
       {navigate.prevPage && (
         <Link href={navigate.prevPage}>
-          {navigate.prevText?.length === 0 ? 'Попередня' : navigate.prevText}
+          {!navigate.prevText ? 'Попередня' : textShorten(navigate.prevText)}
         </Link>
       )}
       <Link href={hrefBook}>
-        {textTitle} параграф {textCharpter}
+        {textShorten(title)} параграф {textShorten(charpter)}
       </Link>
       {navigate.nextPage && (
         <Link href={navigate.nextPage}>
-          {navigate.nextText?.length === 0 ? 'Наступна' : navigate.nextText}
+          {!navigate.nextText ? 'Наступна' : textShorten(navigate.nextText)}
         </Link>
       )}
     </Box>
