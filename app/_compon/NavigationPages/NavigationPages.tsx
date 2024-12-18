@@ -1,4 +1,5 @@
 'use client';
+import { textShorten } from '@/lib/books';
 import { Box, Link } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -28,10 +29,6 @@ const NavigationPages = ({
     const webParam = params.get('web');
     setHrefBook(`/${pathSegments[0]}/${pathSegments[1]}?web=${webParam}`);
   }, []);
-
-  const textShorten = (text: string, num = 20) => {
-    return text.length >= num ? text.slice(0, num) + '...' : text;
-  };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>

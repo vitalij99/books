@@ -65,3 +65,7 @@ export const getTimeHistoryDifference = (dateSave: string) => {
     )}`;
   }
 };
+
+export const textShorten = (text: string, num = 20) => {
+  return text.length >= num ? text.slice(0, num) + '...' : text;
+};
