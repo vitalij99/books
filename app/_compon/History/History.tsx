@@ -27,7 +27,12 @@ const History = () => {
 
     if (!storage || storage.length === 0) return;
 
-    const updatedBooks = storage.map((book: any) => ({
+    const sortBooks = storage.sort((a, b) => {
+      const dateA = a.time ? new Date(a.time).getTime() : 0;
+      const dateB = b.time ? new Date(b.time).getTime() : 0;
+      return dateB - dateA;
+    });
+    const updatedBooks = sortBooks.map((book: any) => ({
       ...book,
       time: getTimeHistoryDifference(book.time),
     }));
