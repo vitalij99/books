@@ -1,6 +1,6 @@
 'use client';
 import { getStorageAr, setStorage } from '@/lib/getStorage';
-import { BooksSaveDB } from '@/types/book';
+import { AllowedKeys, BooksSaveDB } from '@/types/book';
 
 export const findSaveBook = (
   saveBooks: BooksSaveDB[],
@@ -16,7 +16,7 @@ export const findSaveChapter = (book: BooksSaveDB, pathnameBook: string[]) => {
   }
 };
 export const setHistoryBooks = (url: string, title: string) => {
-  const storage = getStorageAr('historybooks');
+  const storage = getStorageAr(AllowedKeys.HistoryBooks);
 
   const link = url.split('/').slice(3).join('/');
   const book = {
@@ -33,12 +33,12 @@ export const setHistoryBooks = (url: string, title: string) => {
     const updatedStorage = [book, ...storage];
 
     updatedStorage.splice(10);
-    setStorage(updatedStorage, 'historybooks');
+    setStorage(updatedStorage, AllowedKeys.HistoryBooks);
   } else {
     const updatedStorage = [book, ...storage];
     updatedStorage.splice(isDuplicateIndex + 1, 1);
 
-    setStorage(updatedStorage, 'historybooks');
+    setStorage(updatedStorage, AllowedKeys.HistoryBooks);
   }
 };
 export const getTimeHistoryDifference = (dateSave: string) => {

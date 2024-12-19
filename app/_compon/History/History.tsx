@@ -4,6 +4,7 @@ import { Box, Card, CardContent, Link, Typography } from '@mui/material';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 import { getStorageAr } from '@/lib/getStorage';
 import { getTimeHistoryDifference } from '@/lib/books';
+import { AllowedKeys } from '@/types/book';
 
 type HistoryBook = {
   link?: string;
@@ -23,7 +24,7 @@ const History = () => {
   const [books, setBooks] = useState<HistoryBook[]>(BOOKS);
 
   useEffect(() => {
-    const storage: HistoryBook[] = getStorageAr('historybooks');
+    const storage: HistoryBook[] = getStorageAr(AllowedKeys.HistoryBooks);
 
     if (!storage || storage.length === 0) return;
 
