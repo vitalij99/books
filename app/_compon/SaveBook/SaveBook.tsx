@@ -37,6 +37,7 @@ const SaveBook = () => {
 
   useEffect(() => {
     if (!session) return;
+    if (!pathname.startsWith('/books')) return;
     (async () => {
       const data = await getSaveBooks();
       setSaveBooks(data || []);
