@@ -42,7 +42,7 @@ const History = () => {
   }, []);
 
   return (
-    <Box minWidth="300px">
+    <Box minWidth="330px">
       <Card variant="outlined" sx={{ p: 1 }}>
         <CardContent>Відвіданні книжки</CardContent>
         <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
