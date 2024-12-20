@@ -5,23 +5,10 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 import { getStorageAr } from '@/lib/getStorage';
 import { getTimeHistoryDifference } from '@/lib/books';
 import { AllowedKeys } from '@/types/book';
-
-type HistoryBook = {
-  link?: string;
-  title?: string;
-  time?: string;
-};
-
-const BOOKS = [
-  {
-    link: '/',
-    title: 'Тут будуть відвіданні книги',
-    time: '00 хв',
-  },
-];
+import { HISTORY_BOOKS, HistoryBook } from '@/types/history';
 
 const History = () => {
-  const [books, setBooks] = useState<HistoryBook[]>(BOOKS);
+  const [books, setBooks] = useState<HistoryBook[]>(HISTORY_BOOKS);
 
   useEffect(() => {
     const storage: HistoryBook[] = getStorageAr(AllowedKeys.HistoryBooks);
@@ -33,9 +20,9 @@ const History = () => {
       const dateB = b.time ? new Date(b.time).getTime() : 0;
       return dateB - dateA;
     });
-    const updatedBooks = sortBooks.map((book: any) => ({
+    const updatedBooks = sortBooks.map(book => ({
       ...book,
-      time: getTimeHistoryDifference(book.time),
+      time: getTimeHistoryDifference(book.time || ''),
     }));
 
     setBooks(updatedBooks);
@@ -59,10 +46,10 @@ const History = () => {
                 alignItems: 'center',
               }}
             >
-              <Link sx={{ maxWidth: '200px' }} href={link}>
+              <Link sx={{ maxWidth: '65%' }} href={link}>
                 {title}
               </Link>
-              {time && <Typography>{time}</Typography>}
+              <Typography>{time || 'Колись'}</Typography>
             </Box>
           )}
         />
