@@ -29,6 +29,7 @@ const SaveBook = () => {
 
   const [bookSaveDB, setBookSaveDB] = useState<ExtendedBooksSaveDB>();
   const [isAdded, setIsAdded] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const bookContext = useContext(BookInfoContext);
 
   const pathname = usePathname();
@@ -77,6 +78,7 @@ const SaveBook = () => {
   }, [bookSaveDB, stringPathname]);
 
   const handleSaveBook = async () => {
+    if (isProcessing) return;
     if (!saveBooks || !stringPathname.length) return;
 
     const web = search.get('web');
@@ -85,32 +87,41 @@ const SaveBook = () => {
     const bookTitle = stringPathname[2];
     const chapter = stringPathname[3] || undefined;
 
-    if (isAdded && bookSaveDB) {
-      const updatedChapters = bookSaveDB.chapter?.filter(
-        ch => ch !== bookSaveDB.thisChapter
-      );
-      const result = await updateChapter(bookSaveDB.id, updatedChapters || []);
-      if (result) setIsAdded(false);
-    } else {
-      const newBookData = {
-        title: bookTitle,
-        link: `books/${bookTitle}?web=${web}`,
-        web,
-        chapter: chapter ? [chapter] : undefined,
-      };
-
-      if (bookSaveDB && chapter) {
-        const updatedChapters = bookSaveDB.chapter
-          ? [...bookSaveDB.chapter, chapter]
-          : [chapter];
-        const result = await updateChapter(bookSaveDB.id, updatedChapters);
-        if (result) setIsAdded(true);
+    try {
+      if (isAdded && bookSaveDB) {
+        const updatedChapters = bookSaveDB.chapter?.filter(
+          ch => ch !== bookSaveDB.thisChapter
+        );
+        const result = await updateChapter(
+          bookSaveDB.id,
+          updatedChapters || []
+        );
+        if (result) setIsAdded(false);
       } else {
-        const newBook = await setSaveBook(newBookData);
-        if (newBook) {
-          setSaveBooks(prevBooks => [...(prevBooks || []), newBook]);
+        const newBookData = {
+          title: bookTitle,
+          link: `books/${bookTitle}?web=${web}`,
+          web,
+          chapter: chapter ? [chapter] : undefined,
+        };
+
+        if (bookSaveDB && chapter) {
+          const updatedChapters = bookSaveDB.chapter
+            ? [...bookSaveDB.chapter, chapter]
+            : [chapter];
+          const result = await updateChapter(bookSaveDB.id, updatedChapters);
+          if (result) setIsAdded(true);
+        } else {
+          const newBook = await setSaveBook(newBookData);
+          if (newBook) {
+            setSaveBooks(prevBooks => [...(prevBooks || []), newBook]);
+          }
         }
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
