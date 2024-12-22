@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { getBooksPopularAll } from '@/back';
-import Loading from '@/app/_compon/Loading/Loading';
+import Loader from '@/app/_compon/Loader/Loader';
 import ListBooksCard from '@/app/_compon/ListBooksCard/ListBooksCard';
 
 const popular = async () => {
   const books = await getBooksPopularAll();
 
   if (!books) {
-    return <Loading />;
+    return <Loader />;
   }
   return (
     <>

@@ -4,7 +4,7 @@ import { Box, Link, Pagination, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { ListBooksLinkProps } from '@/types/book';
-import Loading from '@/app/_compon/Loading/Loading';
+import Loader from '@/app/_compon/Loader/Loader';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
 const amountBook = 10;
@@ -29,7 +29,7 @@ export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
   };
 
   if (books?.length === 0 || !books) {
-    return <Loading />;
+    return <Loader />;
   }
   return (
     <Box padding={3}>

@@ -15,6 +15,7 @@ import { findSaveBook, findSaveChapter, setHistoryBooks } from '@/lib/books';
 
 import { BooksSaveDB } from '@/types/book';
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
+import Loader from '@/app/_compon/Loader/Loader';
 
 interface ExtendedBooksSaveDB extends BooksSaveDB {
   thisChapter?: string;
@@ -130,14 +131,20 @@ const SaveBook = () => {
   }
 
   return (
-    <Button onClick={handleSaveBook}>
-      <Image
-        src={isAdded ? '/save-book.svg' : '/save-book-add.svg'}
-        alt="зберегти книжку"
-        width={24}
-        height={24}
-      />
-    </Button>
+    <>
+      {isProcessing ? (
+        <Loader />
+      ) : (
+        <Button onClick={handleSaveBook}>
+          <Image
+            src={isAdded ? '/save-book.svg' : '/save-book-add.svg'}
+            alt="зберегти книжку"
+            width={24}
+            height={24}
+          />
+        </Button>
+      )}
+    </>
   );
 };
 
