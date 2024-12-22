@@ -71,37 +71,38 @@ const BookRead = ({ book, params }: BookReadProps) => {
   }, []);
 
   useEffect(() => {
-    if (!book || !book.book || !translate.translate) return;
-
+    if (!book || !book.book) return;
     let isCancelled = false;
+    if (!translate.translate) {
+      setTextBook(book.book);
+    } else {
+      const translateText = async (
+        bookTranslate: string[],
+        earlyExitIndex?: number
+      ) => {
+        const allTextBook: string[] = [];
+        setIsLoding(true);
+        try {
+          for (let index = 0; index < bookTranslate.length; index++) {
+            if (isCancelled) return;
+            const result = await translateGoogle(bookTranslate[index]);
+            allTextBook.push(result);
 
-    const translateText = async (
-      bookTranslate: string[],
-      earlyExitIndex?: number
-    ) => {
-      const allTextBook: string[] = [];
-      setIsLoding(true);
-      try {
-        for (let index = 0; index < bookTranslate.length; index++) {
-          if (isCancelled) return;
-          const result = await translateGoogle(bookTranslate[index]);
-          allTextBook.push(result);
-
-          if (earlyExitIndex !== undefined && index === earlyExitIndex) {
-            setTextBook([...allTextBook]);
-            return;
+            if (earlyExitIndex !== undefined && index === earlyExitIndex) {
+              setTextBook([...allTextBook]);
+              return;
+            }
           }
+        } catch (error) {
+          console.error(`Error translating text at index `, error);
+        } finally {
+          setIsLoding(false);
         }
-      } catch (error) {
-        console.error(`Error translating text at index `, error);
-      } finally {
-        setIsLoding(false);
-      }
-      setTextBook([...allTextBook]);
-    };
+        setTextBook([...allTextBook]);
+      };
 
-    translateText(book.book, 20).then(() => translateText(book.book));
-
+      translateText(book.book, 20).then(() => translateText(book.book));
+    }
     return () => {
       isCancelled = true;
     };
