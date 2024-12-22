@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Loader = ({ font = '3px' }: { font?: string }) => {
+const Loader = ({
+  font = '4px',
+  position = 'relative',
+}: {
+  font?: string;
+  position?: string;
+}) => {
   return (
-    <StyledWrapper font={font}>
+    <StyledWrapper font={font} position={position}>
       <div
         aria-label="Orange and tan hamster running in a metal wheel"
         role="img"
@@ -30,13 +36,14 @@ const Loader = ({ font = '3px' }: { font?: string }) => {
   );
 };
 
-const StyledWrapper = styled.div<{ font?: string }>`
+const StyledWrapper = styled.div<{ font: string; position: string }>`
   .wheel-and-hamster {
-    --dur: 1s;
-    position: relative;
+    --dur: 2s;
+    position: ${props => props.position};
     width: 12em;
     height: 12em;
-    font-size: ${props => (props.font ? props.font : '4px')};
+    font-size: ${props => props.font};
+    right: 0px;
   }
 
   .wheel,

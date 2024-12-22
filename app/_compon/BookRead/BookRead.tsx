@@ -20,6 +20,7 @@ import {
 } from '@/types/book';
 import { InitParamsReader, PARAMSREADER } from '@/types/reader';
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
+import Loader from '@/app/_compon/Loader/Loader';
 
 const IS_AUTO_SCROLL = 'isAutoScroll';
 
@@ -32,6 +33,7 @@ const BookRead = ({ book, params }: BookReadProps) => {
   const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
+  const [isLoding, setIsLoding] = useState(false);
 
   const translate = useContext(TranslateContext);
   const info = useRef(useContext(BookInfoContext));
@@ -78,9 +80,10 @@ const BookRead = ({ book, params }: BookReadProps) => {
       earlyExitIndex?: number
     ) => {
       const allTextBook: string[] = [];
-      for (let index = 0; index < bookTranslate.length; index++) {
-        if (isCancelled) return;
-        try {
+      setIsLoding(true);
+      try {
+        for (let index = 0; index < bookTranslate.length; index++) {
+          if (isCancelled) return;
           const result = await translateGoogle(bookTranslate[index]);
           allTextBook.push(result);
 
@@ -88,9 +91,11 @@ const BookRead = ({ book, params }: BookReadProps) => {
             setTextBook([...allTextBook]);
             return;
           }
-        } catch (error) {
-          console.error(`Error translating text at index ${index}:`, error);
         }
+      } catch (error) {
+        console.error(`Error translating text at index `, error);
+      } finally {
+        setIsLoding(false);
       }
       setTextBook([...allTextBook]);
     };
@@ -139,6 +144,7 @@ const BookRead = ({ book, params }: BookReadProps) => {
         maxHeight: '100%',
       }}
     >
+      {isLoding && <Loader font="10px" position="fixed" />}
       <Reader
         book={textBook}
         changeText={changeTextRead}
