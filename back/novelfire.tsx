@@ -110,12 +110,13 @@ const getBookLinks = async ({ book }: { book: string }) => {
 
   for (let i = 0; i < textHtmlAll.length; i++) {
     const parag = textHtmlAll[i];
-    const url = parag.querySelector('a')?.getAttribute('href');
+    const linkChapter = parag.querySelector('a');
+    const url = linkChapter?.getAttribute('href');
 
     if (url) {
       linksBook.push({
         book: transformLink(url),
-        name: url.replace(`${link}book/`, ''),
+        name: linkChapter?.textContent || url.replace(`${link}book/`, ''),
       });
     }
   }
