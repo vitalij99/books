@@ -12,6 +12,7 @@ export const ColorModeContext = createContext({
   mode: 'light',
 });
 
+// TODO add params page readBook
 const DarkProvider = ({
   children,
   theme,
