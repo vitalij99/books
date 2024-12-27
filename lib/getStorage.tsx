@@ -2,11 +2,6 @@
 import debounce from 'lodash.debounce';
 
 import { StorageType } from '@/types/book';
-import { getRootValue } from '@/lib/setRootValue';
-
-export const getStorageRootValue = (key: string) => {
-  return localStorage.getItem(key) || getRootValue(key);
-};
 
 export const getStorage = (key: string) => {
   const res = localStorage.getItem(key);

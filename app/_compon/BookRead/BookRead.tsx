@@ -12,7 +12,7 @@ import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
-import { AllowedKeys, BookProps } from '@/types/book';
+import { BookProps } from '@/types/book';
 import { InitParamsReader, PARAMSREADER } from '@/types/reader';
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
 import Loader from '@/app/_compon/Loader/Loader';

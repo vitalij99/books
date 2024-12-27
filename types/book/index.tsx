@@ -18,7 +18,23 @@ export const STORAGE_KEY = [
   AllowedKeys.TextMargin,
   AllowedKeys.TextLineHeight,
 ];
-
+export interface InitTextStyledType {
+  FontSize: string;
+  TextBook: string;
+  BgColor: string;
+  BkPadding: string;
+  TextMargin: string;
+  TextLineHeight: string;
+}
+export type InitTextStyledKeys = keyof InitTextStyledType;
+export const initTextStyled = {
+  FontSize: '27',
+  TextBook: '#000000',
+  BgColor: '#ffffff',
+  BkPadding: '6',
+  TextMargin: '1',
+  TextLineHeight: '1.5',
+};
 export type StorageType = {
   [key in AllowedKeys]: string;
 };
