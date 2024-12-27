@@ -1,8 +1,6 @@
 'use client';
 import debounce from 'lodash.debounce';
 
-import { StorageType } from '@/types/book';
-
 export const getStorage = (key: string) => {
   const res = localStorage.getItem(key);
 
@@ -14,22 +12,6 @@ export const setStorage = debounce((value: string | {} | [], key: string) => {
     localStorage.setItem(key, JSON.stringify(value));
   } else localStorage.setItem(key, value);
 }, 500);
-
-export const setPropertyStyle = debounce(
-  (storageKey: string, obj: StorageType) => {
-    localStorage.setItem(storageKey, JSON.stringify(obj));
-
-    for (const cssKey in obj) {
-      if (cssKey.startsWith('--')) {
-        document.documentElement.style.setProperty(
-          cssKey,
-          obj[cssKey as keyof StorageType]
-        );
-      }
-    }
-  },
-  500
-);
 
 export function getStorageAr(key: string) {
   const data = localStorage.getItem(key);

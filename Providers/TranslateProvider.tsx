@@ -6,7 +6,7 @@ import { AllowedKeys } from '@/types/book';
 import React, { createContext, useEffect } from 'react';
 
 export const TranslateContext = createContext({
-  handleTranslate: (isTranslate: boolean) => {},
+  handleTranslate: (_isTranslate: boolean) => {},
   translate: false,
 });
 
