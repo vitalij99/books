@@ -1,4 +1,5 @@
-import { ChangeEvent } from 'react';
+import debounce from '@mui/material/utils/debounce';
+import React, { ChangeEvent, useCallback } from 'react';
 
 const InputColor = ({
   onChange,
@@ -9,8 +10,14 @@ const InputColor = ({
   value: string;
   name: string;
 }) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedOnChange = useCallback(
+    debounce(value => onChange(value), 300),
+    [onChange]
+  );
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
+    debouncedOnChange(event.target.value);
   };
 
   return (
