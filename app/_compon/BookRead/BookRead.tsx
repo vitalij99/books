@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { getSrorageJSON, getStorage, setStorage } from '@/lib/getStorage';
-import { setRootValue } from '@/lib/setRootValue';
+
 import { translateGoogle } from '@/lib/translate';
 
 import { TranslateContext } from '@/Providers/TranslateProvider';
@@ -12,15 +12,11 @@ import Reader from '@/app/_compon/Reader/Reader';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
-import {
-  AllowedKeys,
-  BookProps,
-  MENUSTYLEDTEXT,
-  StorageType,
-} from '@/types/book';
+import { AllowedKeys, BookProps } from '@/types/book';
 import { InitParamsReader, PARAMSREADER } from '@/types/reader';
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
 import Loader from '@/app/_compon/Loader/Loader';
+import { ColorModeContext } from '@/Providers/DarkProvider';
 
 const IS_AUTO_SCROLL = 'isAutoScroll';
 
@@ -37,37 +33,24 @@ const BookRead = ({ book, params }: BookReadProps) => {
 
   const translate = useContext(TranslateContext);
   const info = useRef(useContext(BookInfoContext));
+  const colorMode = React.useContext(ColorModeContext);
 
   useEffect(() => {
     info.current.setBookInfoUpdate({ title: book.title });
   }, [book.title]);
 
   useEffect(() => {
-    const initializeStorage = () => {
-      const storage: StorageType = getSrorageJSON(MENUSTYLEDTEXT);
-      if (storage) {
-        Object.keys(storage).forEach(cssKey => {
-          if (cssKey.startsWith('--')) {
-            setRootValue(cssKey, storage[cssKey as keyof StorageType]);
-          }
-        });
+    const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
+    if (storageAutoScroll === 'true') {
+      setisAutoScroll(true);
+    }
+    const storageReader: InitParamsReader = getSrorageJSON(PARAMSREADER);
+    if (storageReader?.timer?.timeSave) {
+      const dateSave = new Date(storageReader.timer.timeSave);
+      if (dateSave >= new Date()) {
+        setTextIsRead(0);
       }
-
-      const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
-      if (storageAutoScroll === 'true') {
-        setisAutoScroll(true);
-      }
-
-      const storageReader: InitParamsReader = getSrorageJSON(PARAMSREADER);
-      if (storage && storageReader?.timer?.timeSave) {
-        const dateSave = new Date(storageReader.timer.timeSave);
-        if (dateSave >= new Date()) {
-          setTextIsRead(0);
-        }
-      }
-    };
-
-    initializeStorage();
+    }
   }, []);
 
   useEffect(() => {
@@ -139,8 +122,8 @@ const BookRead = ({ book, params }: BookReadProps) => {
   return (
     <Box
       sx={{
-        backgroundColor: 'var(--bg-color-book)',
-        paddingInline: `var(${AllowedKeys.BkPadding})`,
+        backgroundColor: colorMode.styleText.BgColor,
+        paddingInline: colorMode.styleText.BkPadding + '%',
         minHeight: '100vh',
         maxHeight: '100%',
       }}
@@ -163,12 +146,12 @@ const BookRead = ({ book, params }: BookReadProps) => {
         renderItem={(text, index) => (
           <Typography
             sx={{
-              color: 'var(--text-book)',
-              fontSize: 'var(--font-size)',
+              color: colorMode.styleText.TextBook,
+              fontSize: colorMode.styleText.FontSize + 'px',
               backdropFilter: textIsRead === index ? 'blur(10px)' : undefined,
               filter: textIsRead === index ? 'invert(1)' : undefined,
-              marginBottom: 'var(--text-text-margin)',
-              lineHeight: 'var(--text-line-height)',
+              marginBottom: colorMode.styleText.TextMargin + 'px',
+              lineHeight: colorMode.styleText.TextLineHeight,
             }}
             className={textIsRead === index ? IS_AUTO_SCROLL : ' '}
           >
