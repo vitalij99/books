@@ -89,7 +89,7 @@ const getBookPopular = async () => {
     return { books: [], web };
   }
 };
-
+// TODO add last chapter
 const getBookLinks = async ({ book }: { book: string }) => {
   const linkBook = `${link}book/${book}/chapters`;
 
