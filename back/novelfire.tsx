@@ -70,18 +70,19 @@ const getBookPopular = async () => {
       img: string;
     }[] = [];
 
-    links.forEach(link => {
-      if (link !== null) {
-        const name = link.getAttribute('title') || '';
-        const href = link.getAttribute('href') || '';
-        const book = href.replace(`https://novelfire.net/book/`, '');
-        const image = link.querySelector('img');
+    for (let i = 0; i < links.length; i++) {
+      const link = links[i];
+      if (!link) continue;
 
-        const img = image?.getAttribute('data-src') || '';
+      const name = link.getAttribute('title') || '';
+      const href = link.getAttribute('href') || '';
+      const book = href.replace('https://novelfire.net/book/', '');
+      const img = link.querySelector('img')?.getAttribute('data-src') || '';
 
-        linkInfoArray.push({ name, book, img });
-      }
-    });
+      linkInfoArray.push({ name, book, img });
+
+      if (linkInfoArray.length >= 30) break;
+    }
 
     return { books: linkInfoArray, web };
   } catch (error) {

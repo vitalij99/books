@@ -32,6 +32,7 @@ export interface Book {
 export interface ListBooksCardProps {
   books: Book[];
   web?: string;
+  firstPriority?: number;
 }
 export interface ListBooksLinkProps {
   books:

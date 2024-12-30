@@ -12,11 +12,12 @@ const popular = async () => {
   }
   return (
     <>
-      {books.map(website => (
+      {books.map((website, index) => (
         <ListBooksCard
           key={website.web}
           books={website.books}
           web={website.web}
+          firstPriority={index === 0 ? 2 : 0}
         />
       ))}
     </>

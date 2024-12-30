@@ -11,7 +11,11 @@ import {
 
 import Image from 'next/image';
 
-const ListBooksCard = ({ books, web }: ListBooksCardProps) => {
+const ListBooksCard = ({
+  books,
+  web,
+  firstPriority = 2,
+}: ListBooksCardProps) => {
   return (
     <Box padding={4}>
       <Typography>{web}</Typography>
@@ -42,7 +46,11 @@ const ListBooksCard = ({ books, web }: ListBooksCardProps) => {
                     }}
                   >
                     <Image
-                      priority={index < 4 ? true : false}
+                      priority={
+                        firstPriority !== 0 && index < firstPriority
+                          ? true
+                          : false
+                      }
                       src={book.img}
                       fill
                       sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 17vw"
