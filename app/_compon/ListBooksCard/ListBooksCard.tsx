@@ -53,7 +53,7 @@ const ListBooksCard = ({
                       }
                       src={book.img}
                       fill
-                      sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 17vw"
+                      sizes="(max-width: 768px) 33vw, (max-width: 1200px) 10vw, 10vw"
                       alt={book.name}
                       style={{
                         objectFit: 'cover',
