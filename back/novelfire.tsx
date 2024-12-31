@@ -107,7 +107,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
 
   const textHtmlAll = element.querySelectorAll('li');
 
-  const linksBook = [];
+  const linksBookPage = [];
 
   for (let i = 0; i < textHtmlAll.length; i++) {
     const parag = textHtmlAll[i];
@@ -115,7 +115,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
     const url = linkChapter?.getAttribute('href');
 
     if (url) {
-      linksBook.push({
+      linksBookPage.push({
         book: transformLink(url),
         name: linkChapter?.textContent || url.replace(`${link}book/`, ''),
       });
@@ -123,10 +123,44 @@ const getBookLinks = async ({ book }: { book: string }) => {
   }
 
   const bookInfo = await getBookInfoLink({ book });
+  const genChapters = generateChapters(textData);
 
+  const linksBook = genChapters
+    ? [...linksBookPage, ...genChapters]
+    : linksBookPage;
   return { linksBook, web, bookHref: book, bookInfo };
 };
 
+const generateChapters = (textData: string) => {
+  try {
+    const result = transformInHtml({
+      html: textData,
+      elem: '#chapter-list-page > header > p:nth-child(5) > a',
+    });
+
+    if (!result) return undefined;
+
+    const link = result[0].getAttribute('href');
+    if (link) {
+      const lastChapter = transformLink(link);
+      const lastNumber = Number(lastChapter);
+      if (!lastNumber) return;
+
+      const linksBook = [];
+
+      for (let i = 99; i < lastNumber; i++) {
+        linksBook.push({
+          book: i + '',
+          name: `chapter-${i}`,
+        });
+      }
+      return linksBook;
+    }
+  } catch (error) {
+    console.log(`error generateCharpters ${web}:`, error);
+    return;
+  }
+};
 const getBookFromLink = async ({
   book,
   chapter,
