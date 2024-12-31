@@ -7,17 +7,14 @@ import { ListBooksLinkProps } from '@/types/book';
 import Loader from '@/app/_compon/Loader/Loader';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
-const amountBook = 10;
+const amountBook = 20;
 export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
   const [corectBooks, setCorectBooks] = useState(books?.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
 
   useEffect(() => {
     setCorectBooks(
-      books?.slice(
-        (pagination - 1) * amountBook,
-        pagination * amountBook + amountBook
-      )
+      books?.slice((pagination - 1) * amountBook, pagination * amountBook)
     );
   }, [books, pagination]);
 
