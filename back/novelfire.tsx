@@ -90,7 +90,7 @@ const getBookPopular = async () => {
     return { books: [], web };
   }
 };
-// TODO add last chapter pagination
+
 const getBookLinks = async ({ book }: { book: string }) => {
   const linkBook = `${link}book/${book}/chapters`;
 
@@ -148,7 +148,7 @@ const generateChapters = (textData: string) => {
 
       const linksBook = [];
 
-      for (let i = 99; i < lastNumber; i++) {
+      for (let i = 101; i < lastNumber; i++) {
         linksBook.push({
           book: i + '',
           name: `chapter-${i}`,
