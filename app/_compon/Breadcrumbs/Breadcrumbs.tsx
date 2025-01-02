@@ -19,6 +19,16 @@ const BreadcrumbsCustl = () => {
     setWeb(webParam || undefined);
   }, []);
 
+  if (pathname.length === 1) {
+    return (
+      <>
+        <Link underline="hover" color="inherit" href="/">
+          Головна
+        </Link>
+      </>
+    );
+  }
+
   return (
     <Breadcrumbs sx={{ color: 'var(--text)', p: 3 }} aria-label="breadcrumb">
       <Link underline="hover" color="inherit" href="/">
@@ -30,6 +40,7 @@ const BreadcrumbsCustl = () => {
           web && index === 1 ? `?web=${web}` : ''
         }`;
         const isLast = index === pathname.length - 1;
+        const text = bookInfo?.title && index === 1 ? bookInfo?.title : segment;
 
         return isLast ? (
           <Typography
@@ -38,7 +49,7 @@ const BreadcrumbsCustl = () => {
             sx={{ textTransform: 'capitalize' }}
             aria-current="page"
           >
-            {bookInfo?.title && index === 1 ? bookInfo?.title : segment}
+            {text}
           </Typography>
         ) : (
           <Link
@@ -48,7 +59,7 @@ const BreadcrumbsCustl = () => {
             sx={{ textTransform: 'capitalize' }}
             href={href}
           >
-            {bookInfo?.title && index === 1 ? bookInfo?.title : segment}
+            {text}
           </Link>
         );
       })}
