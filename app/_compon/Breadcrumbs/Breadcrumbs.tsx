@@ -21,7 +21,7 @@ const BreadcrumbsCustl = () => {
 
   if (pathname.length === 1) {
     return (
-      <Box sx={{ color: 'var(--text)', p: 3 }}>
+      <Box sx={{ p: 3 }}>
         <Link underline="hover" color="inherit" href="/">
           Головна
         </Link>
@@ -30,7 +30,7 @@ const BreadcrumbsCustl = () => {
   }
 
   return (
-    <Breadcrumbs sx={{ color: 'var(--text)', p: 3 }} aria-label="breadcrumb">
+    <Breadcrumbs sx={{ p: 3 }} aria-label="breadcrumb">
       <Link underline="hover" color="inherit" href="/">
         Головна
       </Link>
