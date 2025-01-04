@@ -10,32 +10,20 @@ import {
   Link,
   Skeleton,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Image from 'next/image';
-import { deleteSaveBooks, getSaveBooks, updateChapter } from '@/lib/db';
+import { deleteSaveBooks, updateChapter } from '@/lib/db';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 import DropDownLinks from '@/app/_compon/DropDownLinks/DropDownLinks';
 import SaveOptionsBooks from '@/app/_compon/SaveOptionsBooks/SaveOptionsBooks';
 
-const SaveBooksLinks = () => {
-  const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
-  const [showBooks, setShowBooks] = useState<BooksSaveDB[]>(saveBooks);
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const result = await getSaveBooks();
-        const books = result || [];
-        setSaveBooks(books);
-        setShowBooks(books);
-      } catch (error) {
-        console.error('Error fetching books:', error);
-      }
-    };
-    fetchBooks();
-  }, []);
+const SaveBooksLinks = ({ initSaveBook }: { initSaveBook?: BooksSaveDB[] }) => {
+  const [saveBooks, setSaveBooks] = useState<BooksSaveDB[] | []>(
+    initSaveBook || []
+  );
+  const [showBooks, setShowBooks] = useState<BooksSaveDB[]>(initSaveBook || []);
 
   const selectShowBooks = (web: string) => {
     setShowBooks(
