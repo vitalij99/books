@@ -6,9 +6,7 @@ import {
   ImageListItemBar,
   Link,
   List,
-  Typography,
 } from '@mui/material';
-
 import Image from 'next/image';
 
 const ListBooksCard = ({
@@ -18,9 +16,9 @@ const ListBooksCard = ({
 }: ListBooksCardProps) => {
   return (
     <Box padding={4}>
-      <Typography>{web}</Typography>
+      <p>{web}</p>
       {books && books.length === 0 ? (
-        <Typography>немає</Typography>
+        <p>немає</p>
       ) : (
         <List
           className="scrollbar"
