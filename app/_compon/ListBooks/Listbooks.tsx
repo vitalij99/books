@@ -1,7 +1,7 @@
 'use client';
 import { Box, Link, Pagination, Typography } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { ListBooksLinkProps } from '@/types/book';
 import Loader from '@/app/_compon/Loader/Loader';
@@ -12,17 +12,12 @@ export const Listbooks = ({ books, link, web }: ListBooksLinkProps) => {
   const [corectBooks, setCorectBooks] = useState(books?.slice(0, amountBook));
   const [pagination, setPagination] = useState(1);
 
-  useEffect(() => {
-    setCorectBooks(
-      books?.slice((pagination - 1) * amountBook, pagination * amountBook)
-    );
-  }, [books, pagination]);
-
   const handlePagination = (
     _event: React.ChangeEvent<unknown>,
     page: number
   ) => {
     setPagination(page);
+    setCorectBooks(books?.slice((page - 1) * amountBook, page * amountBook));
   };
 
   if (books?.length === 0 || !books) {
