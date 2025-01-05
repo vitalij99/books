@@ -1,11 +1,11 @@
-'use client';
 import { textShorten } from '@/lib/books';
 import { Box, Link } from '@mui/material';
-import { useEffect, useState } from 'react';
 
 interface NavigationPagesProps {
   title: string;
   charpter: string;
+  bookHref: string;
+  web?: string;
   navigate: {
     nextPage?: string;
     nextText?: string;
@@ -18,18 +18,9 @@ const NavigationPages = ({
   navigate,
   title,
   charpter,
+  bookHref,
+  web,
 }: NavigationPagesProps) => {
-  const [hrefBook, setHrefBook] = useState('/');
-
-  useEffect(() => {
-    const pathSegments = window.location.pathname
-      .split('/')
-      .filter((el, i) => i <= 2 && el);
-    const params = new URLSearchParams(window.location.search);
-    const webParam = params.get('web');
-    setHrefBook(`/${pathSegments[0]}/${pathSegments[1]}?web=${webParam}`);
-  }, []);
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
       {navigate.prevPage && (
@@ -37,7 +28,7 @@ const NavigationPages = ({
           {!navigate.prevText ? 'Попередня' : textShorten(navigate.prevText)}
         </Link>
       )}
-      <Link href={hrefBook}>
+      <Link href={`/book/${bookHref}?${web}`}>
         {textShorten(title)} параграф {textShorten(charpter)}
       </Link>
       {navigate.nextPage && (

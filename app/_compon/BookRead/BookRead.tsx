@@ -23,9 +23,10 @@ const IS_AUTO_SCROLL = 'isAutoScroll';
 type BookReadProps = {
   book: BookProps;
   params: { chapter: string; book: string };
+  web?: string;
 };
 
-const BookRead = ({ book, params }: BookReadProps) => {
+const BookRead = ({ book, params, web }: BookReadProps) => {
   const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
@@ -140,6 +141,8 @@ const BookRead = ({ book, params }: BookReadProps) => {
         navigate={book.nav}
         title={book.title || params.book}
         charpter={params.chapter}
+        bookHref={params.book}
+        web={web}
       />
       <ItemList
         items={textBook}
@@ -163,6 +166,8 @@ const BookRead = ({ book, params }: BookReadProps) => {
         navigate={book.nav}
         title={book.title || params.book}
         charpter={params.chapter}
+        bookHref={params.book}
+        web={web}
       />
     </Box>
   );

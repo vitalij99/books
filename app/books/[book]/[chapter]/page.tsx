@@ -40,7 +40,11 @@ const page = async ({
     web: searchParams.web,
   });
 
-  return <>{book && <BookRead book={book} params={params} />}</>;
+  return (
+    <>
+      {book && <BookRead book={book} params={params} web={searchParams?.web} />}
+    </>
+  );
 };
 
 export default page;
