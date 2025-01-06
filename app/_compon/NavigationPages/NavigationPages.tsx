@@ -28,7 +28,7 @@ const NavigationPages = ({
           {!navigate.prevText ? 'Попередня' : textShorten(navigate.prevText)}
         </Link>
       )}
-      <Link href={`/book/${bookHref}?${web}`}>
+      <Link href={`/book/${bookHref}?web=${web}`}>
         {textShorten(title)} параграф {textShorten(charpter)}
       </Link>
       {navigate.nextPage && (
