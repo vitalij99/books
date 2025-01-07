@@ -1,4 +1,3 @@
-import { textShorten } from '@/lib/books';
 import { Box, Link } from '@mui/material';
 
 interface NavigationPagesProps {
@@ -13,7 +12,9 @@ interface NavigationPagesProps {
     prevText?: string;
   };
 }
-
+const textShorten = (text: string, num = 20) => {
+  return text.length >= num ? text.slice(0, num) + '...' : text;
+};
 const NavigationPages = ({
   navigate,
   title,

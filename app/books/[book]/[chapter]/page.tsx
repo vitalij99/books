@@ -2,6 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import BookRead from '@/app/_compon/BookRead/BookRead';
 import { getBookFromLinkAll } from '@/back';
+import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 
 export async function generateMetadata({
   params,
@@ -42,7 +43,25 @@ const page = async ({
 
   return (
     <>
-      {book && <BookRead book={book} params={params} web={searchParams?.web} />}
+      {book && (
+        <>
+          <NavigationPages
+            title={book.title || params.book}
+            charpter={params.chapter}
+            bookHref={params.book}
+            navigate={book.nav}
+            web={searchParams?.web}
+          />
+          <BookRead book={book} />
+          <NavigationPages
+            title={book.title || params.book}
+            charpter={params.chapter}
+            bookHref={params.book}
+            navigate={book.nav}
+            web={searchParams?.web}
+          />
+        </>
+      )}
     </>
   );
 };

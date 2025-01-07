@@ -9,7 +9,6 @@ import { translateGoogle } from '@/lib/translate';
 
 import { TranslateContext } from '@/Providers/TranslateProvider';
 import Reader from '@/app/_compon/Reader/Reader';
-import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 import ItemList from '@/app/_compon/ItemList/ItemList';
 
 import { BookProps } from '@/types/book';
@@ -22,11 +21,9 @@ const IS_AUTO_SCROLL = 'isAutoScroll';
 
 type BookReadProps = {
   book: BookProps;
-  params: { chapter: string; book: string };
-  web?: string;
 };
 
-const BookRead = ({ book, params, web }: BookReadProps) => {
+const BookRead = ({ book }: BookReadProps) => {
   const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
@@ -124,6 +121,7 @@ const BookRead = ({ book, params, web }: BookReadProps) => {
     <Box
       sx={{
         backgroundColor: colorMode.styleText.BgColor,
+        padding: '10px 0',
         paddingInline: colorMode.styleText.BkPadding + '%',
         minHeight: '100vh',
         maxHeight: '100%',
@@ -137,13 +135,6 @@ const BookRead = ({ book, params, web }: BookReadProps) => {
         srcNextPage={book.nav.nextPage}
       />
 
-      <NavigationPages
-        navigate={book.nav}
-        title={book.title || params.book}
-        charpter={params.chapter}
-        bookHref={params.book}
-        web={web}
-      />
       <ItemList
         items={textBook}
         renderItem={(text, index) => (
@@ -161,13 +152,6 @@ const BookRead = ({ book, params, web }: BookReadProps) => {
             {text}
           </Typography>
         )}
-      />
-      <NavigationPages
-        navigate={book.nav}
-        title={book.title || params.book}
-        charpter={params.chapter}
-        bookHref={params.book}
-        web={web}
       />
     </Box>
   );
