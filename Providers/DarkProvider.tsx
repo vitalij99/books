@@ -46,7 +46,6 @@ const DarkProvider = ({
   const toggleStyleText = (key: InitTextStyledKeys, value: string) => {
     const updateValue = { ...styleText, [key]: value };
 
-    console.log(updateValue);
     setStyleText(updateValue);
     setCookies(MENUSTYLEDTEXT, JSON.stringify(updateValue));
   };
