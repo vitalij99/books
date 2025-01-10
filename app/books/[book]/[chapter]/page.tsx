@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 import BookRead from '@/app/_compon/BookRead/BookRead';
 import { getBookFromLinkAll } from '@/back';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
-import Container from '@/app/_compon/Container/Container';
 
 export async function generateMetadata({
   params,
@@ -43,7 +42,7 @@ const page = async ({
   });
 
   return (
-    <Container>
+    <>
       {book && (
         <>
           <NavigationPages
@@ -63,7 +62,7 @@ const page = async ({
           />
         </>
       )}
-    </Container>
+    </>
   );
 };
 
