@@ -1,3 +1,4 @@
+import Container from '@/app/_compon/Container/Container';
 import { Box, Link } from '@mui/material';
 
 interface NavigationPagesProps {
@@ -23,21 +24,23 @@ const NavigationPages = ({
   web,
 }: NavigationPagesProps) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
-      {navigate.prevPage && (
-        <Link href={navigate.prevPage}>
-          {!navigate.prevText ? 'Попередня' : textShorten(navigate.prevText)}
+    <Container>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 4 }}>
+        {navigate.prevPage && (
+          <Link href={navigate.prevPage}>
+            {!navigate.prevText ? 'Попередня' : textShorten(navigate.prevText)}
+          </Link>
+        )}
+        <Link href={`/books/${bookHref}?web=${web}`}>
+          {textShorten(title)} параграф {textShorten(charpter)}
         </Link>
-      )}
-      <Link href={`/books/${bookHref}?web=${web}`}>
-        {textShorten(title)} параграф {textShorten(charpter)}
-      </Link>
-      {navigate.nextPage && (
-        <Link href={navigate.nextPage}>
-          {!navigate.nextText ? 'Наступна' : textShorten(navigate.nextText)}
-        </Link>
-      )}
-    </Box>
+        {navigate.nextPage && (
+          <Link href={navigate.nextPage}>
+            {!navigate.nextText ? 'Наступна' : textShorten(navigate.nextText)}
+          </Link>
+        )}
+      </Box>
+    </Container>
   );
 };
 
