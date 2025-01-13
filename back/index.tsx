@@ -19,15 +19,19 @@ export const getBookSearchByNameAll = async ({
   const result: ListBooksCardProps[] = [];
 
   try {
-    for (const web of sourcesAll) {
+    const fetchPromises = sourcesAll.map(async web => {
       try {
         const data = await web.getBookSearchByName({ name });
-        result.push(data);
+        const res = { ...data, web: web.web };
+        result.push(res);
       } catch (error) {
         console.error(`Error fetching books from ${web}:`, error);
-        result.push({ books: [], web: web.web });
+        const errorResult = { books: [], web: web.web };
+        result.push(errorResult);
       }
-    }
+    });
+
+    await Promise.all(fetchPromises);
     return result;
   } catch (error) {
     console.error('Unexpected error in getBookSearchByNameAll:', error);
