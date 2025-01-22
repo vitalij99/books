@@ -22,8 +22,8 @@ export const getBookSearchByNameAll = async ({
     const fetchPromises = sourcesAll.map(async web => {
       try {
         const data = await web.getBookSearchByName({ name });
-        const res = { ...data, web: web.web };
-        result.push(res);
+
+        result.push(data);
       } catch (error) {
         console.error(`Error fetching books from ${web}:`, error);
         const errorResult = { books: [], web: web.web };
@@ -39,20 +39,25 @@ export const getBookSearchByNameAll = async ({
   }
 };
 
+// TODO add Promise.all
 export const getBooksPopularAll = async (): Promise<ListBooksCardProps[]> => {
   const result: ListBooksCardProps[] = [];
 
   try {
-    for (const web of sourcesAll) {
+    const fetchPromises = sourcesAll.map(async web => {
       try {
         const data = await web.getBookPopular();
+
         result.push(data);
       } catch (error) {
         console.error(`Error fetching popular books from ${web}:`, error);
-        result.push({ books: [], web: web.web });
-      }
-    }
 
+        const errorResult = { books: [], web: web.web };
+        result.push(errorResult);
+      }
+    });
+
+    await Promise.all(fetchPromises);
     return result;
   } catch (error) {
     console.error('Unexpected error in getBooksPopularAll:', error);
@@ -124,25 +129,24 @@ export const getBookImageLinkAll = async ({
     throw new Error(`Failed to fetch book links from ${web}`);
   }
 };
+
 export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
   const result: ListBooksCardProps[] = [];
 
-  try {
-    for (const web of sourcesAll) {
-      try {
-        const data = await web.getBooksFromTags({ name });
-        result.push(data);
-      } catch (error) {
-        console.error(`Error fetching books from ${web}:`, error);
-        result.push({ books: [], web: web.web });
-      }
+  const promiseAll = sourcesAll.map(async web => {
+    try {
+      const data = await web.getBooksFromTags({ name });
+      result.push(data);
+    } catch (error) {
+      console.error(`Error fetching books from ${web}:`, error);
+      result.push({ books: [], web: web.web });
     }
-    return result;
-  } catch (error) {
-    console.error('Unexpected error in getBooksFromTagsAll:', error);
-    return [{ books: [], web: 'unknown' }];
-  }
+  });
+
+  await Promise.all(promiseAll);
+  return result;
 };
+// TODO add Promise.all
 export const getBooksByGenreAll = async ({ name = '' }: { name: string }) => {
   const result: ListBooksCardProps[] = [];
   try {
