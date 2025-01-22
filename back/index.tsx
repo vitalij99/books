@@ -146,22 +146,20 @@ export const getBooksFromTagsAll = async ({ name = '' }: { name: string }) => {
   await Promise.all(promiseAll);
   return result;
 };
-// TODO add Promise.all
+
 export const getBooksByGenreAll = async ({ name = '' }: { name: string }) => {
   const result: ListBooksCardProps[] = [];
-  try {
-    for (const web of sourcesAll) {
-      try {
-        const data = await web.getBooksFromGenre({ name });
-        result.push(data);
-      } catch (error) {
-        console.error(`Error fetching books from ${web}:`, error);
-        result.push({ books: [], web: web.web });
-      }
+
+  const promiseAll = sourcesAll.map(async web => {
+    try {
+      const data = await web.getBooksFromGenre({ name });
+      result.push(data);
+    } catch (error) {
+      console.error(`Error fetching books from ${web}:`, error);
+      result.push({ books: [], web: web.web });
     }
-    return result;
-  } catch (error) {
-    console.error('Unexpected error in getBooksFromGenreAll:', error);
-    return [{ books: [], web: 'unknown' }];
-  }
+  });
+
+  await Promise.all(promiseAll);
+  return result;
 };
