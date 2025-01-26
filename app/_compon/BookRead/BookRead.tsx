@@ -63,22 +63,30 @@ const BookRead = ({ book }: BookReadProps) => {
       ) => {
         const allTextBook: string[] = [];
         setIsLoding(true);
-        try {
-          for (let index = 0; index < bookTranslate.length; index++) {
-            if (isCancelled) return;
-            const result = await translateGoogle(bookTranslate[index]);
-            allTextBook.push(result);
 
+        try {
+          const translationPromises = bookTranslate.map(async (text, index) => {
+            if (isCancelled) return null;
+
+            const result = await translateGoogle(text);
+
+            // Handle early exit
             if (earlyExitIndex !== undefined && index === earlyExitIndex) {
-              setTextBook([...allTextBook]);
-              return;
+              setTextBook([...allTextBook, result]);
+              throw new Error('Early exit triggered');
             }
-          }
+
+            allTextBook[index] = result;
+            return result;
+          });
+
+          await Promise.all(translationPromises);
         } catch (error) {
-          console.error(`Error translating text at index `, error);
+          console.error(`Error translating text:`, error);
         } finally {
           setIsLoding(false);
         }
+
         setTextBook([...allTextBook]);
       };
 
