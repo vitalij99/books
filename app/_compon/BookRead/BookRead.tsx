@@ -81,8 +81,9 @@ const BookRead = ({ book }: BookReadProps) => {
           });
 
           await Promise.all(translationPromises);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          console.error(`Error translating text:`, error);
+          return;
         } finally {
           setIsLoding(false);
         }
