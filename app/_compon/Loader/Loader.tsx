@@ -9,7 +9,7 @@ const Loader = ({
   position?: string;
 }) => {
   return (
-    <StyledWrapper font={font} position={position}>
+    <StyledWrapper $font={font} $position={position}>
       <div
         aria-label="Orange and tan hamster running in a metal wheel"
         role="img"
@@ -36,13 +36,13 @@ const Loader = ({
   );
 };
 
-const StyledWrapper = styled.div<{ font: string; position: string }>`
+const StyledWrapper = styled.div<{ $font: string; $position: string }>`
   .wheel-and-hamster {
     --dur: 2s;
-    position: ${props => props.position};
+    position: ${props => props.$position};
     width: 12em;
     height: 12em;
-    font-size: ${props => props.font};
+    font-size: ${props => props.$font};
     right: 0px;
   }
 
