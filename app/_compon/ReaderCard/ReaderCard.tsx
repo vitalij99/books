@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Button, Card, Typography } from '@mui/material';
 import SliderParagraf from '@/app/_compon/SliderParagraf/SliderParagraf';
+import DraggableBox from '@/app/_compon/DraggableBox/DraggableBox';
 
 interface ReaderCardProps {
   reader: any;
@@ -27,24 +28,26 @@ const ReaderCard = ({
   }
 
   return (
-    <Card sx={{ p: 1 }}>
-      <Box>
-        <Button onClick={handleReade}>
-          <Typography>
-            {!isreade.read ? 'Старт' : isreade.pause ? 'Продовжити' : 'Пауза'}
-          </Typography>
-        </Button>
-        <Button onClick={handleReadeCancel}>
-          <Typography>Стоп</Typography>
-        </Button>
+    <DraggableBox>
+      <Card sx={{ p: 1 }}>
+        <Box>
+          <Button onClick={handleReade}>
+            <Typography>
+              {!isreade.read ? 'Старт' : isreade.pause ? 'Продовжити' : 'Пауза'}
+            </Typography>
+          </Button>
+          <Button onClick={handleReadeCancel}>
+            <Typography>Стоп</Typography>
+          </Button>
 
-        <SliderParagraf
-          reader={reader}
-          handleChangeParagraf={handleChangeParagraf}
-          maxParagraf={maxParagraf}
-        />
-      </Box>
-    </Card>
+          <SliderParagraf
+            reader={reader}
+            handleChangeParagraf={handleChangeParagraf}
+            maxParagraf={maxParagraf}
+          />
+        </Box>
+      </Card>
+    </DraggableBox>
   );
 };
 

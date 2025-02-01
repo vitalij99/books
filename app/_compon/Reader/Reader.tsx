@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
-import Draggable from 'react-draggable';
+
 import {
   Box,
   Button,
@@ -171,100 +171,94 @@ const Reader = ({
   };
 
   return (
-    <Draggable>
-      <Box sx={{ position: 'fixed', right: '0', zIndex: 3 }}>
-        <ReaderCard
-          reader={reader}
-          isreade={isreade}
-          handleReadeCancel={handleReadeCancel}
-          handleChangeParagraf={handleChangeParagraf}
-          handleReade={handleReade}
-          maxParagraf={book.length}
-        />
-        <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
-          <Box
-            sx={{
-              p: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 5,
-              overflowX: 'hidden',
-            }}
-          >
-            <Button onClick={handleReade}>
-              <Typography>
-                {!isreade.read
-                  ? 'Старт'
-                  : isreade.pause
-                  ? 'Продовжити'
-                  : 'Пауза'}
-              </Typography>
-            </Button>
+    <Box sx={{ position: 'fixed', right: '0', zIndex: 3 }}>
+      <ReaderCard
+        reader={reader}
+        isreade={isreade}
+        handleReadeCancel={handleReadeCancel}
+        handleChangeParagraf={handleChangeParagraf}
+        handleReade={handleReade}
+        maxParagraf={book.length}
+      />
+      <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{
+            p: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 5,
+            overflowX: 'hidden',
+          }}
+        >
+          <Button onClick={handleReade}>
+            <Typography>
+              {!isreade.read ? 'Старт' : isreade.pause ? 'Продовжити' : 'Пауза'}
+            </Typography>
+          </Button>
 
-            {isreade.read && (
-              <Button onClick={handleReadeCancel}>
-                <Typography>Стоп</Typography>
-              </Button>
-            )}
-            <SelectReaderVoice
-              reader={reader}
-              paramsReader={paramsReader}
-              handleChangeSelect={handleChangeSelect}
+          {isreade.read && (
+            <Button onClick={handleReadeCancel}>
+              <Typography>Стоп</Typography>
+            </Button>
+          )}
+          <SelectReaderVoice
+            reader={reader}
+            paramsReader={paramsReader}
+            handleChangeSelect={handleChangeSelect}
+          />
+
+          <Box width={250}>
+            <Typography>Швидкість</Typography>
+            <Slider
+              name="rate"
+              onChange={handleSliderParams}
+              min={0}
+              max={2}
+              step={0.1}
+              value={paramsReader?.rate}
+              valueLabelDisplay="auto"
             />
 
-            <Box width={250}>
-              <Typography>Швидкість</Typography>
-              <Slider
-                name="rate"
-                onChange={handleSliderParams}
-                min={0}
-                max={2}
-                step={0.1}
-                value={paramsReader?.rate}
-                valueLabelDisplay="auto"
-              />
-
-              <Typography>Тон</Typography>
-              <Slider
-                name="pitch"
-                onChange={handleSliderParams}
-                min={0}
-                max={2}
-                step={0.1}
-                value={paramsReader?.pitch}
-                valueLabelDisplay="auto"
-              />
-              <Typography>Гучність</Typography>
-              <Slider
-                name="volume"
-                onChange={handleSliderParams}
-                min={0}
-                step={0.1}
-                max={1}
-                value={paramsReader?.volume}
-                valueLabelDisplay="auto"
-              />
-              <SliderParagraf
-                reader={reader}
-                handleChangeParagraf={handleChangeParagraf}
-                maxParagraf={book.length}
-              />
-              <Timer
-                paramsReader={paramsReader}
-                handleChangeCheckbox={handleChangeCheckbox}
-                isreade={isreade}
-                handleParamsTimer={handleParamsTimer}
-              />
-              <Typography>Ауто скрол за текстом</Typography>
-              <Checkbox
-                checked={autoScroll.isAutoScroll}
-                onChange={autoScroll.handleAutoScroll}
-              />
-            </Box>
+            <Typography>Тон</Typography>
+            <Slider
+              name="pitch"
+              onChange={handleSliderParams}
+              min={0}
+              max={2}
+              step={0.1}
+              value={paramsReader?.pitch}
+              valueLabelDisplay="auto"
+            />
+            <Typography>Гучність</Typography>
+            <Slider
+              name="volume"
+              onChange={handleSliderParams}
+              min={0}
+              step={0.1}
+              max={1}
+              value={paramsReader?.volume}
+              valueLabelDisplay="auto"
+            />
+            <SliderParagraf
+              reader={reader}
+              handleChangeParagraf={handleChangeParagraf}
+              maxParagraf={book.length}
+            />
+            <Timer
+              paramsReader={paramsReader}
+              handleChangeCheckbox={handleChangeCheckbox}
+              isreade={isreade}
+              handleParamsTimer={handleParamsTimer}
+            />
+            <Typography>Ауто скрол за текстом</Typography>
+            <Checkbox
+              checked={autoScroll.isAutoScroll}
+              onChange={autoScroll.handleAutoScroll}
+            />
           </Box>
-        </Drawer>
-      </Box>
-    </Draggable>
+        </Box>
+      </Drawer>
+    </Box>
   );
 };
 
