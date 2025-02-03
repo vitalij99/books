@@ -29,7 +29,7 @@ const ReaderCard = ({
 
   return (
     <DraggableBox>
-      <Card sx={{ p: 1 }}>
+      <Card sx={{ p: 1, minWidth: '200px' }}>
         <Box>
           <Button onClick={handleReade}>
             <Typography>
