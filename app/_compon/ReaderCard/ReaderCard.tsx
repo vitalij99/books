@@ -24,12 +24,12 @@ const ReaderCard = ({
   handleReade,
 }: ReaderCardProps) => {
   if (!reader || !isreade.read) {
-    return <></>;
+    return null;
   }
 
   return (
     <DraggableBox>
-      <Card sx={{ p: 1, minWidth: '200px' }}>
+      <Card sx={{ p: 1, minWidth: '212px', alignItems: 'center' }}>
         <Box>
           <Button onClick={handleReade}>
             <Typography>
