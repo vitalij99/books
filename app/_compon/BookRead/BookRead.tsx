@@ -24,7 +24,7 @@ type BookReadProps = {
 };
 
 const BookRead = ({ book }: BookReadProps) => {
-  const [initTextBook] = useState(book.book);
+  const initTextBook = useRef(book.book);
   const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
@@ -89,14 +89,16 @@ const BookRead = ({ book }: BookReadProps) => {
         setTextBook([...allTextBook]);
       };
 
-      translateText(initTextBook, 20).then(() => translateText(initTextBook));
+      translateText(initTextBook.current, 20).then(() =>
+        translateText(initTextBook.current)
+      );
     } else {
-      setTextBook(initTextBook);
+      setTextBook(initTextBook.current);
     }
     return () => {
       isCancelled = true;
     };
-  }, [initTextBook, translate.translate]);
+  }, [translate.translate]);
 
   useEffect(() => {
     if (!isAutoScroll) return;
