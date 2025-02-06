@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
@@ -24,6 +24,7 @@ type BookReadProps = {
 };
 
 const BookRead = ({ book }: BookReadProps) => {
+  const [initTextBook] = useState(book.book);
   const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
@@ -51,12 +52,9 @@ const BookRead = ({ book }: BookReadProps) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!book || !book.book) return;
+  useMemo(() => {
     let isCancelled = false;
-    if (!translate.translate) {
-      setTextBook(book.book);
-    } else {
+    if (translate.translate) {
       const translateText = async (
         bookTranslate: string[],
         earlyExitIndex?: number
@@ -91,12 +89,14 @@ const BookRead = ({ book }: BookReadProps) => {
         setTextBook([...allTextBook]);
       };
 
-      translateText(book.book, 20).then(() => translateText(book.book));
+      translateText(initTextBook, 20).then(() => translateText(initTextBook));
+    } else {
+      setTextBook(initTextBook);
     }
     return () => {
       isCancelled = true;
     };
-  }, [book, translate.translate]);
+  }, [initTextBook, translate.translate]);
 
   useEffect(() => {
     if (!isAutoScroll) return;
