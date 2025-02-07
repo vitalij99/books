@@ -13,7 +13,7 @@ interface NavigationPagesProps {
     prevText?: string;
   };
 }
-const textShorten = (text: string, num = 20) => {
+const textShorten = (text: string, num = 15) => {
   return text.length >= num ? text.slice(0, num) + '...' : text;
 };
 const NavigationPages = ({
