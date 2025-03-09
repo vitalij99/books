@@ -1,13 +1,13 @@
 'use server';
 
-import { novelbin } from '@/back/novelbin';
+// import { novelbin } from '@/back/novelbin';
 import { novelfire } from '@/back/novelfire';
 import { scribblehub } from '@/back/scribblehub';
 import { webnovel } from '@/back/webnovel';
 
 import { ListBooksCardProps } from '@/types/book';
 
-const sourcesAll = [novelfire, novelbin, scribblehub, webnovel];
+const sourcesAll = [novelfire,  scribblehub, webnovel];
 
 export const getBookSearchByNameAll = async ({
   name = '',
