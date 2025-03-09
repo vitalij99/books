@@ -161,6 +161,7 @@ const generateChapters = (textData: string) => {
     return;
   }
 };
+
 const getBookFromLink = async ({
   book,
   chapter,
@@ -168,8 +169,9 @@ const getBookFromLink = async ({
   book: string;
   chapter: string;
 }) => {
+  //  https://novelfire.docsachhay.net/book/complete-martial-arts-attributes/chapter-1
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1/chapter-26
-  const linkBook = `${link}book/${book}/chapter-${chapter}`;
+  const linkBook = `https://novelfire.docsachhay.net/book/${book}/chapter-${chapter}`;
 
   const data = await fetch(linkBook);
   const textData = await data.text();
@@ -182,6 +184,10 @@ const getBookFromLink = async ({
   if (!result) return undefined;
 
   const element = result[0];
+
+  if (!element) {
+    return
+  }
 
   const textHtmlAll = element.querySelectorAll('#content p');
 
