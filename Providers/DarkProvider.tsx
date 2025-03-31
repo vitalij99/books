@@ -14,7 +14,7 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 
 
-import React, { createContext,  } from 'react';
+import React, { createContext, useMemo } from 'react';
 
 export const ColorModeContext = createContext({
   toggleStyleText: (_key: InitTextStyledKeys, _value: string) => {},

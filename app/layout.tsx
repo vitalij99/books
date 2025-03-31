@@ -3,7 +3,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 import { getCookies } from '@/lib/cookis';
-import { MENUSTYLEDTEXT, THEME } from '@/types/book';
+import { MENUSTYLEDTEXT,  } from '@/types/book';
 
 import SessionWrapper from '@/app/_compon/SessionWrapper/SessionWrapper';
 import ReaderProvider from '@/Providers/ReaderProvider';
@@ -23,7 +23,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const theme = await getCookies(THEME);
+
   const styleText = await getCookies(MENUSTYLEDTEXT);
 
   return (
@@ -31,7 +31,7 @@ export default async function RootLayout({
       <body>
         <SessionWrapper>
           <TranslateProvider>
-            <DarkProvider theme={theme} styleTextCookie={styleText}>
+            <DarkProvider  styleTextCookie={styleText}>
               <BookInfoProvider>
                 <ReaderProvider>
                   <Header />
