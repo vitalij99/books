@@ -64,7 +64,7 @@ const DarkProvider = ({
       value={{ toggleColorMode, mode, styleText, toggleStyleText }}
     >
       <ThemeProvider theme={themeMode}>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         {children}
       </ThemeProvider>
     </ColorModeContext.Provider>

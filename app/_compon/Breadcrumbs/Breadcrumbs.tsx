@@ -1,7 +1,7 @@
 'use client';
 
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
-import { Box, Breadcrumbs, Link, Typography } from '@mui/material';
+import {   Link, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
 const BreadcrumbsCustl = () => {
@@ -19,18 +19,10 @@ const BreadcrumbsCustl = () => {
     setWeb(webParam || undefined);
   }, []);
 
-  if (pathname.length === 1) {
-    return (
-      <Box sx={{ p: 3 }}>
-        <Link underline="hover" color="inherit" href="/">
-          Головна
-        </Link>
-      </Box>
-    );
-  }
+
 
   return (
-    <Breadcrumbs sx={{ p: 3 }} aria-label="breadcrumb">
+    <nav >
       <Link underline="hover" color="inherit" href="/">
         Головна
       </Link>
@@ -63,7 +55,7 @@ const BreadcrumbsCustl = () => {
           </Link>
         );
       })}
-    </Breadcrumbs>
+    </nav>
   );
 };
 
