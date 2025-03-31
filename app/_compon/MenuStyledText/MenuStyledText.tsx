@@ -8,6 +8,7 @@ import {
   OutlinedInput,
   Slider,
   Switch,
+  useColorScheme,
 } from '@mui/material';
 
 import React from 'react';
@@ -22,6 +23,7 @@ import InputColor from '@/app/_compon/InputColor/InputColor';
 const MenuStyledText = () => {
   const colorMode = React.useContext(ColorModeContext);
   const translate = React.useContext(TranslateContext);
+  const { mode, setMode } = useColorScheme();
 
   const handleChange = (value: string, key: InitTextStyledKeys) => {
     colorMode.toggleStyleText(key, value);
@@ -40,11 +42,11 @@ const MenuStyledText = () => {
         }}
       >
         <IconButton
-          onClick={colorMode.toggleColorMode}
+          onClick={() => setMode(mode === 'dark'? "light" :"dark")}
           sx={{ ml: 1 }}
           color="inherit"
         >
-          {colorMode.mode === 'dark' ? (
+          {mode === 'dark' ? (
             <Brightness7Icon />
           ) : (
             <Brightness4Icon />
