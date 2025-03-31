@@ -8,11 +8,12 @@ import {
   getBooksFromTagsAll,
 } from '@/back';
 
-const search = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | '' };
-}) => {
+const search = async (
+  props: {
+    searchParams: Promise<{ [key: string]: string | '' }>;
+  }
+) => {
+  const searchParams = await props.searchParams;
   const { search, genre, tag } = searchParams;
 
   let books;

@@ -4,13 +4,14 @@ import BookRead from '@/app/_compon/BookRead/BookRead';
 import { getBookFromLinkAll } from '@/back';
 import NavigationPages from '@/app/_compon/NavigationPages/NavigationPages';
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: {
-  params: { chapter: string; book: string };
-  searchParams: { [key: string]: string | '' };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ chapter: string; book: string }>;
+    searchParams: Promise<{ [key: string]: string | '' }>;
+  }
+): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const book = await getBookFromLinkAll({
     chapter: params.chapter,
     book: params.book,
@@ -24,13 +25,14 @@ export async function generateMetadata({
   };
 }
 
-const page = async ({
-  params,
-  searchParams,
-}: {
-  params: { chapter: string; book: string };
-  searchParams: { [key: string]: string | '' };
-}) => {
+const page = async (
+  props: {
+    params: Promise<{ chapter: string; book: string }>;
+    searchParams: Promise<{ [key: string]: string | '' }>;
+  }
+) => {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   if (!searchParams.web) {
     return <>error</>;
   }
