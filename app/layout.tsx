@@ -34,7 +34,7 @@ export default async function RootLayout({
             <DarkProvider theme={theme} styleTextCookie={styleText}>
               <BookInfoProvider>
                 <ReaderProvider>
-                  {/* <Header /> */}
+                  <Header />
                   <BreadcrumbsCustl />
                   <main>{children}</main>
                 </ReaderProvider>

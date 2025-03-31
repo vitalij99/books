@@ -1,7 +1,7 @@
 'use client';
 
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
-import {   Link, Typography } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
 const BreadcrumbsCustl = () => {
@@ -19,10 +19,18 @@ const BreadcrumbsCustl = () => {
     setWeb(webParam || undefined);
   }, []);
 
-
+  if (pathname.length === 1) {
+    return (
+      <nav>
+        <Link underline="hover" color="inherit" href="/">
+          Головна
+        </Link>
+      </nav>
+    );
+  }
 
   return (
-    <nav >
+    <nav aria-label="breadcrumb">
       <Link underline="hover" color="inherit" href="/">
         Головна
       </Link>
