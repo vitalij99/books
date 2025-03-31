@@ -1,4 +1,5 @@
-import debounce from '@mui/material/utils/debounce';
+
+import debounce from 'lodash.debounce';
 import React, { ChangeEvent, useCallback } from 'react';
 
 const InputColor = ({

@@ -1,12 +1,15 @@
-import NextAuth, { User } from 'next-auth';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
-import Google from 'next-auth/providers/google';
-import Credentials from 'next-auth/providers/credentials';
-import { getUserEmail } from '@/lib/db';
-import { comparePassword } from '@/utils/saltAndHashPassword';
-import { signInSchema } from '@/lib/zod';
-import { JWT } from 'next-auth/jwt';
+import NextAuth from "next-auth"
+import "next-auth/jwt"
+
+
+import Google from "next-auth/providers/google"
+
+import { PrismaClient } from "@prisma/client"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { getUserEmail } from "./lib/db"
+import Credentials from "next-auth/providers/credentials"
+import { signInSchema } from "./lib/zod"
+import { comparePassword } from "./utils/saltAndHashPassword"
 
 const global = {
   prisma: new PrismaClient(),
@@ -61,24 +64,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
     Google,
   ],
-  session: {
-    strategy: 'jwt',
-  },
+  basePath: "/auth",
+  session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User }) {
-      if (user) {
-        token.id = user.id;
+
+    jwt({ token, trigger, session, account }) {
+      if (trigger === "update") token.name = session.user.name
+      if (account?.provider === "keycloak") {
+        return { ...token, accessToken: account.access_token }
       }
-      return token;
+      return token
     },
     async session({ session, token }) {
-      if (token?.id && session.user) {
-        session.user.id = token.id as string;
-      }
-      return session;
+      if (token?.accessToken) session.accessToken = token.accessToken
+
+      return session
     },
   },
-  pages: {
-    error: '/auth',
-  },
-});
+
+})
+
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string
+  }
+}

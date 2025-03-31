@@ -1,12 +1,12 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import {  useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 
 const STORAGE_KEY_DRAGG = 'draggableBoxPosition';
 
 const DraggableBox = ({ children }: { children: React.ReactNode }) => {
-  const nodeRef = useRef(null);
+
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -23,8 +23,8 @@ const DraggableBox = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <Draggable nodeRef={nodeRef} position={position} onDrag={handleDrag}>
-      <div ref={nodeRef} className="cursor-move">
+    <Draggable  position={position} onDrag={handleDrag}>
+      <div  className="cursor-move">
         {children}
       </div>
     </Draggable>
