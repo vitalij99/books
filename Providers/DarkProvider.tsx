@@ -9,12 +9,10 @@ import {
   MENUSTYLEDTEXT,
 } from '@/types/book';
 
-import {  ThemeProvider, } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-
-
-import React, { createContext, useMemo } from 'react';
+import React, { createContext } from 'react';
 
 export const ColorModeContext = createContext({
   toggleStyleText: (_key: InitTextStyledKeys, _value: string) => {},
@@ -29,11 +27,9 @@ const DarkProvider = ({
   theme?: RequestCookie;
   styleTextCookie?: RequestCookie;
 }) => {
-
   const [styleText, setStyleText] = React.useState<InitTextStyledType>(
     styleTextCookie?.value ? JSON.parse(styleTextCookie.value) : initTextStyled
   );
-
 
   const toggleStyleText = (key: InitTextStyledKeys, value: string) => {
     const updateValue = { ...styleText, [key]: value };
@@ -42,14 +38,9 @@ const DarkProvider = ({
     setCookies(MENUSTYLEDTEXT, JSON.stringify(updateValue));
   };
 
-
   return (
-    <ColorModeContext.Provider
-      value={{   styleText, toggleStyleText }}
-    >
-      <ThemeProvider theme={theme}>
-        {children}
-      </ThemeProvider>
+    <ColorModeContext.Provider value={{ styleText, toggleStyleText }}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ColorModeContext.Provider>
   );
 };

@@ -1,15 +1,13 @@
-import NextAuth from "next-auth"
-import "next-auth/jwt"
+import NextAuth from 'next-auth';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
 
-
-import Google from "next-auth/providers/google"
-
-import { PrismaClient } from "@prisma/client"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { getUserEmail } from "./lib/db"
-import Credentials from "next-auth/providers/credentials"
-import { signInSchema } from "./lib/zod"
-import { comparePassword } from "./utils/saltAndHashPassword"
+import Credentials from 'next-auth/providers/credentials';
+import { getUserEmail } from '@/lib/db';
+import { comparePassword } from '@/utils/saltAndHashPassword';
+import { signInSchema } from '@/lib/zod';
+import { JWT } from 'next-auth/jwt';
+import Google from 'next-auth/providers/google';
 
 const global = {
   prisma: new PrismaClient(),
@@ -22,8 +20,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  debug: !!process.env.AUTH_DEBUG,
   adapter: PrismaAdapter(prisma),
+  basePath: '/auth',
   providers: [
+    Google,
     Credentials({
       credentials: {
         email: {
@@ -62,36 +63,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
       },
     }),
-    Google,
   ],
-  basePath: "/auth",
-  session: { strategy: "jwt" },
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-
+    authorized({ request, auth }) {
+      const { pathname } = request.nextUrl;
+      if (pathname === '/middleware-example') return !!auth;
+      return true;
+    },
     jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name
-      if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token }
+      if (trigger === 'update') token.name = session.user.name;
+      if (account?.provider === 'keycloak') {
+        return { ...token, accessToken: account.access_token };
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
-      if (token?.accessToken) session.accessToken = token.accessToken
+      if (token?.accessToken) session.accessToken = token.accessToken;
 
-      return session
+      return session;
     },
   },
-
-})
-
-declare module "next-auth" {
+  pages: {
+    error: '/auth',
+    signIn: '/auth',
+  },
+});
+declare module 'next-auth' {
   interface Session {
-    accessToken?: string
+    accessToken?: string;
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
-    accessToken?: string
+    accessToken?: string;
   }
 }
