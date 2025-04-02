@@ -1,16 +1,16 @@
 'use client';
 import { getStorageAr, setStorage } from '@/lib/getStorage';
-import { AllowedKeys, BooksSaveDB } from '@/types/book';
+import { AllowedKeys, BookSaveDB, BooksSaveDB } from '@/types/book';
 
 export const findSaveBook = (
-  saveBooks: BooksSaveDB[],
+  saveBooks: BooksSaveDB,
   pathnameBook: string[]
 ) => {
   return saveBooks.find(book => {
     if (book.title === pathnameBook[2]) return book;
   });
 };
-export const findSaveChapter = (book: BooksSaveDB, pathnameBook: string[]) => {
+export const findSaveChapter = (book: BookSaveDB, pathnameBook: string[]) => {
   if (book.title === pathnameBook[2]) {
     return book.chapter?.find(chapter => chapter === pathnameBook[3]);
   }

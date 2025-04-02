@@ -13,31 +13,31 @@ import {
 } from '@/lib/db';
 import { findSaveBook, findSaveChapter, setHistoryBooks } from '@/lib/books';
 
-import { BooksSaveDB } from '@/types/book';
+import { BookSaveDB, BooksSaveDB } from '@/types/book';
 import { BookInfoContext } from '@/Providers/BookInfoProvider';
 import Loader from '@/app/_compon/Loader/Loader';
 
-interface ExtendedBooksSaveDB extends BooksSaveDB {
+interface ExtendedBooksSaveDB extends BookSaveDB {
   thisChapter?: string;
 }
 
 const SaveBook = () => {
   const { data: session } = useSession();
 
-  const [saveBooks, setSaveBooks] = useState<BooksSaveDB[]>([]);
+  const [saveBooks, setSaveBooks] = useState<BooksSaveDB>([]);
 
   const [stringPathname, setStringPathname] = useState<string[]>([]);
 
-  const [bookSaveDB, setBookSaveDB] = useState<ExtendedBooksSaveDB>();
+  const [bookSaveDB, setBookSaveDB] = useState<ExtendedBooksSaveDB[]>();
   const [isAdded, setIsAdded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const bookContext = useContext(BookInfoContext);
 
   const pathname = usePathname();
   const search = useSearchParams();
-
   useEffect(() => {
     if (!session) return;
+
     if (!pathname.startsWith('/books')) return;
     (async () => {
       const data = await getSaveBooks();
@@ -63,6 +63,7 @@ const SaveBook = () => {
 
     if (nameBook.length > 3 && matchedBook) {
       const currentChapter = findSaveChapter(matchedBook, nameBook);
+
       setBookSaveDB({ ...matchedBook, thisChapter: currentChapter });
       setIsAdded(!!currentChapter);
     } else {

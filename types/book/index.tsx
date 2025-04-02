@@ -62,19 +62,20 @@ export interface BooksSave {
   link: string;
   chapter?: string;
 }
-export interface BooksSaveDB {
+export interface BookSaveDB {
   id: string;
   title: string;
   link: string;
   web: string;
-  chapter: string[] | undefined;
+  chapter?: string[];
   image: string | null;
-  userId: string;
+  userEmail: string;
   lastReadeChapter: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
-[];
+
+export type BooksSaveDB = BookSaveDB[];
 export interface BookProps {
   book: string[];
   nav: {

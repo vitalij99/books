@@ -1,7 +1,7 @@
 'use server';
 import { auth, prisma } from '@/auth';
 import { getBookImageLinkAll } from '@/back';
-import { BooksSaveDB } from '@/types/book';
+import { BookSaveDB } from '@/types/book';
 
 interface SetSaveBook {
   title: string;
@@ -10,7 +10,7 @@ interface SetSaveBook {
   web: string;
   tags?: string[];
 }
-type DbBooksBase = Omit<BooksSaveDB, 'chapter'>;
+type DbBooksBase = Omit<BookSaveDB, 'chapter'>;
 interface DbBooks extends DbBooksBase {
   chapter: string | null;
 }
@@ -44,7 +44,7 @@ export const setSaveBook = async ({
   try {
     const session = await auth();
 
-    if (!session?.user || !session?.user?.id) return;
+    if (!session?.user || !session?.user.email) return;
 
     const image = await getBookImageLinkAll({ book: title, web });
 
@@ -57,10 +57,13 @@ export const setSaveBook = async ({
       image,
       web,
       tags,
-      userId: session.user.id,
+      userEmail: session.user.email,
     };
 
+    console.log(data);
+
     const res = await prisma.books.create({ data });
+    console.log(res);
     const allChapter = res.chapter?.split(',');
 
     return { ...res, chapter: allChapter };
@@ -73,30 +76,32 @@ export const setSaveBook = async ({
 export const getSaveBooks = async () => {
   try {
     const session = await auth();
-    if (!session?.user || !session?.user?.id) return;
 
-    if (session?.user || session?.user?.id) {
+    if (!session?.user || !session?.user.email) return;
+
+    if (session?.user && session?.user?.email) {
       const res = await prisma.books.findMany({
-        where: { userId: session.user.id },
+        where: { userEmail: session.user.email },
       });
+      console.log(res);
 
       const newRes = transStringToArrChapter(res);
       return newRes;
     }
   } catch (error) {
-    console.error(`Error Setsavebook:`, error);
+    console.error(`Error getSaveBooks:`, error);
     return undefined;
   }
 };
 
 export const deleteSaveBooks = async (id: string) => {
   const session = await auth();
-  if (!session?.user || !session?.user?.id) return;
+  if (!session?.user || !session?.user.email) return;
 
   if (session?.user || session?.user?.id) {
-    await prisma.books.delete({ where: { id, userId: session.user.id } });
+    await prisma.books.delete({ where: { id, userEmail: session.user.email } });
     const res = await prisma.books.findMany({
-      where: { userId: session.user.id },
+      where: { userEmail: session.user.email },
     });
 
     return transStringToArrChapter(res);
@@ -105,11 +110,11 @@ export const deleteSaveBooks = async (id: string) => {
 
 export const updateChapter = async (id: string, chapter: string[]) => {
   const session = await auth();
-  if (!session?.user || !session?.user?.id) return;
+  if (!session?.user || !session?.user.email) return;
 
   if (session?.user || session?.user?.id) {
     const deleteChapter = await prisma.books.update({
-      where: { id, userId: session.user.id },
+      where: { id, userEmail: session.user.email },
       data: {
         chapter: chapter.toString(),
       },
@@ -121,11 +126,11 @@ export const updateChapter = async (id: string, chapter: string[]) => {
 
 export const updateChapterLastReader = async (id: string, chapter: string) => {
   const session = await auth();
-  if (!session?.user || !session?.user?.id) return;
+  if (!session?.user || !session?.user.email) return;
 
   if (session?.user || session?.user?.id) {
     const res = await prisma.books.update({
-      where: { id, userId: session.user.id },
+      where: { id, userEmail: session.user.email },
       data: {
         lastReadeChapter: chapter,
       },
