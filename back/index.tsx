@@ -7,7 +7,7 @@ import { webnovel } from '@/back/webnovel';
 
 import { ListBooksCardProps } from '@/types/book';
 
-const sourcesAll = [novelfire,  scribblehub, webnovel];
+const sourcesAll = [novelfire, scribblehub, webnovel];
 
 export const getBookSearchByNameAll = async ({
   name = '',

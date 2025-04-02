@@ -9,7 +9,9 @@ const getBookPopular = async () => {
   // https://www.webnovel.com/ranking/novel/all_time/popular_rank
   const linkSearch = `${link}ranking/novel/all_time/popular_rank`;
 
-  const data = await fetch(linkSearch);
+  const data = await fetch(linkSearch, {
+    cache: 'force-cache',
+  });
   const textData = await data.text();
 
   return getBooksListType({ textData, elem: '.j_rank_wrapper section' });
@@ -267,7 +269,9 @@ const getBookFromLink = async ({
 }) => {
   // https://www.webnovel.com/book/22883421205730405/61427216130562225
   const linkBook = reTransformLink(book, chapter);
-  const res = await fetch(linkBook);
+  const res = await fetch(linkBook, {
+    cache: 'force-cache',
+  });
 
   const data = await res.text();
 

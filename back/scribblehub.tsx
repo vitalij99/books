@@ -107,7 +107,9 @@ const getBookFromLink = async ({
 
   const linkBook = `${link}read/${book.replace(`_`, '-')}/chapter/${chapter}`;
 
-  const res = await fetch(linkBook);
+  const res = await fetch(linkBook, {
+    cache: 'force-cache',
+  });
 
   const data = await res.text();
 
@@ -164,7 +166,9 @@ const getBookPopular = async () => {
   // https://www.scribblehub.com/series-ranking/?sort=5&order=1
   const linkSearch = `${link}/series-ranking/?sort=1&order=1`;
 
-  const data = await fetch(linkSearch);
+  const data = await fetch(linkSearch, {
+    cache: 'force-cache',
+  });
   const textData = await data.text();
 
   return getBooksWrapper(textData);

@@ -52,7 +52,9 @@ const getBookPopular = async () => {
   try {
     const linkSearch = `${link}monthly-rank`;
 
-    const data = await fetch(linkSearch);
+    const data = await fetch(linkSearch, {
+      cache: 'force-cache',
+    });
     const textData = await data.text();
 
     const result = transformInHtml({
@@ -173,7 +175,9 @@ const getBookFromLink = async ({
   // https://novelfire.net/book/the-small-sage-will-try-her-best-in-the-different-world-from-lv1/chapter-26
   const linkBook = `https://novelfire.docsachhay.net/book/${book}/chapter-${chapter}`;
 
-  const data = await fetch(linkBook);
+  const data = await fetch(linkBook, {
+    cache: 'force-cache',
+  });
   const textData = await data.text();
 
   const result = transformInHtml({
@@ -186,7 +190,7 @@ const getBookFromLink = async ({
   const element = result[0];
 
   if (!element) {
-    return
+    return;
   }
 
   const textHtmlAll = element.querySelectorAll('#content p');
