@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo,  } from 'react';
+import React, { useMemo } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
@@ -13,7 +13,7 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 
 import { BookProps } from '@/types/book';
 import { InitParamsReader, PARAMSREADER } from '@/types/reader';
-import { BookInfoContext } from '@/Providers/BookInfoProvider';
+
 import Loader from '@/app/_compon/Loader/Loader';
 import { ColorModeContext } from '@/Providers/DarkProvider';
 
@@ -24,19 +24,15 @@ type BookReadProps = {
 };
 
 const BookRead = ({ book }: BookReadProps) => {
-  // const initTextBook = useRef(book.book);
+  const [initTextBook] = useState(book.book);
   const [textBook, setTextBook] = useState(book.book);
   const [textIsRead, setTextIsRead] = useState(-1);
   const [isAutoScroll, setisAutoScroll] = useState(false);
   const [isLoding, setIsLoding] = useState(false);
 
   const translate = useContext(TranslateContext);
-  // const info = useRef(useContext(BookInfoContext));
-  const colorMode = React.useContext(ColorModeContext);
 
-  useEffect(() => {
-    // info.current.setBookInfoUpdate({ title: book.title });
-  }, [book.title]);
+  const colorMode = React.useContext(ColorModeContext);
 
   useEffect(() => {
     const storageAutoScroll = getStorage(IS_AUTO_SCROLL);
@@ -89,16 +85,14 @@ const BookRead = ({ book }: BookReadProps) => {
         setTextBook([...allTextBook]);
       };
 
-      // translateText(initTextBook.current, 20).then(() =>
-      //   translateText(initTextBook.current)
-      // );
+      translateText(initTextBook, 20).then(() => translateText(initTextBook));
     } else {
-      // setTextBook(initTextBook.current);
+      setTextBook(initTextBook);
     }
     return () => {
       isCancelled = true;
     };
-  }, [translate.translate]);
+  }, [initTextBook, translate.translate]);
 
   useEffect(() => {
     if (!isAutoScroll) return;
