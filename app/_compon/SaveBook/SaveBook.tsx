@@ -28,7 +28,7 @@ const SaveBook = () => {
 
   const [stringPathname, setStringPathname] = useState<string[]>([]);
 
-  const [bookSaveDB, setBookSaveDB] = useState<ExtendedBooksSaveDB[]>();
+  const [bookSaveDB, setBookSaveDB] = useState<ExtendedBooksSaveDB>();
   const [isAdded, setIsAdded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const bookContext = useContext(BookInfoContext);
@@ -115,6 +115,7 @@ const SaveBook = () => {
           if (result) setIsAdded(true);
         } else {
           const newBook = await setSaveBook(newBookData);
+
           if (newBook) {
             setSaveBooks(prevBooks => [...(prevBooks || []), newBook]);
           }

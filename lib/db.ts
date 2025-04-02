@@ -60,10 +60,8 @@ export const setSaveBook = async ({
       userEmail: session.user.email,
     };
 
-    console.log(data);
-
     const res = await prisma.books.create({ data });
-    console.log(res);
+
     const allChapter = res.chapter?.split(',');
 
     return { ...res, chapter: allChapter };

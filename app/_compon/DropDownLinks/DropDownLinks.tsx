@@ -1,6 +1,6 @@
 'use client';
 import ItemList from '@/app/_compon/ItemList/ItemList';
-import { BooksSaveDB } from '@/types/book';
+import { BookSaveDB } from '@/types/book';
 import {
   Box,
   Button,
@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 
 interface DropDownLinksProps {
-  book: BooksSaveDB;
+  book: BookSaveDB;
   handleDeleteCharpter: (
     bookId: string,
     deleteChapter: string

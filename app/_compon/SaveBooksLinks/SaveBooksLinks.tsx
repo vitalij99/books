@@ -19,11 +19,11 @@ import ItemList from '@/app/_compon/ItemList/ItemList';
 import DropDownLinks from '@/app/_compon/DropDownLinks/DropDownLinks';
 import SaveOptionsBooks from '@/app/_compon/SaveOptionsBooks/SaveOptionsBooks';
 
-const SaveBooksLinks = ({ initSaveBook }: { initSaveBook?: BooksSaveDB[] }) => {
-  const [saveBooks, setSaveBooks] = useState<BooksSaveDB[] | []>(
+const SaveBooksLinks = ({ initSaveBook }: { initSaveBook?: BooksSaveDB }) => {
+  const [saveBooks, setSaveBooks] = useState<BooksSaveDB | []>(
     initSaveBook || []
   );
-  const [showBooks, setShowBooks] = useState<BooksSaveDB[]>(initSaveBook || []);
+  const [showBooks, setShowBooks] = useState<BooksSaveDB>(initSaveBook || []);
 
   const selectShowBooks = (web: string) => {
     setShowBooks(
