@@ -81,7 +81,6 @@ export const getSaveBooks = async () => {
       const res = await prisma.books.findMany({
         where: { userEmail: session.user.email },
       });
-      console.log(res);
 
       const newRes = transStringToArrChapter(res);
       return newRes;
