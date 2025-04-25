@@ -1,13 +1,6 @@
 'use client';
 import React from 'react';
-import {
-  AppBar,
-  Box,
-  
-  Slide,
-  Toolbar,
-  useScrollTrigger,
-} from '@mui/material';
+import { AppBar, Box, Slide, Toolbar, useScrollTrigger } from '@mui/material';
 
 import AuthBtn from '@/app/_compon/Auth/AuthBtn';
 import BookHeader from '@/app/_compon/BookHeader/BookHeader';
@@ -20,24 +13,25 @@ const Header = () => {
   const trigger = useScrollTrigger();
 
   return (
-    <Container >
-      <Slide appear={false} direction="down" in={!trigger}>
-        <AppBar>
-          <Toolbar>
-            <NavLinks />
+    <Container>
+      <Box sx={{ height: 100 }}>
+        <Slide appear={false} direction="down" in={!trigger}>
+          <AppBar>
+            <Toolbar>
+              <NavLinks />
 
-            <Search />
-            <Box sx={{ flexGrow: 1 }} />
-            <BookHeader />
-            <BookMenu />
-            <div>
-              <AuthBtn />
-            </div>
-          </Toolbar>
-        </AppBar>
-      </Slide>
+              <Search />
+              <Box sx={{ flexGrow: 1 }} />
+              <BookHeader />
+              <BookMenu />
+              <div>
+                <AuthBtn />
+              </div>
+            </Toolbar>
+          </AppBar>
+        </Slide>
+      </Box>
     </Container>
-
   );
 };
 
