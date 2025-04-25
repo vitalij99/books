@@ -24,7 +24,7 @@ const DarkProvider = ({
   styleTextCookie,
 }: {
   children: React.ReactNode;
-  theme?: RequestCookie;
+
   styleTextCookie?: RequestCookie;
 }) => {
   const [styleText, setStyleText] = React.useState<InitTextStyledType>(

@@ -19,6 +19,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { ColorModeContext } from '@/Providers/DarkProvider';
 import { TranslateContext } from '@/Providers/TranslateProvider';
 import InputColor from '@/app/_compon/InputColor/InputColor';
+import { setCookies } from '@/lib/cookis';
 
 const MenuStyledText = () => {
   const colorMode = React.useContext(ColorModeContext);
@@ -27,6 +28,14 @@ const MenuStyledText = () => {
 
   const handleChange = (value: string, key: InitTextStyledKeys) => {
     colorMode.toggleStyleText(key, value);
+  };
+
+  const handleModeChange = () => {
+    const newMode = mode === 'dark' ? 'light' : 'dark';
+
+    setMode(newMode);
+
+    setCookies('darkMode', newMode);
   };
 
   return (
@@ -41,16 +50,8 @@ const MenuStyledText = () => {
           borderRadius: 1,
         }}
       >
-        <IconButton
-          onClick={() => setMode(mode === 'dark'? "light" :"dark")}
-          sx={{ ml: 1 }}
-          color="inherit"
-        >
-          {mode === 'dark' ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
-          )}
+        <IconButton onClick={handleModeChange} sx={{ ml: 1 }} color="inherit">
+          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
       </Box>
 

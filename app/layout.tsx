@@ -3,7 +3,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 import { getCookies } from '@/lib/cookis';
-import { MENUSTYLEDTEXT,  } from '@/types/book';
+import { MENUSTYLEDTEXT } from '@/types/book';
 
 import SessionWrapper from '@/app/_compon/SessionWrapper/SessionWrapper';
 import ReaderProvider from '@/Providers/ReaderProvider';
@@ -23,15 +23,18 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
+  const darkMode = await getCookies('darkMode');
   const styleText = await getCookies(MENUSTYLEDTEXT);
 
   return (
-    <html lang="uk">
+    <html
+      lang="uk"
+      className={darkMode && darkMode.value === 'dark' ? 'dark' : 'light'}
+    >
       <body>
         <SessionWrapper>
           <TranslateProvider>
-            <DarkProvider  styleTextCookie={styleText}>
+            <DarkProvider styleTextCookie={styleText}>
               <BookInfoProvider>
                 <ReaderProvider>
                   <Header />
