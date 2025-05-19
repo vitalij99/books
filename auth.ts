@@ -7,7 +7,7 @@ import { getUserEmail } from '@/lib/db';
 import { comparePassword } from '@/utils/saltAndHashPassword';
 import { signInSchema } from '@/lib/zod';
 import { JWT } from 'next-auth/jwt';
-import Google from 'next-auth/providers/google';
+import Google, { GoogleProfile } from 'next-auth/providers/google';
 
 const global = {
   prisma: new PrismaClient(),
@@ -19,12 +19,25 @@ if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
 
+const googleProvider = Google({
+  profile: (profile: GoogleProfile) => {
+    const name =
+      `${profile.given_name} ${profile.family_name}`.toLowerCase() ?? 'unknown';
+    return {
+      id: profile.sub,
+      email: profile.email,
+      image: profile.picture,
+      name,
+    };
+  },
+});
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: !!process.env.AUTH_DEBUG,
   adapter: PrismaAdapter(prisma),
   basePath: '/auth',
   providers: [
-    Google,
+    googleProvider,
     Credentials({
       credentials: {
         email: {
