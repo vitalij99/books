@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
-
+import { JWT } from 'next-auth/jwt';
 export default {
   providers: [
     Google({
@@ -37,8 +37,15 @@ export default {
       return session;
     },
   },
-  pages: {
-    error: '/auth',
-    signIn: '/auth',
-  },
 } satisfies NextAuthConfig;
+declare module 'next-auth' {
+  interface Session {
+    accessToken?: string;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    accessToken?: string;
+  }
+}
