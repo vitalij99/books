@@ -13,10 +13,14 @@ const SessionWrapper = async ({ children }: { children: React.ReactNode }) => {
       name: session.user.name,
       email: session.user.email,
       image: session.user.image,
-    }
+    };
   }
 
-  return <SessionProvider basePath={"/auth"} session={session}>{children}</SessionProvider>;
+  return (
+    <SessionProvider basePath={'/auth'} session={session}>
+      {children}
+    </SessionProvider>
+  );
 };
 
 export default SessionWrapper;

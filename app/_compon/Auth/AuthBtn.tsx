@@ -22,7 +22,6 @@ export default function AuthBtn() {
           icon={<Avatar src={session.user?.image as string} />}
         >
           <SpeedDialAction
-            tooltipTitle="Sign out"
             onClick={() => signOut()}
             icon={<HighlightOffIcon />}
           />

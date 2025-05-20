@@ -1,27 +1,31 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import authConfig from './auth.config';
+import NextAuth from 'next-auth';
 
-export function middleware(request: NextRequest) {
-  const sessionToken =
-    request.cookies.has('authjs.session-token') ||
-    request.cookies.has('__Secure-authjs.session-token');
+export const { auth: middleware } = NextAuth(authConfig);
 
-  const refererUrl = request.cookies.get('referer')?.value || '/';
+// export function middleware(request: NextRequest) {
+//   const sessionToken =
+//     request.cookies.has('authjs.session-token') ||
+//     request.cookies.has('__Secure-authjs.session-token');
 
-  const response = sessionToken
-    ? NextResponse.redirect(new URL(refererUrl, request.url))
-    : NextResponse.next();
+//   const refererUrl = request.cookies.get('referer')?.value || '/';
 
-  if (!sessionToken) {
-    const setRefererUrl = request.headers.get('referer') || '/';
-    response.cookies.set('referer', setRefererUrl);
-  } else {
-    response.cookies.delete('referer');
-  }
+//   const response = sessionToken
+//     ? NextResponse.redirect(new URL(refererUrl, request.url))
+//     : NextResponse.next();
 
-  return response;
-}
+//   if (!sessionToken) {
+//     const setRefererUrl = request.headers.get('referer') || '/';
+//     response.cookies.set('referer', setRefererUrl);
+//   } else {
+//     response.cookies.delete('referer');
+//   }
 
-export const config = {
-  matcher: '/auth',
-};
+//   return response;
+// }
+
+// export const config = {
+//   matcher: '/auth',
+// };

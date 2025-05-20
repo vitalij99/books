@@ -7,7 +7,10 @@ import { getUserEmail } from '@/lib/db';
 import { comparePassword } from '@/utils/saltAndHashPassword';
 import { signInSchema } from '@/lib/zod';
 import { JWT } from 'next-auth/jwt';
+
 import Google, { GoogleProfile } from 'next-auth/providers/google';
+
+import authConfig from './auth.config';
 
 const global = {
   prisma: new PrismaClient(),
@@ -19,90 +22,14 @@ if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
 
-const googleProvider = Google({
-  profile: (profile: GoogleProfile) => {
-    const name =
-      `${profile.given_name} ${profile.family_name}`.toLowerCase() ?? 'unknown';
-    return {
-      id: profile.sub,
-      email: profile.email,
-      image: profile.picture,
-      name,
-    };
-  },
-});
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: !!process.env.AUTH_DEBUG,
   adapter: PrismaAdapter(prisma),
-  basePath: '/auth',
-  providers: [
-    googleProvider,
-    Credentials({
-      credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'your-email@example.com',
-        },
-        password: {
-          label: 'Password',
-          type: 'password',
-          placeholder: 'password',
-        },
-      },
-      authorize: async credentials => {
-        try {
-          const { email, password } = await signInSchema.parseAsync(
-            credentials
-          );
-          const user = await getUserEmail(email);
-
-          if (!user) {
-            return null;
-          }
-
-          if (user && user.password) {
-            const isValid = await comparePassword(password, user.password);
-
-            if (!isValid) {
-              return null;
-            } else return user;
-          } else {
-            return null;
-          }
-        } catch (error: any) {
-          throw new Error('Неправильний email або пароль.', error);
-        }
-      },
-    }),
-  ],
   session: {
     strategy: 'jwt',
   },
-  callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl;
-      if (pathname === '/middleware-example') return !!auth;
-      return true;
-    },
-    jwt({ token, trigger, session, account }) {
-      if (trigger === 'update') token.name = session.user.name;
-      if (account?.provider === 'keycloak') {
-        return { ...token, accessToken: account.access_token };
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token?.accessToken) session.accessToken = token.accessToken;
 
-      return session;
-    },
-  },
-  pages: {
-    error: '/auth',
-    signIn: '/auth',
-  },
+  ...authConfig,
 });
 declare module 'next-auth' {
   interface Session {

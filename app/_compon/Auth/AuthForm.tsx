@@ -29,10 +29,6 @@ export default function AuthForm() {
         email,
         password,
       });
-
-      if (res?.error) {
-        setError('Неправильний email або пароль.');
-      }
     } else {
       try {
         const res = await fetch('/api/register', {
