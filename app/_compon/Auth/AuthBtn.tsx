@@ -1,10 +1,13 @@
 import { Avatar, Box, Link, SpeedDial, SpeedDialAction } from '@mui/material';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { useRouter } from 'next/navigation';
+
+// TODO signout tolen
 export default function AuthBtn() {
   const { data: session } = useSession();
-
+  const router = useRouter();
   if (!session?.user)
     return (
       <Link underline="none" color="#fff" href="/auth">
@@ -21,7 +24,7 @@ export default function AuthBtn() {
           icon={<Avatar src={session.user?.image as string} />}
         >
           <SpeedDialAction
-            onClick={() => signOut()}
+            onClick={() => router.push(`/api/auth/signout`)}
             icon={<HighlightOffIcon />}
           />
         </SpeedDial>
