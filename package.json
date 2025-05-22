@@ -24,7 +24,7 @@
     "@types/react-dom": "^19.1.5",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "autoprefixer": "^10.4.21",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "eslint": "^9.27.0",
     "eslint-config-next": "^15.3.2",
     "lodash.debounce": "^4.0.8",

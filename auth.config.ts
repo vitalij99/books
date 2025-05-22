@@ -1,10 +1,31 @@
 import type { NextAuthConfig } from 'next-auth';
-import Google from 'next-auth/providers/google';
+import Google, { GoogleProfile } from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
-import { JWT } from 'next-auth/jwt';
 import type { Provider } from 'next-auth/providers';
+import { JWT } from 'next-auth/jwt';
+import { signInSchema } from '@/lib/zod';
+
+import { comparePassword } from '@/utils/saltAndHashPassword';
+import { getUserEmail } from '@/lib/db';
+
+const googleProvider = Google({
+  profile: (profile: GoogleProfile) => {
+    const name =
+      `${profile.given_name} ${profile.family_name}`.toLowerCase() ?? 'unknown';
+    return {
+      id: profile.sub,
+      email: profile.email,
+      image: profile.picture,
+      name,
+    };
+  },
+  clientId: process.env.AUTH_GOOGLE_ID || '',
+  clientSecret: process.env.AUTH_GOOGLE_SECRET || '',
+  allowDangerousEmailAccountLinking: true,
+});
 
 const providers: Provider[] = [
+  googleProvider,
   Credentials({
     credentials: {
       email: {
@@ -18,18 +39,29 @@ const providers: Provider[] = [
         placeholder: 'password',
       },
     },
-    authorize(c) {
-      if (c.password !== 'password') return null;
-      return {
-        id: 'test',
-        name: 'Test User',
-        email: 'test@example.com',
-      };
+
+    authorize: async credentials => {
+      try {
+        const { email, password } = await signInSchema.parseAsync(credentials);
+        const user = await getUserEmail(email);
+
+        if (!user) {
+          return null;
+        }
+
+        if (user && user.password) {
+          const isValid = await comparePassword(password, user.password);
+
+          if (!isValid) {
+            return null;
+          } else return user;
+        } else {
+          return null;
+        }
+      } catch (error: any) {
+        throw new Error('Неправильний email або пароль.', error);
+      }
     },
-  }),
-  Google({
-    clientId: process.env.AUTH_GOOGLE_ID || '',
-    clientSecret: process.env.AUTH_GOOGLE_SECRET || '',
   }),
 ];
 
