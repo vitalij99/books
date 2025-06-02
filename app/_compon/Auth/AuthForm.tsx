@@ -18,11 +18,8 @@ export default function AuthForm() {
           <form
             action={async () => {
               'use server';
-              try {
-                await signIn('google');
-              } catch (error) {
-                throw error;
-              }
+
+              await signIn('google');
             }}
           >
             <Button
