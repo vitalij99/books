@@ -42,11 +42,9 @@ const getBooksListType = ({
 
         const modifiedImg = image?.getAttribute('data-original');
         const img = 'https:' + modifiedImg || '';
-        const linkBook =
-          link.querySelector('a')?.getAttribute('data-report-did') ||
-          link.querySelector('a')?.getAttribute('href') ||
-          '';
-        const book = linkBook?.match(/\d+$/)?.[0];
+        const linkBook = link.querySelector('a')?.getAttribute('href') || '';
+        const book = linkBook?.match(/\/book\/(.+)/)?.[1] || '';
+
         if (book) {
           linkInfoArray.push({ name, book, img });
         }
@@ -95,10 +93,8 @@ const getBooksListSearch = ({
         const modifiedImg =
           image?.getAttribute('data-original') || image?.getAttribute('src');
         const img = 'https:' + modifiedImg || '';
-        const linkBook =
-          link.querySelector('a')?.getAttribute('data-bookid') ||
-          link.querySelector('a')?.getAttribute('href');
-        const book = linkBook?.match(/\d+$/)?.[0];
+        const linkBook = link.querySelector('a')?.getAttribute('href') || '';
+        const book = linkBook?.match(/\/book\/(.+)/)?.[1] || '';
         if (book) {
           linkInfoArray.push({ name, book, img });
         }
@@ -115,6 +111,7 @@ const getBookLinks = async ({ book }: { book: string }) => {
   // https://www.webnovel.com/book/30240152305644005/catalog
 
   const linksBook = await getBooksChaptersLink({ book });
+
   if (!linksBook) return undefined;
 
   const bookInfo: BookInfoType = await getBookInfoLink({ book });
@@ -138,17 +135,24 @@ const getTitleBookFromLink = async ({ book }: { book: string }) => {
 };
 
 const getBooksChaptersLink = async ({ book }: { book: string }) => {
-  // https://www.webnovel.com/book/30240152305644005/catalog
+  // https://www.webnovel.com/book/disaster-apocalypse-farming-family-and-my-hidden-secret-space_32026809008929705/catalog
+
   const linkBook = `${link}book/${book}/catalog`;
+
+  console.log('linkBook:', linkBook);
 
   const res = await fetch(linkBook);
 
   const data = await res.text();
 
+  console.log('res:', data);
   const result = transformInHtml({
     html: data,
     elem: '.volume-item a',
   });
+
+  console.log('result:', result);
+
   if (!result) return undefined;
 
   const linksBook = [];
@@ -218,7 +222,9 @@ const getBookInfo = (textData: string) => {
 
     const result = {} as BookInfoType;
 
-    info[0].querySelectorAll('strong').forEach(strong => {
+    if (!info[0]) return result;
+
+    info[0]?.querySelectorAll('strong').forEach(strong => {
       const title = strong?.textContent.replace(':', '').trim().toLowerCase();
 
       if (!title) return;
