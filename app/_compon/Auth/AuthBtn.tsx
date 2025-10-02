@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useRouter } from 'next/navigation';
 
-// TODO signout tolen
 export default function AuthBtn() {
   const { data: session } = useSession();
   const router = useRouter();
